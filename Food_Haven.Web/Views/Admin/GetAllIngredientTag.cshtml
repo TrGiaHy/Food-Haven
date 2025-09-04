@@ -1,0 +1,555 @@
+﻿@model List<Repository.ViewModels.IngredientTagViewModel>
+@* @{
+    var storeId = ViewBag.StoreId;
+} *@
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
+    data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default">
+
+
+<!-- Mirrored from EasyFood.com/velzon/html/master/forms-layouts.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Feb 2025 12:22:12 GMT -->
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Admin - IngredientTag List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="EasyFood" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/assetsAdmin/images/favicon.svg">
+
+    <!-- gridjs css -->
+    <link rel="stylesheet" href="~/assetsAdmin/libs/gridjs/theme/mermaid.min.css">
+
+    <!-- Layout config Js -->
+    <script src="~/assetsAdmin/js/layout.js"></script>
+    <!-- Bootstrap Css -->
+    <link href="~/assetsAdmin/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="~/assetsAdmin/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="~/assetsAdmin/css/app.min.css" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="~/assetsAdmin/css/custom.min.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+        @await Html.PartialAsync("_headeradmin")
+
+
+        <!-- ========== App Menu ========== -->
+        <div class="app-menu navbar-menu">
+            <!-- LOGO -->
+            <div class="navbar-brand-box">
+                <!-- Dark Logo-->
+                <a class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="~/assetsAdmin/images/logo-sm.svg" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="~/assetsAdmin/images/logo-dark.svg" alt="" height="35">
+                    </span>
+                </a>
+                <!-- Light Logo-->
+                <a class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="~/assetsAdmin/images/logo-sm.svg" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="~/assetsAdmin/images/logo-light.svg" alt="" height="35">
+                    </span>
+                </a>
+                <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+                    id="vertical-hover">
+                    <i class="ri-record-circle-line"></i>
+                </button>
+            </div>
+
+            <div id="scrollbar">
+                <div class="container-fluid">
+                    <div id="two-column-menu">
+                    </div>
+                    <ul class="navbar-nav" id="navbar-nav">
+                        <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="Index">
+                                <i class=" ri-pie-chart-line"></i> <span>Revenue Statistics</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="WithdrawList">
+                            <i class="ri-exchange-dollar-line"></i> <span>Withdrawal Requests From Users</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="Managercomplant">
+                            <i class="ri-error-warning-line"></i> <span>Order Complaint Reports From Seller</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagerUser">
+                                <i class="ri-account-circle-line"></i> <span>User Accounts</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagementSeller">
+                                <i class="ri-user-add-line"></i> <span>Seller Registration Requests</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="ViewStoreRegistration">
+                            <i class="ri-file-add-line"></i> <span>Store Registration Requests</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ViewAdminStore">
+                                <i class="ri-store-2-line"></i> <span>Store</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagementReportStore">
+                            <i class="ri-alert-line"></i> <span>Store Reports From User</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ViewCategories">
+                                <i class="ri-folder-2-line"></i> <span>Categories</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagementRecipe">
+                                <i class="ri-restaurant-2-line"></i> <span>Cooking Recipes</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagerExpertRecipe">
+                                <i class="ri-restaurant-2-line"></i> <span>Expert Recipe</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link active" asp-controller="Admin" asp-action="GetAllIngredientTag">
+                            <i class=" ri-price-tag-3-line"></i> <span>Ingredient Tag</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="GetAllTypeOfDish">
+                            <i class="ri-restaurant-line"></i> <span>Type of Dish</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagerVoucher">
+                            <i class=" ri-coupon-2-line"></i> <span>Voucher</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="Chat">
+                                <i class="ri-chat-3-line"></i> <span>Chat</span>
+                            </a>
+                        </li>
+                        <!--<li class="nav-item">
+                            <a class="nav-link menu-link" href="">
+                                <i class="ri-notification-2-line"></i> <span>Notifications</span>
+                            </a>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+            <!-- Sidebar -->
+        </div>
+        <div class="sidebar-background"></div>
+    </div>
+    <!-- Left Sidebar End -->
+    <!-- Vertical Overlay-->
+    <div class="vertical-overlay"></div>
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+
+        <div class="page-content">
+            <div class="container-fluid">
+
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div
+                            class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                            <h4 class="mb-sm-0">Ingredient Tags List</h4>
+
+                            @* <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
+                                    <li class="breadcrumb-item active">IngredientTags List</li>
+                                </ol>
+                            </div> *@
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h4 class="card-title mb-0">Ingredient Tags List</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-start mb-3">
+                                    <a href="/Admin/CreateIngredientTag" class="btn btn-sm btn-success">
+                                        <i class="ri-add-line"></i> Create Ingredient Tags
+                                    </a>
+                                </div>
+                                <div id="table-ingredienttag"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var ingredientTags = @Html.Raw(Json.Serialize(Model));
+
+                        if (!ingredientTags || ingredientTags.length === 0) {
+                            document.getElementById("table-ingredienttag").innerHTML =
+                                "<div class='alert alert-warning text-center'><p>No ingredient tags available.</p></div>";
+                            return;
+                        }
+
+                        new gridjs.Grid({
+                            columns: [
+                                { name: "ID", hidden: true },
+                                { name: "Name", width: "250px" },
+                                {
+                                    name: "Created Date",
+                                    width: "150px",
+                                    formatter: (cell) => formatDate(cell)
+                                },
+                                {
+                                    name: "Modified Date",
+                                    width: "150px",
+                                    formatter: (cell) => formatDate(cell)
+                                },
+                                {
+                                    name: "Status",
+                                    width: "120px",
+                                    formatter: (cell) => {
+                                        return cell
+                                            ? gridjs.html(`<span class="badge bg-success-subtle text-success">Active</span>`)
+                                            : gridjs.html(`<span class="badge bg-danger-subtle text-danger">Disabled</span>`);
+                                    }
+                                },
+                                {
+                                    name: "Actions",
+                                    width: "200px",
+                                    formatter: (_, row) => {
+                                        let id = row.cells[0].data;
+                                        let isActive = row.cells[4].data;
+
+                                        let toggleText = isActive ? "Disable" : "Enable";
+                                        let toggleClass = isActive ? "btn btn-sm btn-danger" : "btn btn-sm btn-success";
+                                        let toggleIcon = isActive ? "ri-eye-off-line" : "ri-eye-line";
+
+                                        return gridjs.html(`
+                                            <div class="d-flex gap-2">
+                                                <a class="btn btn-sm btn-primary" href="/Admin/UpdateIngredientTag/${id}">
+                                                    <i class="ri-pencil-fill align-bottom me-1"></i> Edit
+                                                </a>
+                                                <button class="${toggleClass}" onclick="ToggleIngredientTagStatus('${id}', ${!isActive})">
+                                                    <i class="${toggleIcon} align-bottom me-1"></i> ${toggleText}
+                                                </button>
+                                            </div>
+                                        `);
+                                    }
+                                }
+                            ],
+                            pagination: { enabled: true, limit: 10, summary: true },
+                            sort: {
+                                multiColumn: false,
+                                compare: (a, b) => new Date(b.cells[2].data) - new Date(a.cells[2].data)
+                            },
+                            search: true,
+                            data: ingredientTags.map(c => [
+                                c.id,
+                                c.name,
+                                c.createdDate,
+                                c.modifiedDate,
+                                c.isActive // only once!
+                            ])
+                        }).render(document.getElementById("table-ingredienttag"));
+                    });
+
+                    function formatDate(dateString) {
+                        if (!dateString) return "";
+                        let date = new Date(dateString);
+                        return date.toLocaleDateString("en-GB");
+                    }
+
+                    function ToggleIngredientTagStatus(id, isActive) {
+                        let actionText = isActive ? "enable" : "disable";
+                        let confirmButtonColor = isActive ? "#28a745" : "#dc3545";
+
+                        Swal.fire({
+                            title: `Are you sure?`,
+                            text: `Do you want to ${actionText} this ingredient tag?`,
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: confirmButtonColor,
+                            cancelButtonColor: "#6c757d",
+                            confirmButtonText: `Yes, ${actionText} it!`
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                fetch(`/Admin/ToggleIngredientTagStatus?id=${id}&isActive=${isActive}`, {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ id, isActive })
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            Swal.fire({
+                                                title: "Success!",
+                                                text: `Ingredient tag has been ${actionText}d successfully.`,
+                                                icon: "success",
+                                                timer: 1500,
+                                                showConfirmButton: false
+                                            }).then(() => location.reload());
+                                        } else {
+                                            Swal.fire("Error!", "Failed to update ingredient tag status.", "error");
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error("Error updating ingredient tag status:", error);
+                                        Swal.fire("Error!", "An unexpected error occurred.", "error");
+                                    });
+                            }
+                        });
+                    }
+                </script>
+
+
+                <!-- end row -->
+
+            </div>
+            <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+        @section Scripts {
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const swalSuccess = '@TempData["SuccessMessage"]';
+                    const swalError = '@TempData["SwalError"]';
+
+                    if (swalError) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: swalError,
+                            confirmButtonColor: '#d33'
+                        });
+                    }
+
+                    if (swalSuccess) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: swalSuccess,
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                });
+            </script>
+        }
+
+        @await Html.PartialAsync("_Footer_Admin_Seller")
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var ingredientTags = @Html.Raw(Json.Serialize(Model));
+
+                if (!ingredientTags || ingredientTags.length === 0) {
+                    document.getElementById("table-ingredienttag").innerHTML = "<div class='alert alert-warning text-center'><p>No ingredient tags available.</p></div>";
+                    return;
+                }
+
+                new gridjs.Grid({
+                    columns: [
+                        { name: "ID", hidden: true },
+                        { name: "Name", width: "250px" },
+                        { name: "Created Date", width: "150px", formatter: (cell) => formatDate(cell) },
+                        { name: "Modified Date", width: "150px", formatter: (cell) => formatDate(cell) },
+                        {
+                            name: "Status",
+                            width: "120px",
+                            formatter: (cell) => {
+                                return cell
+                                    ? gridjs.html(`<span class="badge bg-success-subtle text-success">Active</span>`)
+                                    : gridjs.html(`<span class="badge bg-danger-subtle text-danger">Disabled</span>`);
+                            }
+                        },
+                        {
+                            name: "Actions",
+                            width: "150px",
+                            formatter: (_, row) => {
+                                let id = row.cells[0].data;
+                                let isActive = row.cells[5].data;
+
+                                let toggleButtonHtml = isActive
+                                    ? `<li>
+                                                    <button class="dropdown-item" onclick="ToggleIngredientTagStatus('${id}', false)">
+                                                        <i class="ri-eye-off-line text-danger align-bottom me-2"></i> Disable
+                                                    </button>
+                                               </li>`
+                                    : `<li>
+                                                    <button class="dropdown-item" onclick="ToggleIngredientTagStatus('${id}', true)">
+                                                        <i class="ri-eye-line text-success align-bottom me-2"></i> Enable
+                                                    </button>
+                                               </li>`;
+
+                                return gridjs.html(`
+                                            <div class="dropdown">
+                                                <button class="btn btn-soft-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="ri-more-fill align-middle"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                    <li>
+                                                        <a class="dropdown-item edit-item-btn" href="/Admin/UpdateIngredientTag/${id}">
+                                                            <i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit
+                                                        </a>
+                                                    </li>
+                                                    ${toggleButtonHtml}
+                                                </ul>
+                                            </div>
+                                        `);
+                            }
+                        }
+                    ],
+                    pagination: { enabled: true, limit: 10, summary: true },
+                    sort: true,
+                    search: true,
+                    data: ingredientTags.map(c => [
+                        c.id,
+                        c.name,
+                        c.createdDate,
+                        c.modifiedDate,
+                        c.isActive,
+                        c.isActive // truyền thêm isActive để xử lý toggle
+                    ])
+                }).render(document.getElementById("table-ingredienttag"));
+            });
+
+            function formatDate(dateString) {
+                if (!dateString) return "";
+                let date = new Date(dateString);
+                return date.toLocaleDateString("en-GB");
+            }
+
+            function ToggleIngredientTagStatus(id, isActive) {
+                let actionText = isActive ? "enable" : "disable";
+                let confirmButtonColor = isActive ? "#28a745" : "#dc3545";
+
+                Swal.fire({
+                    title: `Are you sure?`,
+                    text: `Do you want to ${actionText} this ingredient tag?`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: confirmButtonColor,
+                    cancelButtonColor: "#6c757d",
+                    confirmButtonText: `Yes, ${actionText} it!`
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(`/Admin/ToggleIngredientTagStatus?id=${id}&isActive=${isActive}`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ id, isActive })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire({
+                                        title: "Success!",
+                                        text: `Ingredient tag has been ${actionText}d successfully.`,
+                                        icon: "success",
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    }).then(() => location.reload());
+                                } else {
+                                    Swal.fire("Error!", "Failed to update ingredient tag status.", "error");
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Error updating ingredient tag status:", error);
+                                Swal.fire("Error!", "An unexpected error occurred.", "error");
+                            });
+                    }
+                });
+            }
+        </script>
+
+        <!-- end row -->
+
+    </div>
+    <!-- container-fluid -->
+
+    </div>
+    <!-- end main content-->
+
+
+    </div>
+    </footer>
+    </div>
+    <!-- end main content-->
+
+    </div>
+    <!-- END layout-wrapper -->
+    <!--start back-to-top-->
+    <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+        <i class="ri-arrow-up-line"></i>
+    </button>
+    <!--end back-to-top-->
+    <!--preloader-->
+    <div id="preloader">
+        <div id="status">
+            <div class="spinner-border text-primary avatar-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- JAVASCRIPT -->
+    <script src="~/assetsAdmin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assetsAdmin/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/assetsAdmin/libs/node-waves/waves.min.js"></script>
+    <script src="~/assetsAdmin/libs/feather-icons/feather.min.js"></script>
+    <script src="~/assetsAdmin/js/pages/plugins/lord-icon-2.1.0.js"></script>
+    <script src="~/assetsAdmin/js/plugins.js"></script>
+
+    <!-- prismjs plugin -->
+    <script src="~/assetsAdmin/libs/prismjs/prism.js"></script>
+
+    <!-- gridjs js -->
+    <script src="~/assetsAdmin/libs/gridjs/gridjs.umd.js"></script>
+    <!-- gridjs init -->
+    <script src="~/assetsAdmin/js/pages/gridjs.init.js"></script>
+
+    <!-- App js -->
+    <script src="~/assetsAdmin/js/app.js"></script>
+
+</body>
+
+
+<!-- Mirrored from EasyFood.com/velzon/html/master/forms-layouts.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Feb 2025 12:22:12 GMT -->
+
+</html>

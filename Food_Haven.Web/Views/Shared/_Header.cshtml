@@ -1,0 +1,588 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Models
+@using Repository.ViewModels
+@using System.Security.Claims
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+
+@{
+    string chatUrl = "/Home/Login"; // Mặc định nếu chưa đăng nhập
+    var user = await UserManager.GetUserAsync(User);
+
+    if (user != null)
+    {
+        if (await UserManager.IsInRoleAsync(user, "Admin"))
+        {
+            chatUrl = "/Admin/chat";
+        }
+        else if (await UserManager.IsInRoleAsync(user, "Seller"))
+        {
+            chatUrl = "/Seller/chat";
+        }
+        else if (await UserManager.IsInRoleAsync(user, "User"))
+        {
+            chatUrl = "/users/chatlist";
+        }
+    }
+}
+
+<header class="header-area header-style-1 header-height-2">
+    <div class="header-middle header-middle-ptb-1 d-none d-lg-block">
+        <div class="container">
+            <div class="header-wrap">
+                <div class="logo logo-width-1">
+                    <a asp-action="Index" asp-controller="Home"><img src="~/assets/imgs/theme/logo_new.svg"
+                            alt="logo" /></a>
+                </div>
+                <div class="header-right">
+                    <div class="search-style-2">
+                        <form asp-action="SearchProductList" asp-controller="Home" method="get">
+                         @*    <select class="select-active">
+                                <option>All Categories</option>
+                                <option>Milks and Dairies</option>
+                                <option>Wines & Alcohol</option>
+                                <option>Clothing & Beauty</option>
+                                <option>Pet Foods & Toy</option>
+                                <option>Fast food</option>
+                                <option>Baking material</option>
+                                <option>Vegetables</option>
+                                <option>Fresh Seafood</option>
+                                <option>Noodles & Rice</option>
+                                <option>Ice cream</option>
+                            </select> *@
+            <input type="text" name="searchName" placeholder="Search By Product..." value="@ViewData["SearchKeyword"]" />
+                            <button class="btn mdi mdi-magnify search-widget-icon" type="submit"></button> <!-- cần nút submit để gửi -->
+                        </form>
+                    </div>
+                    <div class="header-action-right">
+                        <div class="header-action-2">
+                            @* <div class="search-location"> *@
+                            @*     <form action="#"> *@
+                            @*         <select class="select-active"> *@
+                            @*             <option>Your Location</option> *@
+                            @*             <option>Alabama</option> *@
+                            @*             <option>Alaska</option> *@
+                            @*             <option>Arizona</option> *@
+                            @*             <option>Delaware</option> *@
+                            @*             <option>Florida</option> *@
+                            @*             <option>Georgia</option> *@
+                            @*             <option>Hawaii</option> *@
+                            @*             <option>Indiana</option> *@
+                            @*             <option>Maryland</option> *@
+                            @*             <option>Nevada</option> *@
+                            @*             <option>New Jersey</option> *@
+                            @*             <option>New Mexico</option> *@
+                            @*             <option>New York</option> *@
+                            @*         </select> *@
+                            @*     </form> *@
+                            @* </div> *@
+                            <div class="header-action-icon-2"> 
+                                 <a href=""> 
+                                    <img class="svgInject" alt="Nest" 
+                                         src="~/assets/imgs/theme/icons/icon-compare.svg" /> 
+                                     @* <span class="pro-count blue">3</span>  *@
+                               </a> 
+                               <a asp-action="FindRecipes" asp-controller="home"><span class="lable ml-0">Suggestions</span></a> 
+                            </div> 
+                            <div class="header-action-icon-2">
+                                <a onclick="goToChatOrver(@User.FindFirst(ClaimTypes.NameIdentifier)?.Value)">
+                                    <img class="svgInject" alt="Nest" 
+                                         src="~/assets/imgs/theme/icons/phone-call.svg" /> 
+                                     @* <span class="pro-count blue">3</span>  *@
+                               </a>
+                                <a href="@chatUrl"><span class="lable ml-0">Chat</span></a>
+                            </div> 
+                            <div class="header-action-icon-2">
+                                <a href="">
+                                    <img class="svgInject" alt="Nest" src="~/assets/imgs/theme/icons/icon-heart.svg" />
+                                    @* <span class="pro-count blue">6</span> *@
+                                </a>
+                                <a href=""><span class="lable ml-0">Favorites </span></a>
+                                    <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
+                                        <ul>
+                                            <li>
+                                                <a asp-action="Wishlist" asp-controller="Home">
+                                                    <i class="fi fi-rs-heart mr-10"></i>Wishlist
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a asp-action="ManagementFollowedStores" asp-controller="Home">
+                                                    <i class="fi fi-rs-heart mr-10"></i>Followed Stores
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a asp-action="FavoriteRecipes" asp-controller="Users">
+                                                    <i class="fi fi-rs-heart mr-10"></i>Favorite Recipes
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                            </div>
+
+                            <div id="cart-container">
+                                @await Html.PartialAsync("_Cart", new List<CartViewModels>())
+                            </div>
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+
+                            <script src="https://cdn.jsdelivr.net/npm/notify-js@3/notify.min.js"></script>
+
+                            <script>
+                                $(document).ready(function () {
+                                    loadCart();
+
+                                    function loadCart() {
+                                        $.get("/Home/CartPart", function (data) {
+                                            $("#cart-container").html(data);
+                                        }).fail(function (xhr) {
+                                            console.error("Error:", xhr.responseText);
+                                            $("#cart-container").html("<p style='color:red;'>Failed to load cart.</p>");
+                                        });
+                                    }
+
+                                    window.AddToCart = function (productId) {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/Home/AddToCart",
+                                            contentType: "application/json",
+                                            data: JSON.stringify({ ProductID: productId, quantity: 1 }),
+                                            success: function (response) {
+                                                if (response.success) {
+                                                    new Notify({
+                                                        status: 'success',
+                                                        title: 'Success!',
+                                                        text: response.message,
+                                                        effect: 'fade',
+                                                        speed: 300,
+                                                        showIcon: true,
+                                                        showCloseButton: true,
+                                                        autoclose: true,
+                                                        autotimeout: 3000,
+                                                        position: 'right top',
+                                                    });
+                                                    loadCart(); // Refresh cart
+                                                } else {
+                                                    new Notify({
+                                                        status: 'error',
+                                                        title: 'Error!',
+                                                        text: response.message,
+                                                        effect: 'fade',
+                                                        speed: 300,
+                                                        showIcon: true,
+                                                        showCloseButton: true,
+                                                        autoclose: true,
+                                                        autotimeout: 3000,
+                                                        position: 'right top',
+                                                    });
+                                                }
+                                            },
+                                            error: function (xhr) {
+                                                console.error(xhr.responseText);
+                                                new Notify({
+                                                    status: 'error',
+                                                    title: 'System Error!',
+                                                    text: "Unable to add to cart.",
+                                                    effect: 'fade',
+                                                    speed: 300,
+                                                    showIcon: true,
+                                                    showCloseButton: true,
+                                                    autoclose: true,
+                                                    autotimeout: 3000,
+                                                    position: 'right top',
+                                                });
+                                            }
+                                        });
+                                    };
+
+                                    // Function to delete product
+                                window.DeleteFromCart = function (cartId) {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "The product will be removed from your cart!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Delete!",
+        cancelButtonText: "Cancel"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                type: "POST",
+                url: "/Home/DeleteCart",
+                contentType: "application/json",
+                data: JSON.stringify({ CartID: cartId }), // dùng cartId đúng
+                success: function (response) {
+                    if (response.success) {
+                        new Notify({
+                            status: 'success',
+                            title: 'Deleted!',
+                            text: response.message,
+                            effect: 'fade',
+                            speed: 300,
+                            showIcon: true,
+                            showCloseButton: true,
+                            autoclose: true,
+                            autotimeout: 3000,
+                            position: 'right top',
+                        });
+                        loadCart(); // Refresh cart without reloading page
+                    } else {
+                        new Notify({
+                            status: 'error',
+                            title: 'Error!',
+                            text: response.message,
+                            effect: 'fade',
+                            speed: 300,
+                            showIcon: true,
+                            showCloseButton: true,
+                            autoclose: true,
+                            autotimeout: 3000,
+                            position: 'right top',
+                        });
+                    }
+                },
+                error: function (xhr) {
+                    console.error(xhr.responseText);
+                    new Notify({
+                        status: 'error',
+                        title: 'System Error!',
+                        text: "Unable to remove the product from the cart.",
+                        effect: 'fade',
+                        speed: 300,
+                        showIcon: true,
+                        showCloseButton: true,
+                        autoclose: true,
+                        autotimeout: 3000,
+                        position: 'right top',
+                    });
+                }
+            });
+        }
+    });
+};
+                                });
+                            </script>
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <div class="header-action-icon-2">
+                                    <a href="">
+                                        <img class="svgInject" alt="Nest" src="~/assets/imgs/theme/icons/icon-user.svg" />
+                                    </a>
+                                    <a asp-controller="Users" asp-action="Index"><span class="lable ml-0">Account</span></a>
+                                    <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
+                                        <ul>
+                                            <li>
+                                                <a asp-controller="Users" asp-action="Index">
+                                                    <i class="fi fi-rs-user mr-10"></i>My
+                                                    Account
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a asp-controller="Users" asp-action="MyViewRecipe">
+													<i class="fi fi-rs-label mr-10"></i>My Recipes
+                                                </a>
+                                            </li>
+                                            @{
+                                                // var user = await UserManager.GetUserAsync(User);
+                                                var isSeller = user != null && await UserManager.IsInRoleAsync(user, "Seller");
+                                            }
+                                            @if (isSeller)
+                                            {
+                                                <li>
+                                                    <a href="/Seller">
+                                                        <i class="fi fi-rs-location-alt mr-10"></i>Management Seller
+                                                    </a>
+                                                </li>
+                                            }
+                                            @* <li> *@
+                                            @*     <a href=""> *@
+                                            @*         <i class="fi fi-rs-label mr-10"></i>My *@
+                                            @*         Voucher *@
+                                            @*     </a> *@
+                                            @* </li> *@
+                                            @* <li>
+                                                <a asp-controller="Home" asp-action="Wishlist">
+                                                    <i class="fi fi-rs-heart mr-10"></i>My
+                                                    Wishlist
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a asp-controller="Home" asp-action="Cart">
+                                                    <i class="fi-rs-shopping-cart mr-10"></i>My
+                                                    Cart
+                                                </a>
+                                            </li> *@
+                                            @* <li> *@
+                                            @*     <a href=""> *@
+                                            @*         <i class="fi fi-rs-settings-sliders mr-10"></i>Setting *@
+                                            @*     </a> *@
+                                            @* </li> *@
+                                            <li>
+                                                <a href="/Home/Logout">
+                                                    <i class="fi fi-rs-sign-out mr-10"></i>Sign
+                                                    out
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="header-action-icon-2">
+                                    <a href="">
+                                        <img class="svgInject" alt="Nest" src="~/assets/imgs/theme/icons/icon-user.svg" />
+                                    </a>
+                                    <a href=""><span class="lable ml-0">Account</span></a>
+                                    <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
+                                        <ul>
+                                            <li>
+                                                <a asp-action="Login" asp-controller="Home">
+                                                    <i class="fi fi-rs-user mr-10"></i>Login
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a asp-action="register" asp-controller="Home">
+                                                    <i class="fi fi-rs-location-alt mr-10"></i>Register
+                                                </a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            }
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header-bottom header-bottom-bg-color sticky-bar">
+        <div class="container">
+            <div class="header-wrap header-space-between position-relative">
+                <div class="logo logo-width-1 d-block d-lg-none">
+                    <a asp-controller="Home"><img src="~/assets/imgs/theme/logo_new.svg" alt="logo" /></a>
+                </div>
+                <div class="header-nav d-none d-lg-flex">
+                    <div id="category-list-container">
+                    </div>
+                </div>
+                <script>
+                    $(document).ready(function () {
+                        function bindCategoryEvents() {
+                            $(document).off("click", ".categories-button-active").on("click", ".categories-button-active", function (e) {
+                                e.preventDefault();
+
+                                // Thay đổi toggle để thêm cả 2 class cần thiết
+                                $(this).siblings(".categories-dropdown-wrap").toggleClass("active categories-dropdown-active-large");
+                                console.log("Dropdown clicked!");
+                            });
+
+                            $(document).off("click", ".more_categories").on("click", ".more_categories", function () {
+                                $(".more_slide_open").slideToggle();
+                            });
+                        }
+
+                        function loadCategoryList() {
+                            $.ajax({
+                                url: '@Url.Action("SearchCategoryList", "Home")',
+                                type: "GET",
+                                dataType: "html",
+                                success: function (response) {
+                                    $("#category-list-container").html(response);
+                                    bindCategoryEvents();
+                                    console.log("✅ Category list loaded successfully.");
+                                },
+                                error: function () {
+                                    $("#category-list-container").html('<p>Lỗi khi tải danh mục. Vui lòng thử lại.</p>');
+                                }
+                            });
+                        }
+
+                        loadCategoryList();
+                    });
+                </script>
+                  <style>
+                       .header-bottom {
+        background: #fff;
+        border-bottom: 1px solid #eee;
+    }
+                    .categories-dropdown-wrap {
+                        background: #fff;
+                        padding: 15px;
+                        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.03);
+                        position: absolute;
+                        width: 100%;
+                        min-width: 500px;
+                        max-width: 100vw;
+                        left: 0;
+                        right: 0;
+                        z-index: 2000;
+                        display: none;
+                        box-sizing: border-box;
+                    }
+
+                    .categories-dropdown-wrap.active {
+                        display: block !important;
+                    }
+
+                    .categori-dropdown-inner {
+                        display: flex;
+                        gap: 20px;
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+
+                    .categori-dropdown-inner ul {
+                        flex: 1 1 0;
+                        list-style: none;
+                        padding: 0;
+                        margin: 0;
+                        min-width: 0;
+                        /* Giúp tránh nội dung ép rộng */
+                    }
+
+                    .categori-dropdown-inner ul li a {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        display: block;
+                        max-width: 100%;
+                    }
+
+                    .more_slide_open {
+                        margin-top: 10px;
+                    }
+
+                    .more_categories {
+                        cursor: pointer;
+                    }
+                </style>
+                <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block font-heading">
+                    <nav>
+                        <ul>
+                            <li>
+                                <a asp-controller="Home" asp-action="index">Home </a>
+
+                            </li>
+                            @* <li>
+                                <a asp-controller="Home" asp-action="ListProducts"> Products </a>
+
+                            </li> *@
+                            <li>
+                                <a asp-controller="Home" asp-action="GetAllCategory">Categories</a>
+
+                            </li>
+                           
+                            <li>
+                                <a asp-controller="Home" asp-action="GetAllStore">Store</a>
+                            </li>
+                            <li>
+                                <a asp-controller="users" asp-action="ViewRecipe">Recipe</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+           
+            <div class="header-action-icon-2 d-block d-lg-none">
+                <div class="burger-icon burger-icon-white">
+                    <span class="burger-icon-top"></span>
+                    <span class="burger-icon-mid"></span>
+                    <span class="burger-icon-bottom"></span>
+                </div>
+            </div>
+            <div class="header-action-right d-block d-lg-none">
+                <div class="header-action-2">
+                    <div class="header-action-icon-2">
+                        <a href="">
+                            <img alt="Nest" src="~/assets/imgs/theme/icons/icon-heart.svg" />
+                            @* <span class="pro-count white">4</span> *@
+                        </a>
+                    </div>
+                    <div class="header-action-icon-2">
+                        <a class="mini-cart-icon" asp-controller="Home" asp-action="Cart">
+                            <img alt="Nest" src="~/assets/imgs/theme/icons/icon-cart.svg" />
+                            @* <span class="pro-count white">2</span> *@
+                        </a>
+                        <div class="cart-dropdown-wrap cart-dropdown-hm2">
+                            <ul>
+                                <li>
+                                    <div class="shopping-cart-img">
+                                        <a href="">
+                                            <img alt="Nest" src="~/assets/imgs/shop/thumbnail-3.jpg" />
+                                        </a>
+                                    </div>
+                                    <div class="shopping-cart-title">
+                                        <h4><a href="">Plain Striola Shirts</a></h4>
+                                        <h3><span>1 × </span>$800.00</h3>
+                                    </div>
+                                    <div class="shopping-cart-delete">
+                                        <a href="#"><i class="fi-rs-cross-small"></i></a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="shopping-cart-img">
+                                        <a href="">
+                                            <img alt="Nest" src="~/assets/imgs/shop/thumbnail-4.jpg" />
+                                        </a>
+                                    </div>
+                                    <div class="shopping-cart-title">
+                                        <h4><a href="">Macbook Pro 2024</a></h4>
+                                        <h3><span>1 × </span>$3500.00</h3>
+                                    </div>
+                                    <div class="shopping-cart-delete">
+                                        <a href="#"><i class="fi-rs-cross-small"></i></a>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="shopping-cart-footer">
+                                <div class="shopping-cart-total">
+                                    <h4>Total <span>$383.00</span></h4>
+                                </div>
+                                <div class="shopping-cart-button">
+                                    <a asp-controller="Home" asp-action="Cart">View cart</a>
+                                    <a href="">Checkout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    @* <script>
+        function goToChatOrver(userId) {
+              fetch('/Home/GetCurrentUserRole')
+                  .then(response => {
+                      if (!response.ok) throw new Error("Không thể lấy vai trò");
+                      return response.json();
+                  })
+                  .then(data => {
+                      let redirectUrl = '/users/chatlist';
+                      if (data.role === "Admin") {
+                          redirectUrl = '/Admin/chat';
+                      } else if (data.role === "Seller") {
+                          redirectUrl = '/Seller/chat';
+                      }else if (data.role === "Guest") {
+                          redirectUrl = '/Home/Login';
+                      }
+
+                      window.location.href = redirectUrl;
+                  })
+                  .catch(error => {
+                      console.error("Lỗi khi lấy vai trò người dùng:", error);
+                      window.location.href = '/users';
+                  });
+          }
+    </script> *@
+</header>
+
+

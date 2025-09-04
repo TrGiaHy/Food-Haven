@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <Title>Food Haven - Find Recipes</Title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:Title" content="" />
+    <meta property="og:type" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="~/assets/imgs/theme/favicon.svg" />
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="~/assets/css/main.css?v=6.0" />
+    <link href="~/css/findrecupe.css" rel="stylesheet" />
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="~/assets/css/plugins/slider-range.css" />
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="chrome-extension://mooikfkahbdckldjjndioackbalphokd/~/assets/prompt.js"></script>
+    @Html.Raw(" <link href='https://cdn.jsdelivr.net/npm/@flaticon/flaticon-uicons/css/all/all.css' rel='stylesheet'>")
+
+    <link rel="stylesheet" href="~/assets/js/gridjs/theme/mermaid.min.css">
+    <!-- Icons Css -->
+    <link href="~/assetsAdmin/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        .nav-tabs .nav-item:first-child .nav-link {
+            margin-left: 0 !important;
+            padding-left: 5px !important;
+            padding-top: 15px !important;
+            padding-bottom: 15px !important;
+            padding-right: 24px !important;
+        }
+
+        .nav-tabs .nav-link:first-child {
+            padding-left: 16px !important;
+        }
+
+        #history-tab {
+            padding-bottom: 11px;
+        }
+    </style>
+</head>
+
+
+<body data-theme="default">
+    @await Html.PartialAsync("_Header")
+    @* <div class="mobile-header-active mobile-header-wrapper-style">
+        <div class="mobile-header-wrapper-inner">
+            <div class="mobile-header-top">
+                <div class="mobile-header-logo">
+                    <a href='/'><img src="~/assets/imgs/theme/logo.svg" alt="logo" /></a>
+                </div>
+                <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
+                    <button class="close-style search-close">
+                        <i class="icon-top"></i>
+                        <i class="icon-bottom"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="mobile-header-content-area">
+                <div class="mobile-search search-style-3 mobile-header-border">
+                    <form action="#">
+                        <input type="text" placeholder="Search for items…" />
+                        <button type="submit"><i class="fi-rs-search"></i></button>
+                    </form>
+                </div>
+                <div class="mobile-menu-wrap mobile-header-border">
+                    <!-- mobile menu start -->
+                    <nav>
+                        <ul class="mobile-menu font-heading">
+                            <li class="menu-item-has-children">
+                                <a href='/'>Home</a>
+                                <ul class="dropdown">
+                                    <li><a href='/'>Home 1</a></li>
+                                    <li><a href='/index-2'>Home 2</a></li>
+                                    <li><a href='/index-3'>Home 3</a></li>
+                                    <li><a href='/index-4'>Home 4</a></li>
+                                    <li><a href='/index-5'>Home 5</a></li>
+                                    <li><a href='/index-6'>Home 6</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href='/shop-grid-right'>shop</a>
+                                <ul class="dropdown">
+                                    <li><a href='/shop-grid-right'>Shop Grid – Right Sidebar</a></li>
+                                    <li><a href='/shop-grid-left'>Shop Grid – Left Sidebar</a></li>
+                                    <li><a href='/shop-list-right'>Shop List – Right Sidebar</a></li>
+                                    <li><a href='/shop-list-left'>Shop List – Left Sidebar</a></li>
+                                    <li><a href='/shop-fullwidth'>Shop - Wide</a></li>
+                                    <li class="menu-item-has-children">
+                                        <a href="#">Single Product</a>
+                                        <ul class="dropdown">
+                                            <li><a href='/shop-product-right'>Product – Right Sidebar</a></li>
+                                            <li><a href='/shop-product-left'>Product – Left Sidebar</a></li>
+                                            <li><a href='/shop-product-full'>Product – No sidebar</a></li>
+                                            <li><a href='/shop-product-vendor'>Product – Vendor Infor</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href='/shop-filter'>Shop – Filter</a></li>
+                                    <li><a href='/shop-wishlist'>Shop – Wishlist</a></li>
+                                    <li><a href='/shop-cart'>Shop – Cart</a></li>
+                                    <li><a href='/shop-checkout'>Shop – Checkout</a></li>
+                                    <li><a href='/shop-compare'>Shop – Compare</a></li>
+                                    <li class="menu-item-has-children">
+                                        <a href="#">Shop Invoice</a>
+                                        <ul class="dropdown">
+                                            <li><a href='/shop-invoice-1'>Shop Invoice 1</a></li>
+                                            <li><a href='/shop-invoice-2'>Shop Invoice 2</a></li>
+                                            <li><a href='/shop-invoice-3'>Shop Invoice 3</a></li>
+                                            <li><a href='/shop-invoice-4'>Shop Invoice 4</a></li>
+                                            <li><a href='/shop-invoice-5'>Shop Invoice 5</a></li>
+                                            <li><a href='/shop-invoice-6'>Shop Invoice 6</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="#">Vendors</a>
+                                <ul class="dropdown">
+                                    <li><a href='/vendors-grid'>Vendors Grid</a></li>
+                                    <li><a href='/vendors-list'>Vendors List</a></li>
+                                    <li><a href='/vendor-details-1'>Vendor Details 01</a></li>
+                                    <li><a href='/vendor-details-2'>Vendor Details 02</a></li>
+                                    <li><a href='/vendor-dashboard'>Vendor Dashboard</a></li>
+                                    <li><a href='/vendor-guide'>Vendor Guide</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="#">Mega menu</a>
+                                <ul class="dropdown">
+                                    <li class="menu-item-has-children">
+                                        <a href="#">Women's Fashion</a>
+                                        <ul class="dropdown">
+                                            <li><a href='/shop-product-right'>Dresses</a></li>
+                                            <li><a href='/shop-product-right'>Blouses & Shirts</a></li>
+                                            <li><a href='/shop-product-right'>Hoodies & Sweatshirts</a></li>
+                                            <li><a href='/shop-product-right'>Women's Sets</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item-has-children">
+                                        <a href="#">Men's Fashion</a>
+                                        <ul class="dropdown">
+                                            <li><a href='/shop-product-right'>Jackets</a></li>
+                                            <li><a href='/shop-product-right'>Casual Faux Leather</a></li>
+                                            <li><a href='/shop-product-right'>Genuine Leather</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item-has-children">
+                                        <a href="#">Technology</a>
+                                        <ul class="dropdown">
+                                            <li><a href='/shop-product-right'>Gaming Laptops</a></li>
+                                            <li><a href='/shop-product-right'>Ultraslim Laptops</a></li>
+                                            <li><a href='/shop-product-right'>Tablets</a></li>
+                                            <li><a href='/shop-product-right'>Laptop Accessories</a></li>
+                                            <li><a href='/shop-product-right'>Tablet Accessories</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href='/blog-category-fullwidth'>Blog</a>
+                                <ul class="dropdown">
+                                    <li><a href='/blog-category-grid'>Blog Category Grid</a></li>
+                                    <li><a href='/blog-category-list'>Blog Category List</a></li>
+                                    <li><a href='/blog-category-big'>Blog Category Big</a></li>
+                                    <li><a href='/blog-category-fullwidth'>Blog Category Wide</a></li>
+                                    <li class="menu-item-has-children">
+                                        <a href="#">Single Product Layout</a>
+                                        <ul class="dropdown">
+                                            <li><a href='/blog-post-left'>Left Sidebar</a></li>
+                                            <li><a href='/blog-post-right'>Right Sidebar</a></li>
+                                            <li><a href='/blog-post-fullwidth'>No Sidebar</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="#">Pages</a>
+                                <ul class="dropdown">
+                                    <li><a href='/page-about'>About Us</a></li>
+                                    <li><a href='/page-contact'>Contact</a></li>
+                                    <li><a href='/page-account'>My Account</a></li>
+                                    <li><a href='/page-login'>Login</a></li>
+                                    <li><a href='/page-register'>Register</a></li>
+                                    <li><a href='/page-forgot-password'>Forgot password</a></li>
+                                    <li><a href='/page-reset-password'>Reset password</a></li>
+                                    <li><a href='/page-purchase-guide'>Purchase Guide</a></li>
+                                    <li><a href='/page-privacy-policy'>Privacy Policy</a></li>
+                                    <li><a href='/page-terms'>Terms of Service</a></li>
+                                    <li><a href='/page-404'>404 Page</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="#">Language</a>
+                                <ul class="dropdown">
+                                    <li><a href="#">English</a></li>
+                                    <li><a href="#">French</a></li>
+                                    <li><a href="#">German</a></li>
+                                    <li><a href="#">Spanish</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- mobile menu end -->
+                </div>
+                <div class="mobile-header-info-wrap">
+                    <div class="single-mobile-header-info">
+                        <a href='/page-contact'><i class="fi-rs-marker"></i> Our location </a>
+                    </div>
+                    <div class="single-mobile-header-info">
+                        <a href='/page-login'><i class="fi-rs-user"></i>Log In / Sign Up </a>
+                    </div>
+                    <div class="single-mobile-header-info">
+                        <a href="#"><i class="fi-rs-headphones"></i>(+01) - 2345 - 6789 </a>
+                    </div>
+                </div>
+                <div class="mobile-social-icon mb-50">
+                    <h6 class="mb-15">Follow Us</h6>
+                    <a href="#"><img src="~/assets/imgs/theme/icons/icon-facebook-white.svg" alt="" /></a>
+                    <a href="#"><img src="~/assets/imgs/theme/icons/icon-twitter-white.svg" alt="" /></a>
+                    <a href="#"><img src="~/assets/imgs/theme/icons/icon-instagram-white.svg" alt="" /></a>
+                    <a href="#"><img src="~/assets/imgs/theme/icons/icon-pinterest-white.svg" alt="" /></a>
+                    <a href="#"><img src="~/assets/imgs/theme/icons/icon-youtube-white.svg" alt="" /></a>
+                </div>
+                <div class="site-copyright">Copyright 2024 © Nest. All rights reserved. Powered by AliThemes.</div>
+            </div>
+        </div>
+    </div> *@
+    <!--End header-->
+    <main class="main pages">
+        @* <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href='/' rel='nofollow'><i class="fi-rs-home mr-5"></i>Home</a>
+                    <span></span> FindRecipes
+                </div>
+            </div>
+        </div> *@
+
+        <style>
+            #customLoading {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.7);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+            }
+
+            .recipe-card {
+                border: none;
+                border-radius: 15px;
+                transition: all 0.3s ease;
+                overflow: hidden;
+            }
+
+                .recipe-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+                }
+
+            .recipe-Title {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                font-weight: bold;
+            }
+
+            .history-item {
+                border-left: 4px solid #667eea;
+                background: rgba(102, 126, 234, 0.05);
+                transition: all 0.3s ease;
+                cursor: pointer;
+            }
+
+                .history-item:hover {
+                    background: rgba(102, 126, 234, 0.1);
+                    transform: translateX(5px);
+                }
+
+            .history-time {
+                color: #666;
+                font-size: 0.85em;
+            }
+
+            .tab-content {
+                background: white;
+                border-radius: 0 15px 15px 15px;
+                box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            }  
+            #historyList {
+                height: auto !important;
+                overflow: visible !important;
+            }
+            .empty-history {
+                text-align: center;
+                color: #666;
+                padding: 40px 20px;
+            }
+
+                .empty-history i {
+                    font-size: 3rem;
+                    color: #ddd;
+                    margin-bottom: 15px;
+                }
+        </style>
+        <div class="page-content pt-30">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-10 col-lg-12 m-auto">
+                   
+              
+                        <h2>Food Haven Recipe Generator</h2>
+                        <hr />
+                         <ul class="nav nav-tabs mb-0" id="mainTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="generator-tab" data-bs-toggle="tab" data-bs-target="#generator" type="button" role="tab">
+                                    <i class="fas fa-magic me-2"></i>Generate Recipe
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab">
+                                    <i class="fas fa-history me-2"></i>View History</span>
+                                </button>
+                            </li>
+
+                    </ul>
+
+                        <div class="tab-content p-4">
+                            <!-- Tab Tạo Recipe -->
+                            <div class="tab-pane fade show active" id="generator" role="tabpanel">
+                                <div class="card mb-3">
+                                    <div class="card-header fw-bold">Available Ingredients</div>
+                                    <div class="card-body pb-2">
+                                        <input type="text" id="search-ingredient" class="form-control mb-2" placeholder="Search ingredient..." autocomplete="off" />
+                                        <div id="available-Ingredients"
+                                             class="d-flex flex-wrap gap-2"
+                                             style="max-height: 300px; overflow-y: auto; min-height:60px; border:1px solid #e3e3e3; border-radius:8px;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card mb-3">
+                                    <div class="card-header fw-bold">Selected Ingredients <small class="text-muted">(Click to remove)</small></div>
+                                    <div class="card-body">
+                                        <div id="selected-Ingredients" class="d-flex flex-wrap gap-2 align-items-center" style="min-height: 60px;">
+                                            <div class="text-muted w-100 text-center">
+                                                <i class="fas fa-hand-pointer me-2"></i>Select at least 2 ingredients to get started
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="card mb-3">
+                                    <div class="card-header fw-bold">Number of recipes to show</div>
+                                    <div class="card-body">
+                                        <div class="result-btns-row">
+                                            <input type="number" id="limit-input" min="1" max="50" value="5" class="form-control" style="width:100px;display:inline-block" />
+                                            <button id="btn-generate" class="btn btn-success ms-2" disabled>Generate</button>
+                                            <button id="btn-clear" class="btn btn-secondary ms-2">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tab Lịch sử -->
+                            <!-- Tab lịch sử -->
+                            <div class="tab-pane fade" id="history" role="tabpanel">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h4 class="mb-0">
+                                        <i class="fas fa-history me-2"></i>Recipe view history
+
+                                    </h4>
+                                    <button id="btn-clear-history" class="btn btn-outline-danger btn-sm">
+                                        <i class="fas fa-trash me-2"></i>Delete history
+
+                                    </button>
+                                </div>
+
+                                <div id="historyList" data-loaded="false">
+                                    <div class="text-center my-4">
+                                        <div class="spinner-border text-secondary" role="status"></div>
+                                        <p class="mt-2">Loading history...</p>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <!-- Ingredients selection -->
+                   
+
+                        <div id="results" class="mt-3"></div>
+
+                        <!-- Modal recipe template -->
+                        <div class="modal fade" tabindex="-1" id="recipeModal" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content" style="background:#fff8cc; font-family: 'Fira Mono', 'Consolas', monospace;">
+                                    <div class="modal-header" style="border:none;">
+                                        <h5 class="modal-Title fw-bold" id="modalTitle"></h5>
+                                        <button type="button" class="btn-close fs-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body" style="white-space:pre-line; max-height: 700px; overflow-y: auto; text-align:left; padding-left:32px;padding-right:32px;">
+                                        <div id="modalRecipeBody"></div>
+                                    </div>
+                                    <div class="modal-footer" style="border:none;">
+                                        <button id="downloadRecipeBtn" class="btn btn-success">
+                                            <i class="fas fa-download me-2"></i>Download Recipe
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Custom loading overlay -->
+                        <div id="customLoading" style="display:none;">
+                            <div style="background:#fff8cc;border-radius:30px;padding:40px 50px 30px 50px;box-shadow:0 8px 24px rgba(0,0,0,0.12);min-width:340px;text-align:center;display:inline-block;">
+                                <div>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/1046/1046857.png" alt="cook" width="48" style="margin-bottom:10px;">
+                                </div>
+                                <span id="loadingText" style="font-family:'Fira Mono',monospace;font-size:1.3rem;font-weight:600;display:block;">
+                                    Finding a recipe<span id="loadingDots"></span>
+                                </span>
+                            </div>
+                        </div>
+
+                        @section scripts {
+                          
+
+    
+
+                            <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+                            .<script>
+                                 $(document).ready(function () {
+                                     // Xử lý modal backdrop bị giữ lại
+                                     $('#recipeModal').on('hidden.bs.modal', function () {
+                                         $('.modal-backdrop').remove();        // Xoá lớp nền mờ
+                                         $('body').removeClass('modal-open');  // Cho phép cuộn trang lại
+                                     });
+
+                                     // (các xử lý khác như .view-history-recipe, ajax... ở đây)
+                                 });
+                            </script>
+
+                            <script>
+
+                                        let availableIngredients = [];
+                                        let filteredIngredients = [];
+                                        let selectedIngredients = [];
+                                        let foundRecipes = [];
+                                        let lastRecipeTxt = "";
+
+                                        $(document).ready(function () {
+                                            $.get('@Url.Action("GetAvailableIngredients")', function (data) {
+                                                availableIngredients = data;
+                                                filteredIngredients = data.slice();
+                                                renderAvailableIngredients();
+                                            });
+                                            setGenerateBtnState();
+                                        });
+
+                                        $('#search-ingredient').on('input', function () {
+                                            const keyword = $(this).val().toLowerCase();
+                                            filteredIngredients = availableIngredients.filter(x => x.toLowerCase().includes(keyword));
+                                            renderAvailableIngredients();
+                                        });
+
+                                        function renderAvailableIngredients() {
+                                            let html = '';
+                                            filteredIngredients.forEach(ing => {
+                                                html += `<button class="btn btn-secondary-primary mb-2 ing-btn" data-ing="${ing}" type="button">${ing}</button>`;
+                                            });
+                                            $("#available-Ingredients").html(html);
+                                        }
+
+                                        function renderSelectedIngredients() {
+                                            let html = '';
+                                            selectedIngredients.forEach(ing => {
+                                                html += `<span class="badge bg-success p-2 me-1 selected-ing" data-ing="${ing}" style="cursor:pointer;" Title="Click to remove">${ing} <i class="fas fa-times ms-1"></i></span>`;
+                                            });
+                                            $("#selected-Ingredients").html(html);
+                                            setGenerateBtnState();
+                                        }
+
+                                        $(document).on('click', '.ing-btn', function () {
+                                            let ing = $(this).data('ing');
+                                            if (!selectedIngredients.includes(ing)) {
+                                                selectedIngredients.push(ing);
+                                                availableIngredients = availableIngredients.filter(x => x !== ing);
+                                                filteredIngredients = availableIngredients.filter(x => x.toLowerCase().includes($('#search-ingredient').val().toLowerCase()));
+                                                renderAvailableIngredients();
+                                                renderSelectedIngredients();
+                                            }
+                                        });
+
+                                        $(document).on('click', '.selected-ing', function () {
+                                            let ing = $(this).data('ing');
+                                            selectedIngredients = selectedIngredients.filter(x => x !== ing);
+                                            if (!availableIngredients.includes(ing)) {
+                                                availableIngredients.push(ing);
+                                                availableIngredients.sort();
+                                            }
+                                            filteredIngredients = availableIngredients.filter(x => x.toLowerCase().includes($('#search-ingredient').val().toLowerCase()));
+                                            renderAvailableIngredients();
+                                            renderSelectedIngredients();
+                                        });
+
+                                        $('#btn-clear').click(function () {
+                                            availableIngredients = availableIngredients.concat(selectedIngredients).sort();
+                                            filteredIngredients = availableIngredients.slice();
+                                            selectedIngredients = [];
+                                            renderAvailableIngredients();
+                                            renderSelectedIngredients();
+                                            $("#results").empty();
+                                            $("#search-ingredient").val('');
+                                            setGenerateBtnState();
+                                        });
+
+                                        function setGenerateBtnState() {
+                                            if (selectedIngredients.length >= 2) {
+                                                $('#btn-generate').prop('disabled', false);
+                                            } else {
+                                                $('#btn-generate').prop('disabled', true);
+                                            }
+                                        }
+
+                                        // Hiệu ứng dấu chấm động cho loading
+                                        let dotCount = 0;
+                                        let dotInterval;
+                                        function startLoadingDots() {
+                                            dotInterval = setInterval(function () {
+                                                dotCount = (dotCount + 1) % 4;
+                                                $('#loadingDots').text('.'.repeat(dotCount));
+                                            }, 350);
+                                        }
+                                        function stopLoadingDots() {
+                                            clearInterval(dotInterval);
+                                            $('#loadingDots').text('');
+                                        }
+
+                                        $('#btn-generate').click(function () {
+                                            let limit = parseInt($("#limit-input").val()) || 5;
+                                            $('#customLoading').css('display', 'flex');
+                                            startLoadingDots();
+                                            $.ajax({
+                                                url: '@Url.Action("FindRecipes")',
+                                                method: 'POST',
+                                                data: {
+                                                    Ingredients: selectedIngredients,
+                                                    limit: limit
+                                                },
+                                                success: function (html) {
+                                                    $("#results").html(html);
+                                                },
+                                                error: function () {
+                                                   $("#results").html('<div class="alert alert-danger">Error while searching for recipes!</div>');
+
+                                                },
+                                                complete: function () {
+                                                    $('#customLoading').fadeOut(100);
+                                                    stopLoadingDots();
+                                                }
+                                            });
+                                        });
+
+                                $(document).on('click', '.btn-view-modal', function () {
+                                    let idx = $(this).data('idx');
+                                    let r = window.recipeResultArray[idx];
+                                    window.selectedRecipe = r; // Để sử dụng đúng khi tải file
+                                    let txt =
+                                        r.Title + "\n\n" +
+                                        "Ingredients:\n" +
+                                        parseIngredients(r.Ingredients) + "\n\n" +
+                                        "Instructions:\n" +
+                                        parseDirections(r.Directions);
+                                    $("#modalTitle").text(r.Title);
+                                    $("#modalRecipeBody").text(txt);
+                                    lastRecipeTxt = txt;
+                                                                 $.ajax({
+                                    url: '@Url.Action("AddViewHistory", "Home")',
+                                    method: 'POST',
+                                    data: {
+                                        recipeId: r.ID,
+                                        matchedIngredients: selectedIngredients.join(', ')
+                                    },
+                                    success: function () {
+                                                             $.get('/Home/LoadRecipeViewHistory', function (html) {
+                                    $historyList.html(html);
+
+                                    // Check if any history item exists
+                                    if ($historyList.find('.history-item').length > 0) {
+                                        $clearBtn.show();
+                                    } else {
+                                        $clearBtn.hide();
+                                    }
+                                }).fail(function () {
+                                    $historyList.html('<div class="alert alert-danger text-center mt-3">Failed to load view history.</div>');
+                                    $clearBtn.hide();
+                                });
+                                        console.log("Lưu lịch sử thành công");
+                                    },
+                                    error: function () {
+                                        console.warn("Lỗi khi lưu lịch sử");
+                                    }
+                                });
+                                    var myModal = new bootstrap.Modal(document.getElementById('recipeModal'));
+                                    myModal.show();
+                                });
+
+
+
+                                        function parseIngredients(Ingredients) {
+                                            if (!Ingredients) return "";
+                                            try {
+                                                let arr = JSON.parse(Ingredients);
+                                                return arr.map(x => '- ' + x).join('\n');
+                                            } catch {
+                                                return Ingredients.split(',').map(x => '- ' + x.trim()).join('\n');
+                                            }
+                                        }
+                                        function parseDirections(Directions) {
+                                            if (!Directions) return "";
+                                            try {
+                                                let arr = JSON.parse(Directions);
+                                                return arr.map((x, i) => (i + 1) + '. ' + x).join('\n');
+                                            } catch {
+                                                return Directions;
+                                            }
+                                        }
+                            </script>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    @await Html.PartialAsync("_Footer_User")
+    <!-- Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <img src="~/assets/imgs/theme/loading.gif" alt="" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Vendor JS-->
+    <script src="~/assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="~/assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="~/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="~/assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/plugins/slick.js"></script>
+    <script src="~/assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="~/assets/js/plugins/wow.js"></script>
+    <script src="~/assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="~/assets/js/plugins/magnific-popup.js"></script>
+    <script src="~/assets/js/plugins/select2.min.js"></script>
+    <script src="~/assets/js/plugins/waypoints.js"></script>
+    <script src="~/assets/js/plugins/counterup.js"></script>
+    <script src="~/assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="~/assets/js/plugins/images-loaded.js"></script>
+    <script src="~/assets/js/plugins/isotope.js"></script>
+    <script src="~/assets/js/plugins/scrollup.js"></script>
+    <script src="~/assets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="~/assets/js/plugins/jquery.theia.sticky.js"></script>
+    <script src="~/assets/js/plugins/jquery.elevatezoom.js"></script>
+    <!-- Template  JS -->
+    <script src="~/js/dowloadrecipe.js"></script>
+    <script src="~/assets/js/main.js?v=6.0"></script>
+    <script src="~/assets/js/shop.js?v=6.0"></script>
+</body>
+
+</html>
+
+<script>
+
+    $(document).ready(function () {
+        $('#history-tab').on('shown.bs.tab', function () {
+            const $historyList = $('#historyList');
+            const $clearBtn = $('#btn-clear-history');
+
+            // Show loading
+            $historyList.html(`
+                <div class="text-center my-4">
+                    <div class="spinner-border text-secondary" role="status"></div>
+                    <p class="mt-2">Loading view history...</p>
+                </div>
+            `);
+
+             $.get('/Home/LoadRecipeViewHistory', function (html) {
+        $historyList.html(html);
+
+        // Check if any history item exists
+        if ($historyList.find('.history-item').length > 0) {
+            $clearBtn.show();
+        } else {
+            $clearBtn.hide();
+        }
+    }).fail(function (xhr, status, error) {
+        console.error("❌ Load failed:", status, error);
+
+        if (xhr.status === 401) {
+            $historyList.html('<div class="alert alert-warning text-center mt-3">Bạn cần đăng nhập để xem lịch sử.</div>');
+        } else {
+            $historyList.html('<div class="alert alert-danger text-center mt-3">Đã xảy ra lỗi khi tải lịch sử.</div>');
+        }
+
+        $clearBtn.hide();
+    });
+        });
+
+        // Xử lý khi bấm nút "Delete history"
+        $('#btn-clear-history').click(function () {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Delete all view history?',
+                text: 'This action cannot be undone!',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete all',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/Home/DeleteAllViewHistory',
+                        type: 'POST',
+                        success: function () {
+                           $('#historyList').html(`
+        <div class="empty-history text-center">
+            <i class="fas fa-clock fa-2x mb-2 text-muted"></i>
+            <h5>No view history yet</h5>
+            <p class="text-muted">Recipes you've viewed will appear here</p>
+        </div>
+    `);
+
+                            $('#btn-clear-history').hide();
+                            Swal.fire('Deleted!', 'Your view history has been deleted.', 'success');
+                        },
+                        error: function () {
+                            Swal.fire('Error', 'Failed to delete history.', 'error');
+                        }
+                    });
+                }
+            });
+        });
+    });
+
+</script>

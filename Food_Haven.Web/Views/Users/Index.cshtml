@@ -1,0 +1,2346 @@
+@using System.Text.Json
+@model Repository.ViewModels.IndexUserViewModels
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>User - Account Details</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:title" content="" />
+    <meta property="og:type" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="~/assets/imgs/theme/favicon.svg" />
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="~/assets/css/main.css?v=6.0" />
+
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+
+    <script src="chrome-extension://mooikfkahbdckldjjndioackbalphokd/~/assets/prompt.js"></script>
+    @Html.Raw(" <link href='https://cdn.jsdelivr.net/npm/@flaticon/flaticon-uicons/css/all/all.css' rel='stylesheet'>")
+
+    <link rel="stylesheet" href="~/assets/js/gridjs/theme/mermaid.min.css">
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    <!-- Plugins css -->
+    <link href="assets/libs/dropzone/dropzone.css" rel="stylesheet" type="text/css" />
+    <!-- Layout config Js -->
+    <script src="assets/js/layout.js"></script>
+    <!-- Bootstrap Css -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="assets/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/multi.js@0.5.1/multi.min.css">
+
+
+
+    <!-- multi.js css -->
+    <link rel="stylesheet" type="text/css" href="assetsAdmin/libs/multi.js/multi.min.css" />
+    <!-- autocomplete css -->
+    <link rel="stylesheet" href="assetsAdmin/libs/%40tarekraafat/autocomplete.js/css/autoComplete.css">
+
+    <!-- Icons Css -->
+    <link href="~/assetsAdmin/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        .gridjs-input {
+            height: 42px !important;
+        }
+
+        .mr-2 {
+            margin-right: 10px;
+        }
+
+        .badge.bg-kitchen {
+            background-color: #17a2b8;
+        }
+        /* for Preparing In Kitchen */
+        .badge.bg-failed {
+            background-color: #dc3545;
+        }
+        /* for Cancelled or Failed */
+
+    </style>
+    <style>
+        .wrap {
+            width: 250px;
+            height: 50px;
+            background: #fff;
+            border-radius: 10px;
+        }
+
+        .stars {
+            margin: 0 auto;
+            cursor: pointer;
+        }
+
+        .star {
+            color: #ccc;
+            font-size: 28px;
+            transition: color 0.2s;
+        }
+
+            .star.hovered {
+                color: #b0c9f9 !important;
+            }
+
+            .star.selected {
+                color: #007bff !important;
+            }
+
+        .rate {
+            height: 50px;
+            margin-left: -5px;
+            padding: 5px;
+            font-size: 25px;
+            position: relative;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+            .rate input[type="radio"] {
+                opacity: 0;
+                position: absolute;
+                pointer-events: none;
+            }
+
+        .face {
+            opacity: 0;
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            background: #91a6ff;
+            border-radius: 5px;
+            top: -50px;
+            left: 2px;
+            transition: 0.2s;
+            pointer-events: none;
+        }
+
+            .face::before {
+                font-family: 'Font Awesome 5 Free';
+                font-weight: 900;
+                content: "\f0dd";
+                color: #91a6ff;
+                position: absolute;
+                left: 9px;
+                bottom: -15px;
+            }
+
+            .face::after {
+                font-family: 'Font Awesome 5 Free';
+                font-weight: 900;
+                color: #fff;
+                position: absolute;
+                left: 5px;
+                top: -1px;
+            }
+
+        .rate:nth-child(1) .face::after {
+            content: "\f119";
+        }
+        /* ☹ */
+        .rate:nth-child(2) .face::after {
+            content: "\f11a";
+        }
+        /* 😐 */
+        .rate:nth-child(3) .face::after {
+            content: "\f118";
+        }
+        /* 🙂 */
+        .rate:nth-child(4) .face::after {
+            content: "\f580";
+        }
+        /* 😊 */
+        .rate:nth-child(5) .face::after {
+            content: "\f59a";
+        }
+        /* 😄 */
+        .rate:hover .face {
+            opacity: 1;
+        }
+
+        .badge-warning {
+            background-color: #ffc107;
+            color: #000;
+            margin: 3px 5px 0 0;
+            cursor: pointer;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+
+            .badge-warning.selected {
+                background-color: #dc3545;
+                color: #fff;
+            }
+    </style>
+    <style>
+        #complaint-preview-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .img-thumb {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            flex-shrink: 0;
+        }
+
+            .img-thumb img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            .img-thumb .remove-btn {
+                position: absolute;
+                top: -6px;
+                right: -6px;
+                background: red;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 22px;
+                height: 22px;
+                font-size: 14px;
+                cursor: pointer;
+            }
+
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    @await Html.PartialAsync("_Header")
+
+    <!--End header-->
+    <main class="main pages">
+        @* <div class="page-header breadcrumb-wrap">
+        <div class="container">
+        <div class="breadcrumb">
+        <a href="index.html" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+        <span></span> Pages <span></span> My Account
+        </div>
+        </div>
+        </div> *@
+        <div class="page-content pt-50 pb-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-11 m-auto">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="dashboard-menu">
+                                    <ul class="nav flex-column" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="account-detail-tab" data-bs-toggle="tab"
+                                               href="#account-detail" role="tab" aria-controls="account-detail"
+                                               aria-selected="true"><i class="fi-rs-user mr-10"></i>Account details</a>
+                                        </li>
+                                        @* <li class="nav-item">
+                                        <a class="nav-link " id="dashboard-tab" data-bs-toggle="tab"
+                                        href="#dashboard" role="tab" aria-controls="dashboard"
+                                        aria-selected="false">
+                                        <i class="fi-rs-settings-sliders mr-10"></i>Dashboard
+                                        </a>
+                                        </li> *@
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders"
+                                               role="tab" aria-controls="orders" aria-selected="false">
+                                                <i class="fi-rs-shopping-bag mr-10"></i>Orders
+                                            </a>
+                                        </li>
+                                        <li class="nav-item" style="display: none;">
+                                            <a class="nav-link" id="order-details-tab" data-bs-toggle="tab" href="#order-details" role="tab" aria-controls="order-details" aria-selected="false" >
+                                                <i class="fi-rs-shopping-bag mr-10"></i>Order Details
+                                            </a>
+                                        </li>
+
+                                        @* <li class="nav-item">
+                                        <a class="nav-link" id="track-orders-tab" data-bs-toggle="tab"
+                                        href="#track-orders" role="tab" aria-controls="track-orders"
+                                        aria-selected="false">
+                                        <i class="fi-rs-shopping-cart-check mr-10"></i>Track Your Order
+                                        </a>
+                                        </li> *@
+
+                                        @if (Model.userView.RequestSeller == "0" || Model.userView.RequestSeller == "1" || Model.userView.RequestSeller == "3") // Nếu chưa đăng ký seller
+                                        {
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="#address"
+                                                   role="tab" aria-controls="address" aria-selected="true">
+                                                    <i class="fi-rs-marker mr-10"></i>Register Seller
+                                                </a>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="nav-item" style="display: none;">
+                                                @* <a class="nav-link" id="address-tab" target="_blank" asp-controller="Seller" asp-action="viewstore"
+                                                   role="tab" aria-controls="address" aria-selected="true">
+                                                    <i class="fi-rs-marker mr-10"></i>Management Seller
+                                                </a> *@
+                                            </li>
+                                        }
+                                        @* <li class="nav-item">
+                                        <a class="nav-link" id="account-detail-tab" data-bs-toggle="tab"
+                                        href="#account-detail" role="tab" aria-controls="account-detail"
+                                        aria-selected="true"><i class="fi-rs-user mr-10"></i>Account details</a>
+                                        </li> *@
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="wallet-tab" data-bs-toggle="tab" href="#wallet"
+                                               role="tab" aria-controls="wallet" aria-selected="true">
+                                                <i class="fi-rs-user mr-10"></i>Wallet
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="Feedback-tab" data-bs-toggle="tab" href="#Feedback"
+                                               role="tab" aria-controls="Feedback" aria-selected="true">
+                                                <i class="fi-rs-user mr-10"></i>My Feedback
+                                            </a>
+                                        </li>
+
+                                        @* <li class="nav-item">
+                                        <a class="nav-link" id="Feedback-tab" data-bs-toggle="tab" href="#Feedback"
+                                        role="tab" aria-controls="Feedback" aria-selected="false">
+                                        <i class="fi-rs-shopping-bag mr-10"></i>Your Feedback
+                                        </a>
+                                        </li>*@
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/home/logout">
+                                                <i class="fi-rs-sign-out mr-10"></i>Logout
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="tab-content account dashboard-content pl-50">
+                                    <div class="tab-pane fade " id="dashboard" role="tabpanel"
+                                         aria-labelledby="dashboard-tab">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="mb-0">Hello Rosie!</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <p>
+                                                    From your account dashboard. you can easily check &amp; view your <a href="#">recent orders</a>,<br />
+                                                    manage your <a href="#">shipping and billing addresses</a> and <a href="#">edit your password and account details.</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade show" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="mb-0">Your Orders</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive" id="table-orders"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="order-details" role="tabpanel" aria-labelledby="order-details-tab">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="mb-0">Order Details</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive" id="table-order-details"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="review_modal" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog modal-xl modal-dialog-centered">
+                                            <div class="modal-content p-4 fs-5">
+                                                <!-- Cỡ chữ lớn hơn -->
+                                                <form class="reviews-view__form">
+                                                    <input type="hidden" id="product-id-field">
+                                                    <input type="hidden" id="product-name-hidden">
+
+                                                    <h3 class="mb-3 fs-4">Review purchased order</h3>
+                                                    <span id="review_product_name" class="badge bg-success mb-3 fs-6 py-2 px-3">
+
+                                                    </span>
+
+                                                    <div class="wrap mb-4">
+                                                        <div class="stars">
+                                                            <label class="rate"><input type="radio" name="rating" value="1"><i class="fas fa-star star"></i><div class="face"></div></label>
+                                                            <label class="rate"><input type="radio" name="rating" value="2"><i class="fas fa-star star"></i><div class="face"></div></label>
+                                                            <label class="rate"><input type="radio" name="rating" value="3"><i class="fas fa-star star"></i><div class="face"></div></label>
+                                                            <label class="rate"><input type="radio" name="rating" value="4"><i class="fas fa-star star"></i><div class="face"></div></label>
+                                                            <label class="rate"><input type="radio" name="rating" value="5"><i class="fas fa-star star"></i><div class="face"></div></label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group mb-3">
+                                                        <label for="review-text" class="fs-5"> Share more information</label>
+                                                        <textarea class="form-control fs-5" id="review-text" rows="6" style="height: auto; overflow-y: hidden; resize: none;"></textarea>
+
+                                                        <script>
+                                                            document.addEventListener("DOMContentLoaded", function () {
+                                                                const textarea = document.getElementById("review-text");
+
+                                                                textarea.addEventListener("input", function () {
+                                                                    this.style.height = "auto";
+                                                                    this.style.height = this.scrollHeight + "px";
+                                                                });
+                                                            });
+                                                        </script>
+
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <span class="badge badge-warning py-2 px-3 fs-6 me-2 mb-2 d-inline-block" onclick="setReason(this)">Product meets quality standards.</span>
+                                                        <span class="badge badge-warning py-2 px-3 fs-6 me-2 mb-2 d-inline-block" onclick="setReason(this)">Product is quite good.</span>
+                                                        <span class="badge badge-warning py-2 px-3 fs-6 me-2 mb-2 d-inline-block" onclick="setReason(this)">Product is okay.</span>
+                                                        <span class="badge badge-warning py-2 px-3 fs-6 me-2 mb-2 d-inline-block" onclick="setReason(this)">Support was enthusiastic.</span>
+                                                        <span class="badge badge-warning py-2 px-3 fs-6 me-2 mb-2 d-inline-block" onclick="setReason(this)">Product is poor quality.</span>
+                                                        <span class="badge badge-warning py-2 px-3 fs-6 me-2 mb-2 d-inline-block" onclick="setReason(this)">No customer support.</span>
+                                                        <span class="badge badge-warning py-2 px-3 fs-6 me-2 mb-2 d-inline-block" onclick="setReason(this)">Product is unusable.</span>
+
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-success w-100 mt-3 fs-5" onclick="doRating()">Submit</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" id="complaint_modal" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog modal-xl modal-dialog-centered">
+                                            <div class="modal-content p-4">
+                                                <form id="complaint-form" enctype="multipart/form-data">
+                                                    <h3 class="mb-3">Submit Complaint</h3>
+                                                    <input type="hidden" id="order-detail-id">
+
+                                                    <div class="mb-2">
+                                                        <label>Order Tracking:</label>
+                                                        <span id="order-code" class="fw-bold text-primary">#...</span>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label> Complained product:</label>
+                                                        <span id="product-name" class="fw-bold text-danger">...</span>
+                                                    </div>
+
+                                                    <!-- Upload ảnh -->
+                                                    <div class="mb-3">
+                                                        <label for="complaint-image" class="form-label">Upload illustrative images (up to 3 images, each ≤ 5MB)</label>
+                                                        <input class="form-control" type="file" id="complaint-image" accept="image/*" multiple
+                                                               onchange="handleComplaintImage(this)" onclick="clearImageError()">
+                                                        <span id="image-error" class="error-message"></span>
+                                                    </div>
+
+                                                    <!-- Preview ảnh -->
+                                                    <div id="complaint-preview-wrapper"></div>
+
+                                                    <!-- Textarea mô tả -->
+                                                    <div class="form-group mb-1">
+                                                        <label for="complaint-text"> Describe the error encountered</label>
+                                                        <textarea class="form-control fs-5" id="complaint-text" rows="6" style="height: auto; overflow-y: hidden; resize: none;" placeholder="Provide a detailed description of the issue..."
+                                                                  oninput="clearTextError();"></textarea>
+                                                        <span id="text-error" class="error-message"></span>
+
+                                                        <script>
+                                                            document.addEventListener("DOMContentLoaded", function () {
+                                                                const textarea = document.getElementById("complaint-text");
+
+                                                                textarea.addEventListener("input", function () {
+                                                                    this.style.height = "auto";
+                                                                    this.style.height = this.scrollHeight + "px";
+                                                                });
+                                                            });
+                                                        </script>
+
+                                                    </div>
+
+                                                    <button type="button" id="btnSubmitComplaint" class="btn btn-danger w-100 mt-3" onclick="submitComplaint()">
+                                                        Submit Complaint
+                                                    </button>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <script>
+                                        let selectedImages = [];
+
+                                        function openComplaintModal(orderCode, productName, orderDetailId) {
+                                            document.getElementById("order-code").textContent = orderCode;
+                                            document.getElementById("product-name").textContent = productName;
+                                            document.getElementById("order-detail-id").value = orderDetailId;
+                                            document.getElementById("complaint-text").value = '';
+                                            document.getElementById("complaint-image").value = '';
+                                            document.getElementById("text-error").textContent = '';
+                                            document.getElementById("image-error").textContent = '';
+
+                                            selectedImages = [];
+                                            renderImagePreviews();
+
+                                            const modal = new bootstrap.Modal(document.getElementById("complaint_modal"));
+                                            modal.show();
+                                        }
+
+                                        function handleComplaintImage(input) {
+                                            const files = Array.from(input.files);
+                                            const errorSpan = document.getElementById("image-error");
+                                            errorSpan.textContent = '';
+
+                                            if ((selectedImages.length + files.length) > 3) {
+                                                errorSpan.textContent = "A maximum of 3 images is allowed";
+                                                input.value = "";
+                                                return;
+                                            }
+
+                                            for (const file of files) {
+                                                if (file.size > 5 * 1024 * 1024) {
+                                                    errorSpan.textContent = `Image "${file.name}" exceeds 5MB and has been removed`;
+                                                    continue;
+                                                }
+                                                selectedImages.push(file);
+                                            }
+
+                                            input.value = "";
+                                            renderImagePreviews();
+                                        }
+
+                                        function renderImagePreviews() {
+                                            const wrapper = document.getElementById("complaint-preview-wrapper");
+                                            wrapper.innerHTML = "";
+
+                                            selectedImages.forEach((file, index) => {
+                                                const imgURL = URL.createObjectURL(file);
+                                                const div = document.createElement("div");
+                                                div.className = "img-thumb";
+
+                                                const img = document.createElement("img");
+                                                img.src = imgURL;
+
+                                                const btn = document.createElement("button");
+                                                btn.type = "button";
+                                                btn.className = "remove-btn";
+                                                btn.innerHTML = "&times;";
+                                                btn.onclick = () => {
+                                                    selectedImages.splice(index, 1);
+                                                    renderImagePreviews();
+                                                };
+
+                                                div.appendChild(img);
+                                                div.appendChild(btn);
+                                                wrapper.appendChild(div);
+                                            });
+                                        }
+
+                                        function submitComplaint() {
+                                            const text = document.getElementById("complaint-text").value.trim();
+                                            const orderDetailId = document.getElementById("order-detail-id").value;
+                                            const textError = document.getElementById("text-error");
+                                            const imageError = document.getElementById("image-error");
+                                            const submitBtn = document.getElementById("btnSubmitComplaint");
+
+                                            textError.textContent = '';
+                                            imageError.textContent = '';
+
+                                            let hasError = false;
+
+                                            if (!text) {
+                                                textError.textContent = "Please enter a complaint description.";
+                                                hasError = true;
+                                            }
+
+                                            if (selectedImages.length === 0) {
+                                                imageError.textContent = "Please select at least one image.";
+                                                hasError = true;
+                                            }
+
+                                            if (hasError) return;
+
+                                            // 🔄 Hiển thị loading
+                                            submitBtn.disabled = true;
+                                            submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Sending...';
+
+                                            const formData = new FormData();
+                                            formData.append("OrderDetailID", orderDetailId);
+                                            formData.append("Description", text);
+                                            selectedImages.forEach(file => formData.append("Images", file));
+
+                                            fetch("/Users/SubmitComplaint", {
+                                                method: "POST",
+                                                body: formData
+                                            })
+                                                .then(res => res.json())
+                                                .then(data => {
+                                                    // ✅ Khôi phục nút
+                                                    submitBtn.disabled = false;
+                                                    submitBtn.innerHTML = 'Submit Complaint';
+
+                                                    if (data.success) {
+                                                        new Notify({
+                                                            status: 'success',
+                                                            title: 'Success!',
+                                                            text: data.message || 'Send successful!',
+                                                            effect: 'fade',
+                                                            speed: 300,
+                                                            showIcon: true,
+                                                            showCloseButton: true,
+                                                            autoclose: true,
+                                                            autotimeout: 3000,
+                                                            position: 'right top'
+                                                        });
+
+                                                        const modal = bootstrap.Modal.getInstance(document.getElementById("complaint_modal"));
+                                                        modal.hide();
+
+                                                        setTimeout(() => {
+                                                            document.getElementById("orders-tab")?.click();
+                                                        }, 500);
+                                                    } else {
+                                                        new Notify({
+                                                            status: 'error',
+                                                            title: 'Failed',
+                                                            text: data.message || 'Failed to send!',
+                                                            effect: 'fade',
+                                                            speed: 300,
+                                                            showIcon: true,
+                                                            showCloseButton: true,
+                                                            autoclose: true,
+                                                            autotimeout: 3000,
+                                                            position: 'right top'
+                                                        });
+                                                    }
+                                                })
+                                                .catch(err => {
+                                                    console.error(err);
+                                                    Swal.fire("❌ Connection Error", "Unable to connect to the server.", "error");
+
+                                                    submitBtn.disabled = false;
+                                                    submitBtn.innerHTML = 'Submit Complaint';
+                                                });
+                                        }
+
+
+                                        function clearTextError() {
+                                            document.getElementById("text-error").textContent = '';
+                                        }
+
+                                        function clearImageError() {
+                                            document.getElementById("image-error").textContent = '';
+                                        }
+                                        function autoResize(textarea) {
+                                            textarea.style.height = 'auto'; // Reset chiều cao trước
+                                            textarea.style.height = textarea.scrollHeight + 'px'; // Gán chiều cao theo nội dung
+                                        }
+
+                                    </script>
+                                    <script>
+                                        function setReason(el) {
+                                            el.classList.toggle('selected');
+                                            const textarea = document.getElementById('review-text');
+                                            let lines = textarea.value.split('\n').map(line => line.trim());
+
+                                            if (el.classList.contains('selected')) {
+                                                if (!lines.includes(el.innerText)) {
+                                                    lines.push(el.innerText);
+                                                }
+                                            } else {
+                                                lines = lines.filter(line => line !== el.innerText);
+                                            }
+
+                                            textarea.value = lines.filter(Boolean).join('\n');
+                                        }
+
+                                        let currentRating = 0;
+                                        const rates = document.querySelectorAll('.rate');
+
+                                        rates.forEach((rate, index) => {
+                                            const star = rate.querySelector('.star');
+
+                                            rate.addEventListener('mouseover', () => {
+                                                rates.forEach((r, i) => {
+                                                    const s = r.querySelector('.star');
+                                                    s.classList.remove('selected');
+                                                    s.classList.toggle('hovered', i <= index);
+                                                });
+                                            });
+
+                                            rate.addEventListener('mouseout', () => {
+                                                rates.forEach((r, i) => {
+                                                    const s = r.querySelector('.star');
+                                                    s.classList.remove('hovered');
+                                                    s.classList.toggle('selected', i < currentRating);
+                                                });
+                                            });
+
+                                            rate.addEventListener('click', () => {
+                                                currentRating = index + 1;
+                                                rate.querySelector('input').checked = true;
+                                                rates.forEach((r, i) => {
+                                                    const s = r.querySelector('.star');
+                                                    s.classList.remove('hovered');
+                                                    s.classList.toggle('selected', i < currentRating);
+                                                });
+                                            });
+                                        });
+                                        function doRating() {
+                                            const rating = document.querySelector('input[name="rating"]:checked')?.value;
+                                            const text = document.getElementById("review-text").value.trim();
+                                            const productId = document.getElementById("product-id-field").value;
+                                            const productName = document.getElementById("product-name-hidden").value;
+
+                                            if (!rating) {
+                                                Swal.fire("No Rating Selected!", "Please select a star rating before submitting.", "warning");
+                                                return;
+                                            }
+
+                                            if (!text) {
+                                                Swal.fire("Thiếu nội dung!", "Vui lòng chia sẻ nội dung đánh giá.", "warning");
+                                                return;
+                                            }
+
+                                            fetch("/Users/SubmitReview", {
+                                                method: "POST",
+                                                headers: {
+                                                    "Content-Type": "application/json"
+                                                },
+                                                body: JSON.stringify({
+                                                    productId: productId,
+                                                    rating: parseInt(rating),
+                                                    content: text
+                                                })
+                                            })
+                                                .then(res => res.json())
+                                                .then(data => {
+                                                    if (data.success) {
+
+                                                        const modalElement = document.getElementById("review_modal");
+                                                        const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                                                        modalInstance?.hide();
+
+                                                        Swal.fire("Success!", data.message || "Thank you for your review.", "success")
+
+                                                                                                    .then(() => document.getElementById("orders-tab")?.click());
+                                                    } else {
+                                                        Swal.fire("Error!", data.message || "Failed to submit the review.", "error");
+                                                    }
+
+                                                })
+                                                .catch(error => {
+                                                    console.error("Submit error:", error);
+                                                    Swal.fire("Error!", "Unable to connect to the server.", "error");
+
+                                                });
+                                        }
+                                        function openReviewModal(productId, productName) {
+                                            const modal = new bootstrap.Modal(document.getElementById("review_modal"));
+                                            modal.show();
+
+                                            document.getElementById("product-id-field").value = productId;
+                                            document.getElementById("product-name-hidden").value = productName;
+                                            document.getElementById("review_product_name").innerText = productName;
+
+                                            if (productIdField) {
+                                                productIdField.value = productId;
+                                            } else {
+                                                console.warn("Không tìm thấy input với id='review_product_id'");
+                                            }
+
+                                            if (productNameBadge) {
+                                                productNameBadge.textContent = ` Product review: ${productName}`;
+                                            } else {
+                                                console.warn("Không tìm thấy span với id='review_product_name'");
+                                            }
+                                        }
+
+                                    </script>
+
+                                    <script>
+                                        // Global variables để track grid instances
+                                        let ordersGrid = null;
+                                        let detailsGrid = null;
+                                        let orderDetailsListenerAdded = false;
+                                        let orderId=null;
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            loadOrdersData();
+                                        });
+
+                                        function loadOrdersData() {
+                                            const orderContainer = document.getElementById("table-orders");
+
+                                            // Destroy existing grid trước khi tạo mới
+                                            if (ordersGrid) {
+                                                ordersGrid.destroy();
+                                                ordersGrid = null;
+                                            }
+
+                                            orderContainer.innerHTML = ""; // Clear existing content
+
+                                            // Show loading indicator
+                                            orderContainer.innerHTML = '<div class="text-center p-4"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+
+                                            fetch("/Users/GetOrdersList", {
+                                                method: "GET",
+                                                headers: {
+                                                    "Content-Type": "application/json",
+                                                    "Accept": "application/json"
+                                                },
+                                                cache: "no-store"
+                                            })
+                                            .then(response => {
+                                                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                                                return response.json();
+                                            })
+                                            .then(data => {
+                                                if (data.success && data.orders) {
+                                                    renderOrdersGrid(data.orders);
+                                                } else {
+                                                    orderContainer.innerHTML = '<div class="alert alert-warning">No orders found.</div>';
+                                                }
+                                            })
+                                            .catch(error => {
+                                                console.error("Load orders error:", error);
+                                                orderContainer.innerHTML = '<div class="alert alert-danger">Error loading orders. Please try again.</div>';
+                                            });
+                                        }
+
+                                        // Function to render the orders grid
+                                        function renderOrdersGrid(orderData) {
+                                            const orderContainer = document.getElementById("table-orders");
+                                            orderContainer.innerHTML = ""; // Clear loading indicator
+
+                                            let sttCounter = 1;
+
+                                            // Tạo grid mới và lưu reference
+                                            ordersGrid = new gridjs.Grid({
+                                                columns: [
+                                                    { name: "STT", width: "80px" },
+                                                    { name: "Order Tracking", width: "160px" },
+                                                    { name: "Payment Method", width: "130px" },
+                                                    {
+                                                        name: "Status Payment",
+                                                        width: "160px",
+                                                        formatter: (cell) => {
+                                                            const value = (cell || "").trim().toLowerCase();
+                                                            let color = "secondary";
+
+                                                            switch (value) {
+                                                                case "pending":
+                                                                case "waiting confirmation":
+                                                                case "processing":
+                                                                    color = "warning";
+                                                                    break;
+                                                                case "confirmed":
+                                                                case "success":
+                                                                    color = "success";
+                                                                    break;
+                                                                case "preparing in kitchen":
+                                                                    color = "info";
+                                                                    break;
+                                                                case "delivering":
+                                                                    color = "primary";
+                                                                    break;
+                                                                case "cancelled by user":
+                                                                case "cancelled by restaurant":
+                                                                case "cancelled by shop":
+                                                                case "delivery failed":
+                                                                case "rejected":
+                                                                    color = "danger";
+                                                                    break;
+                                                                case "refunded":
+                                                                    color = "dark";
+                                                                    break;
+                                                            }
+
+                                                            return gridjs.html(`<span class="badge bg-${color}">${cell}</span>`);
+                                                        }
+                                                    },
+                                                    {
+                                                        name: "Order Status",
+                                                        width: "180px",
+                                                        formatter: (cell) => {
+                                                            const value = (cell || "").trim().toLowerCase();
+                                                            let color = "secondary";
+
+                                                            switch (value) {
+                                                                case "pending":
+                                                                case "waiting confirmation":
+                                                                case "processing":
+                                                                    color = "warning";
+                                                                    break;
+                                                                case "confirmed":
+                                                                    color = "success";
+                                                                    break;
+                                                                case "preparing in kitchen":
+                                                                    color = "info";
+                                                                    break;
+                                                                case "delivering":
+                                                                    color = "primary";
+                                                                    break;
+                                                                case "cancelled by user":
+                                                                case "cancelled by restaurant":
+                                                                case "cancelled by shop":
+                                                                case "delivery failed":
+                                                                case "rejected":
+                                                                    color = "danger";
+                                                                    break;
+                                                                case "refunded":
+                                                                    color = "dark";
+                                                                    break;
+                                                            }
+
+                                                            return gridjs.html(`<span class="badge bg-${color}">${cell}</span>`);
+                                                        }
+                                                    },
+                                                    { name: "Quantity", width: "90px" },
+                                                    {
+                                                        name: "Total",
+                                                        width: "120px",
+                                                        formatter: (cell) => parseFloat(cell).toLocaleString("vi-VN", {
+                                                            style: "currency", currency: "VND"
+                                                        })
+                                                    },
+                                                    {
+                                                        name: "Order Date",
+                                                        width: "180px",
+                                                        formatter: (cell) => {
+                                                            const date = new Date(cell);
+                                                            return date.toLocaleDateString("vi-VN") + " " + date.toLocaleTimeString("vi-VN");
+                                                        }
+                                                    },
+                                                    {
+                                                        name: "Delivery Date",
+                                                        width: "180px",
+                                                        formatter: (cell) => {
+                                                            if (!cell) return "";
+                                                            const date = new Date(cell);
+                                                            return date.toLocaleDateString("vi-VN") + " " + date.toLocaleTimeString("vi-VN");
+                                                        }
+                                                    },
+                                                    { name: "Note", width: "200px" },
+                                                    { name: "Delivery Address", width: "220px" },
+                                                    {
+                                                        name: "Actions",
+                                                        width: "150px",
+                                                        formatter: (_, row) => {
+                                                            const orderId = row.cells[1]?.data;
+                                                            return gridjs.html(`
+                                                                <button class="btn btn-sm btn-primary view-details"
+                                                                        data-id="${orderId}">
+                                                                    View Order
+                                                                </button>
+                                                            `);
+                                                        }
+                                                    }
+                                                ],
+                                                pagination: { enabled: true, limit: 5, summary: true },
+                                                search: true,
+                                                sort: true,
+                                                data: orderData.map((o, index) => [
+                                                    sttCounter++,           // 0
+                                                    o.orderTracking,        // 1
+                                                    o.paymentMethod,        // 2
+                                                    o.statusPayment,        // 3
+                                                    o.status,               // 4
+                                                    o.quantity,             // 5
+                                                    o.total,                // 6
+                                                    o.orderDate,            // 7
+                                                    o.deliveryDate,         // 8
+                                                    o.note,                 // 9
+                                                    o.deliveryAddress,      // 10
+                                                    ""                      // 11: placeholder for formatter
+                                                ])
+                                            });
+
+                                            // Render grid
+                                            ordersGrid.render(orderContainer);
+
+                                            // Setup event listener chỉ một lần
+                                            if (!orderDetailsListenerAdded) {
+                                                setupOrderDetailsListener();
+                                                orderDetailsListenerAdded = true;
+                                            }
+                                        }
+
+                                        // Setup event listener for order details
+                                        function setupOrderDetailsListener() {
+                                            document.addEventListener("click", function (e) {
+                                                if (e.target.classList.contains("view-details")) {
+                                                 orderId = e.target.getAttribute("data-id");
+                                                    loadOrderDetails(orderId);
+                                                }
+                                            });
+                                        }
+
+                                        // Your existing loadOrderDetails function remains the same
+                                        function loadOrderDetails(orderId) {
+                                            fetch("/Users/GetOrderDetails", {
+                                                method: "POST",
+                                                headers: {
+                                                    "Content-Type": "application/json",
+                                                    "Accept": "application/json"
+                                                },
+                                                body: JSON.stringify(orderId),
+                                                cache: "no-store"
+                                            })
+                                            .then(response => {
+                                                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                                                return response.json();
+                                            })
+                                            .then(data => {
+                                                if (data.success) {
+                                                    renderOrderDetailsGrid(data);
+                                                } else {
+                                                    Swal.fire("Not Found", "Order details could not be found.", "warning");
+                                                }
+                                            })
+                                            .catch(error => {
+                                                console.error("Fetch error:", error);
+                                                Swal.fire("Error!", "An error occurred while loading the order details.", "error");
+                                            });
+                                        }
+
+                                        // Function to render order details grid
+                                        function renderOrderDetailsGrid(data) {
+                                            const detailsContainer = document.getElementById("table-order-details");
+
+                                            // Destroy existing details grid
+                                            if (detailsGrid) {
+                                                detailsGrid.destroy();
+                                                detailsGrid = null;
+                                            }
+
+                                            detailsContainer.innerHTML = "";
+
+                                            let sttCounter = 1;
+
+                                            detailsGrid = new gridjs.Grid({
+                                                columns: [
+                                                    { name: "STT", width: "60px", hidden: true },
+                                                    { name: "Product Name", width: "250px" },
+                                                    { name: "Product Price", width: "150px" },
+                                                    { name: "Total Price", width: "150px" },
+                                                    { name: "Quantity", width: "100px" },
+                                                    {
+                                                        name: "Status",
+                                                        width: "150px",
+                                                        formatter: (cell) => {
+                                                            const value = (cell || "").toLowerCase();
+                                                            let color = "secondary";
+
+                                                            switch (value) {
+                                                                case "pending":
+                                                                case "waiting confirmation":
+                                                                case "processing":
+                                                                    color = "warning";
+                                                                    break;
+                                                                case "confirmed":
+                                                                    color = "success";
+                                                                    break;
+                                                                case "preparing in kitchen":
+                                                                    color = "info";
+                                                                    break;
+                                                                case "delivering":
+                                                                    color = "primary";
+                                                                    break;
+                                                                case "cancelled by user":
+                                                                case "cancelled by restaurant":
+                                                                case "cancelled by shop":
+                                                                case "delivery failed":
+                                                                case "rejected":
+                                                                    color = "danger";
+                                                                    break;
+                                                                case "refunded":
+                                                                    color = "dark";
+                                                                    break;
+                                                            }
+
+                                                            return gridjs.html(`<span class="badge bg-${color}">${cell}</span>`);
+                                                        }
+                                                    },
+                                                    { name: "Feedback", hidden: true },
+                                                    { name: "Complaint", hidden: true },
+                                                    { name: "Product ID", hidden: true },
+                                                    {
+                                                        name: "Action",
+                                                        width: "200px",
+                                                        formatter: (_, row) => {
+                                                            const hasFeedback = row.cells[6]?.data;
+                                                            const hasComplaint = row.cells[7]?.data;
+                                                            const productName = row.cells[1]?.data || "";
+                                                            const productId = row.cells[8]?.data || "";
+                                                            const ortracking = row.cells[9]?.data || "";
+
+                                                            const escapedName = String(productName).replace(/'/g, "\\'");
+                                                            let buttons = '<div class="d-flex gap-2 justify-content-start">';
+
+                                                            if (!hasFeedback) {
+                                                                buttons += `
+                                                                    <button class="btn btn-outline-success btn-sm"
+                                                                      onclick="openReviewModal('${productId}', '${escapedName}')">
+                                                                        Review
+                                                                    </button>`;
+                                                            }
+
+                                                            if (!hasComplaint) {
+                                                                buttons += `
+                                                                    <button class="btn btn-outline-danger btn-sm"
+                                                                      onclick="openComplaintModal('${ortracking}', '${escapedName}', '${productId}')">
+                                                                        Complaint
+                                                                    </button>`;
+                                                            }
+
+                                                            buttons += '</div>';
+                                                            return gridjs.html(buttons);
+                                                        }
+                                                    }
+                                                ],
+                                                pagination: { enabled: true, limit: 5, summary: true },
+                                                search: true,
+                                                sort: true,
+                                                data: data.data.map((od) => [
+                                                    sttCounter++,
+                                                    od.productName,
+                                                    od.productPrice,
+                                                    od.totalPrice,
+                                                    od.quantity,
+                                                    od.status,
+                                                    od.hasFeedback,
+                                                    od.hasComplaint,
+                                                    od.productId,
+                                                    od.ortracking
+                                                ])
+                                            });
+
+                                            detailsGrid.render(detailsContainer);
+
+                                            // Show order details tab
+                                            const orderDetailsTab = new bootstrap.Tab(document.getElementById("order-details-tab"));
+                                            orderDetailsTab.show();
+
+                                            // Remove existing buttons
+                                            document.getElementById("back-to-orders-btn")?.remove();
+                                            document.getElementById("go-to-pay-btn")?.remove();
+                                            document.getElementById("cancel-entire-order-btn")?.remove();
+
+                                            // Add action buttons based on order status
+                                            addOrderActionButtons(data, detailsContainer);
+                                        }
+
+                                        // Function to add action buttons based on order status
+                                        function addOrderActionButtons(data, container) {
+                                            const orderStatus = (data.orderStatus || "").toLowerCase();
+                                            const flag = data.isPay;
+                                            const link = (data.linkpay || "");
+
+                                            if (orderStatus === "processing") {
+                                                if (flag === true && link && link.trim() !== '') {
+                                                    const button = document.createElement("button");
+                                                    button.className = "btn btn-success mt-3 float-end";
+                                                    button.id = "go-to-pay-btn";
+                                                    button.innerHTML = "<i class='fi fi-rs-star'></i> Go to pay";
+                                                    button.addEventListener("click", () => {
+                                                        window.open(link, "_blank");
+                                                    });
+                                                    container.appendChild(button);
+                                                }
+                                            }
+
+                                            if (orderStatus === "pending") {
+                                                const cancelAllBtn = document.createElement("button");
+                                                cancelAllBtn.id = "cancel-entire-order-btn";
+                                                cancelAllBtn.className = "btn btn-danger mt-3 float-end";
+                                                cancelAllBtn.innerHTML = "<i class='fi fi-rs-trash'></i> Cancel Order";
+                                                cancelAllBtn.onclick = () => cancelEntireOrder(orderId);
+                                                console.log("Adding cancel button for order ID:", orderId);
+                                                container.appendChild(cancelAllBtn);
+                                            }
+
+                                            // Back button
+                                            const backButton = document.createElement("button");
+                                            backButton.id = "back-to-orders-btn";
+                                            backButton.className = "btn btn-secondary mt-3 me-2";
+                                            backButton.innerHTML = "<i class='fi fi-rs-arrow-left'></i>Back to Orders";
+                                            backButton.onclick = () => {
+                                                document.getElementById("orders-tab")?.click();
+                                                loadOrdersData(); // Reload orders when going back
+                                            };
+                                            container.appendChild(backButton);
+                                        }
+
+                                        // Function to cancel entire order
+                                        function cancelEntireOrder(orderId) {
+                                            Swal.fire({
+                                                title: "Cancel this order?",
+                                                text: "This entire order will be cancelled!",
+                                                icon: "warning",
+                                                showCancelButton: true,
+                                                confirmButtonText: "Cancel Order",
+                                                cancelButtonText: "No",
+                                                confirmButtonColor: "#d33",
+                                                cancelButtonColor: "#6c757d"
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    fetch("/Users/CancelOrder", {
+                                                        method: "POST",
+                                                        headers: {
+                                                            "Content-Type": "application/json",
+                                                            "Accept": "application/json"
+                                                        },
+                                                        body: JSON.stringify(orderId)
+                                                    })
+                                                    .then(res => res.json())
+                                                    .then(data => {
+                                                        if (data.success) {
+                                                            Swal.fire("Cancelled!", data.message || "The order has been cancelled.", "success")
+                                                                .then(() => {
+                                                                    document.getElementById("orders-tab")?.click();
+                                                                    loadOrdersData(); // Reload orders after cancellation
+                                                                });
+                                                        } else {
+                                                            Swal.fire("Error!", data.message || "Unable to cancel the order.", "error");
+                                                        }
+                                                    })
+                                                    .catch(() => Swal.fire("Error!", "An error occurred while sending the cancellation request.", "error"));
+                                                }
+                                            });
+                                        }
+
+                                        // SignalR connection
+                                        
+                                     
+                                    </script>
+
+
+                                    @* <div class="tab-pane fade" id="track-orders" role="tabpanel"
+                                    aria-labelledby="track-orders-tab">
+                                    <div class="card">
+                                    <div class="card-header">
+                                    <h3 class="mb-0">Orders tracking</h3>
+                                    </div>
+                                    <div class="card-body contact-from-area">
+                                    <p>
+                                    To track your order please enter your OrderID in the box below and
+                                    press "Track" button. This was given to you on your receipt and in
+                                    the confirmation email you should have received.
+                                    </p>
+                                    <div class="row">
+                                    <div class="col-lg-8">
+                                    <form class="contact-form-style mt-30 mb-50" action="#"
+                                    method="post">
+                                    <div class="input-style mb-20">
+                                    <label>Order ID</label>
+                                    <input name="order-id"
+                                    placeholder="Found in your order confirmation email"
+                                    type="text" />
+                                    </div>
+                                    <div class="input-style mb-20">
+                                    <label>Billing email</label>
+                                    <input name="billing-email"
+                                    placeholder="Email you used during checkout"
+                                    type="email" />
+                                    </div>
+                                    <button class="submit submit-auto-width"
+                                    type="submit">
+                                    Track
+                                    </button>
+                                    </form>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </div> *@
+                                    <div class="tab-pane fade" id="address" role="tabpanel"
+                                         aria-labelledby="address-tab">
+                                        <div class="row justify-content-center">
+                                            <div class="col-lg-8">
+                                                @if (Model.userView.RequestSeller == "0") // Nếu chưa đăng ký seller
+                                                {
+                                                    <div class="card shadow-sm border-0">
+                                                        <div class="card-header bg-warning text-dark text-center">
+                                                            <h4 class="mb-0">Become a Seller</h4>
+                                                        </div>
+                                                        <div class="card-body text-center">
+                                                            <p class="text-muted">
+                                                                Unlock new opportunities by selling your products on our platform.
+                                                            </p>
+                                                            <button class="btn btn-success mt-2" id="btnRegisterSeller">Register as Seller</button>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else if (Model.userView.RequestSeller == "1") // Pending approval
+                                                {
+                                                    <div class="alert alert-info mt-3" id="approvalMessage">
+                                                        <h5>Announcement!</h5>
+                                                        <p>Your request has been submitted. Please wait for admin approval.</p>
+                                                    </div>
+                                                }
+                                                else if (Model.userView.RequestSeller?.Trim() == "3") // Rejected
+                                                {
+                                                    <div class="alert alert-danger mt-3" id="rejectedMessage">
+                                                        <h5>Rejected!</h5>
+                                                        <p>Your request to become a seller has been denied. Please contact support for more information.</p>
+<div class="ms-2 note-text">
+    <strong class="text-danger">Note:</strong>
+    <span style="word-wrap: break-word; white-space: normal;">@Model.userView.RejectNote</span>
+</div>
+
+
+                                                    </div>
+                                                     <button class="btn btn-success mt-2" id="btnRegisterSeller">Register as Seller</button>
+
+                                                }
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade active show" id="account-detail" role="tabpanel"
+                                         aria-labelledby="account-detail-tab">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3>Account Details</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <form id="updateProfileForm">
+                                                    <div class="row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>First Name <span class="required">*</span></label>
+                                                            <input required class="form-control" id="FirstName" name="FirstName" type="text" value="@Model.userView.FirstName" />
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Last Name <span class="required">*</span></label>
+                                                            <input required class="form-control" id="LastName" name="LastName" type="text" value="@Model.userView.LastName" />
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>UserName <span class="required">*</span></label>
+                                                            <input required class="form-control" id="UserName" name="UserName" type="text" value="@Model.userView.UserName" readonly />
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Email <span class="required">*</span></label>
+                                                            <input required class="form-control" id="Email" name="Email" type="text" value="@Model.userView.Email" readonly />
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Phone Number <span class="required">*</span></label>
+                                                            <input class="form-control"
+                                                                   id="PhoneNumber"
+                                                                   name="PhoneNumber"
+                                                                   type="text"
+                                                                   value="@Model.userView.PhoneNumber"
+                                                                   inputmode="numeric"
+                                                                   oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                                                   maxlength="10"
+                                                                   required />
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Birthday <span class="required">*</span></label>
+                                                            <input class="form-control" id="Birthday" name="Birthday" type="date" value="@(Model.userView.Birthday != null ? Model.userView.Birthday.Value.ToString("yyyy-MM-dd") : "")" />
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <label>Address <span class="required">*</span></label>
+                                                            <textarea class="form-control" id="Address" name="Address" rows="3">@Model.userView.Address</textarea>
+                                                        </div>
+                                                        @* <div class="form-group col-md-12">
+                                                        <label>
+                                                        Current Password <span class="required">*</span>
+                                                        </label>
+                                                        <input required="" class="form-control" name="password"
+                                                        type="password" />
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                        <label>New Password <span class="required">*</span></label>
+                                                        <input required="" class="form-control" name="npassword"
+                                                        type="password" />
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                        <label>
+                                                        Confirm Password <span class="required">*</span>
+                                                        </label>
+                                                        <input required="" class="form-control" name="cpassword"
+                                                        type="password" />
+                                                        </div> *@
+                                                        <div class="col-md-12">
+                                                            <button type="submit"
+                                                                    class="btn btn-fill-out submit font-weight-bold"
+                                                                    name="submit" value="Submit">
+                                                                Save Change
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="tab-pane fade" id="wallet" role="tabpanel" aria-labelledby="wallet-tab">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="mb-0">Your Balance : <span id="balance-display">@Model.BalanceUser ₫</span></h3>
+                                            </div>
+                                            <div class="container mt-4">
+
+                                                <div class="row mb-4">
+                                                    <div class="col-md-12">
+                                                        <button class="btn btn-success mr-10" data-bs-toggle="modal" data-bs-target="#depositModal">
+                                                            <i class="fas fa-wallet me-1"></i> Deposit
+                                                        </button>
+                                                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#withdrawModal">
+                                                            <i class="fas fa-money-bill-wave me-1"></i>Withdraw
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+
+                                                <!-- Forms container -->
+                                                <div class="row">
+                                                    <div class="modal fade" id="depositModal" tabindex="-1" aria-labelledby="depositModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content shadow">
+                                                                <div class="modal-header bg-success text-white">
+                                                                    <h5 class="modal-title" id="depositModalLabel">Deposit</h5>
+                                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                                </div>
+                                                                <form>
+                                                                    @Html.AntiForgeryToken()
+                                                                    <div class="modal-body">
+                                                                        <label class="form-label">Deposit amount</label>
+
+                                                                        <input type="number" min="1000" step="1000" id="numOrder" class="form-control mb-3" placeholder="Enter amount (₫)">
+                                                                        <label class="form-label">Payment method</label>
+                                                                        <div class="form-check">
+                                                                            <input class="form-check-input" type="radio" name="paymentType" checked>
+                                                                            <label class="form-check-label">Online payment</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button id="btnDeposit" class="btn btn-success w-100">Submit</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Rút tiền form -->
+                                                    <div class="modal fade" id="withdrawModal" tabindex="-1" aria-labelledby="withdrawModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content shadow">
+                                                                <div class="modal-header bg-danger text-white">
+                                                                    <h5 class="modal-title" id="withdrawModalLabel">Withdraw</h5>
+                                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                                </div>
+                                                                <form>
+                                                                    @Html.AntiForgeryToken()
+                                                                    <div class="modal-body">
+                                                                        <label class="form-label">Withdrawal amount</label>
+                                                                        <input type="number" min="1000" step="1000" class="form-control mb-3" id="numOrderVut" placeholder="Enter amount (₫)">
+                                                                        <label class="form-label">Withdrawal method</label>
+                                                                        <div class="form-check">
+                                                                            <input class="form-check-input" type="radio" name="withdrawType" checked>
+                                                                            <label class="form-check-label">Bank transfer</label>
+                                                                        </div>
+                                                                        <label class="form-label mt-3">Bank Name</label>
+                                                                        <select class="form-control" id="bankSelect" style="width:100%"></select>
+                                                                        <label class="form-label mt-3">Recipient account name</label>
+                                                                        <input type="text" class="form-control" id="nameAcc" placeholder="Account holder name">
+                                                                        <label class="form-label mt-3">Account number</label>
+                                                                        <input type="text" class="form-control" id="umaccou" placeholder="Account number">
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button id="btnWithdraw" class="btn btn-danger w-100">Submit</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                                <!-- Transactions List -->
+                                                <div class="card w-100">
+                                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                                        <h3>Transactions List</h3>
+                                                    </div>
+                                                    <div class="card-body w-100" id="Exampletable">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <script>
+                                            const depositBtn = document.getElementById('depositBtn');
+                                            const withdrawBtn = document.getElementById('withdrawBtn');
+                                            const depositForm = document.getElementById('depositForm');
+                                            const withdrawForm = document.getElementById('withdrawForm');
+                                            const selectElement = withdrawForm.querySelector('select');
+
+                                            // Function to hide both forms
+                                            function hideForms() {
+                                                depositForm.style.display = 'none';
+                                                withdrawForm.style.display = 'none';
+                                            }
+
+                                            // Show deposit form
+                                            depositBtn.addEventListener('click', function (e) {
+                                                e.stopPropagation();
+                                                if (depositForm.style.display === 'block') {
+                                                    depositForm.style.display = 'none';
+                                                } else {
+                                                    hideForms();
+                                                    depositForm.style.display = 'block';
+                                                }
+                                            });
+
+                                            // Show withdraw form
+                                            withdrawBtn.addEventListener('click', function (e) {
+                                                e.stopPropagation();
+                                                if (withdrawForm.style.display === 'block') {
+                                                    withdrawForm.style.display = 'none';
+                                                } else {
+                                                    hideForms();
+                                                    withdrawForm.style.display = 'block';
+                                                }
+                                            });
+
+                                            document.addEventListener('click', function (e) {
+                                                const isClickInsideSelect = selectElement && (selectElement.contains(e.target) || e.target.tagName === 'OPTION');
+                                                const isClickInsideInput = e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA';
+
+                                                if (!depositBtn.contains(e.target) &&
+                                                    !withdrawBtn.contains(e.target) &&
+                                                    !depositForm.contains(e.target) &&
+                                                    !withdrawForm.contains(e.target) &&
+                                                    !isClickInsideSelect &&
+                                                    !isClickInsideInput) {
+                                                    hideForms();
+                                                }
+                                            });
+
+
+                                            // Prevent form clicks from closing the form
+                                            depositForm.addEventListener('click', function (e) {
+                                                e.stopPropagation();
+                                            });
+
+                                            withdrawForm.addEventListener('click', function (e) {
+                                                e.stopPropagation();
+                                            });
+
+                                            // Handle select element specifically
+                                            if (selectElement) {
+                                                selectElement.addEventListener('click', function (e) {
+                                                    e.stopPropagation();
+                                                });
+
+                                                selectElement.addEventListener('focus', function (e) {
+                                                    e.stopPropagation();
+                                                });
+
+                                                selectElement.addEventListener('change', function (e) {
+                                                    e.stopPropagation();
+                                                });
+
+                                                // Handle key events for search/filter in select
+                                                selectElement.addEventListener('keydown', function (e) {
+                                                    e.stopPropagation();
+                                                });
+                                            }
+
+                                            // Keep form visible when interacting with inputs
+                                            const inputs = document.querySelectorAll('#depositForm input, #withdrawForm input');
+                                            inputs.forEach(input => {
+                                                input.addEventListener('click', function (e) {
+                                                    e.stopPropagation();
+                                                });
+                                                input.addEventListener('focus', function (e) {
+                                                    e.stopPropagation();
+                                                });
+                                                input.addEventListener('keydown', function (e) {
+                                                    e.stopPropagation();
+                                                });
+                                            });
+                                        </script>
+
+                                        <style>
+                                            .mr-2 {
+                                                margin-right: 10px;
+                                            }
+
+                                            .custom_select .select2-container--default .select2-selection--single {
+                                                width: 484.8px;
+                                            }
+
+                                            .custom_select .select2-container {
+                                                max-width: 484.8px;
+                                            }
+                                        </style>
+                                    </div>
+
+
+                                    <div class="tab-pane fade show" id="Feedback" role="tabpanel" aria-labelledby="Feedback-tab">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="mb-0">Your FeedBack</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive" id="table-feedback"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    @* ///FEEDBACK *@
+                                    @* <div class="tab-pane fade" id="Feedback" role="tabpanel" aria-labelledby="Feedback-tab">
+                                    <div class="card">
+                                    <div class="card-header">
+                                    <h3 class="mb-0">Your Feedback</h3>
+                                    </div>
+                                    <div class="card-body">
+                                    <div class="table-responsive" id="table-feedback">
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </div> *@
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    @await Html.PartialAsync("_Footer_User")
+    <!-- Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <img src="~/assets/imgs/theme/loading.gif" alt="" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#updateProfileForm").submit(function (event) {
+                event.preventDefault();
+
+                var birthdayValue = $("#Birthday").val();
+                var formData = {
+                    userView: {
+                        FirstName: $("#FirstName").val(),
+                        LastName: $("#LastName").val(),
+                        UserName: $("#UserName").val(),
+                        Email: $("#Email").val(),
+                        PhoneNumber: $("#PhoneNumber").val(),
+                        Address: $("#Address").val(),
+                        Birthday: birthdayValue ? birthdayValue : null,  // Nếu trường Birthday rỗng, gửi null
+                    }
+                };
+
+                $.ajax({
+                    url: "/Users/UpdateProfile",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(formData),
+                    beforeSend: function () {
+                        Swal.fire({
+                            title: "Updating...",
+                            text: "Please wait...",
+                            icon: "info",
+                            showConfirmButton: false,
+                            allowOutsideClick: false
+                        });
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire({
+                                title: "Success!",
+                                text: "Profile updated successfully!",
+                                icon: "success",
+                                confirmButtonText: "OK"
+                            }).then(() => {
+                                $("#account-detail").load(location.href + " #account-detail > *");
+                            });
+                        } else {
+                            Swal.fire("Error!", response.message || "Profile update failed!", "error");
+                        }
+                    },
+                    error: function (xhr) {
+                        let errorMessage = "Cannot connect to the server.";
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+                        Swal.fire("Error!", errorMessage, "error");
+                    }
+                });
+
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#btnRegisterSeller").click(function (e) {
+                e.preventDefault(); // Ngăn reload trang
+
+                $.ajax({
+                    url: "/Users/RegisterSeller", // Endpoint xử lý
+                    type: "POST",
+                    contentType: "application/json",
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Success",
+                                text: "Your seller registration request has been sent successfully!",
+                                confirmButtonText: "OK"
+                            }).then(() => {
+                                // Cập nhật #address khi đăng ký Success
+                                $("#address").load(location.href + " #address > *");
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: response.message,
+                                confirmButtonText: "OK"
+                            }).then(() => {
+                                // Nếu lỗi do thiếu thông tin => Cập nhật lại #account-detail
+                                if (response.message.includes("Please update all required information")) {
+                                    $('#account-detail-tab').tab('show'); // Nếu bạn dùng Bootstrap tabs
+                                }
+                            });
+                        }
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "An error occurred! Please try again.",
+                            confirmButtonText: "OK"
+                        });
+                    }
+                });
+            });
+        });
+
+
+
+    </script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var hash = window.location.hash;
+            if (hash) {
+                var triggerEl = document.querySelector(`a[href="${hash}"]`);
+                if (triggerEl) {
+                    var tab = new bootstrap.Tab(triggerEl);
+                    tab.show();
+                }
+            }
+        });
+    </script>
+
+    <!-- Bootstrap 5 CSS & JS -->
+    <!-- ✅ jQuery (luôn phải đứng trước các plugin dùng jQuery) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+
+    <!-- ✅ Bootstrap 5 -->
+    @* <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> *@
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- ✅ Quill (dùng cho trình soạn thảo) -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+    <!-- ✅ multi.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/multi.js@0.5.0/multi.min.css">
+
+    <!-- ✅ autoComplete.js -->
+    <!-- ✅ Các plugin khác -->
+    <script src="~/assets/js/plugins/slick.js"></script>
+    <script src="~/assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="~/assets/js/plugins/wow.js"></script>
+    <script src="~/assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="~/assets/js/plugins/magnific-popup.js"></script>
+    <script src="~/assets/js/plugins/select2.min.js"></script>
+    <script src="~/assets/js/plugins/waypoints.js"></script>
+    <script src="~/assets/js/plugins/counterup.js"></script>
+    <script src="~/assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="~/assets/js/plugins/images-loaded.js"></script>
+    <script src="~/assets/js/plugins/isotope.js"></script>
+    <script src="~/assets/js/plugins/scrollup.js"></script>
+    <script src="~/assets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="~/assets/js/plugins/jquery.theia.sticky.js"></script>
+    <script src="~/assets/js/plugins/jquery.elevatezoom.js"></script>
+
+    <!-- ✅ Template JS -->
+    <script src="~/assets/js/main.js?v=6.0"></script>
+    <script src="~/assets/js/shop.js?v=6.0"></script>
+
+    <!-- ✅ Grid.js -->
+    <script src="~/assets/js/gridjs/gridjs.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+    <!-- ✅ Admin Template (nếu dùng layout riêng cho admin) -->
+    <script src="assetsAdmin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assetsAdmin/libs/simplebar/simplebar.min.js"></script>
+    <script src="assetsAdmin/libs/node-waves/waves.min.js"></script>
+    <script src="assetsAdmin/libs/feather-icons/feather.min.js"></script>
+    <script src="assetsAdmin/js/pages/plugins/lord-icon-2.1.0.js"></script>
+    <script src="assetsAdmin/js/plugins.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/multi.js@0.5.1/multi.min.js"></script>
+
+
+
+    <!-- Dropzone (nếu dùng) -->
+    <script src="assetsAdmin/libs/dropzone/dropzone-min.js"></script>
+
+    <!-- Prism (code highlight) -->
+    <script src="assetsAdmin/libs/prismjs/prism.js"></script>
+
+    <!-- Quản lý nội dung nâng cao -->
+    <script src="assetsAdmin/js/pages/form-input-spin.init.js"></script>
+    <script src="assetsAdmin/js/pages/flag-input.init.js"></script>
+
+    <!-- Khởi tạo Quill hoặc form nâng cao -->
+    <script src="assetsAdmin/js/pages/form-editor.init.js"></script>
+
+    <!-- ✅ Quill nếu dùng bản local -->
+    <!-- <script src="assetsAdmin/libs/quill/quill.min.js"></script> -->
+    <!-- Admin app -->
+    <script src="assetsAdmin/js/app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+</body>
+
+</html>
+@* <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById("Exampletable");
+        var list = @Html.Raw(JsonSerializer.Serialize(Model.Balance));
+
+        container.innerHTML = "";
+
+        new gridjs.Grid({
+            columns: [
+                { name: "NO.", width: "90px" , formatter: (e) => gridjs.html(`<p>${e}</p>`) },
+                { name: "Before", width: "110px", formatter: (e) => gridjs.html(`<p>${e}</p>`) },
+                {
+                    name: "Before",
+                    width: "110px",
+                    formatter: (e) => {
+                        const color = e < 0 ? "red" : "green";
+                        return gridjs.html(`<p style="color:${color}">${e}</p>`)
+                    }
+                },
+                { name: "After", width: "110px", formatter: (e) => gridjs.html(`<p>${e}</p>`) },
+                { name: "Type", width: "100px", formatter: (e) => gridjs.html(`<p>${e}</p>`) },
+                {
+                    name: "Status",
+                    width: "130px",
+                    formatter: (e) => {
+                        let color = "#C3A73A";
+
+                        if (e.toLowerCase() === "done") {
+                            color = "green";
+                        } else if (e.toLowerCase() === "cancel") {
+                            color = "#C10103";
+                        }
+
+                        return gridjs.html(`<p style="color:${color}; font-weight:bold;">${e}</p>`);
+                    }
+                },
+
+                {
+                    name: "Type",
+                    width: "100px",
+                    formatter: (e) => {
+                        const date = new Date(e);
+                        const formatted = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
+                        return gridjs.html(`<p>${formatted}</p>`);
+                    }
+                },
+                {
+                    name: "Invoice",
+                    width: "150px",
+                    formatter: (e) => gridjs.html(`<a href="${e}" target="_blank" class="text-reset text-decoration-underline">Details</a>`)
+
+                }
+            ],
+            pagination: {
+                enabled: true,
+                limit: 5,
+                summary: true
+            },
+            pageSize: [5, 10, 20, 50],
+            sort: true,
+            search: true,
+            data: list.map(u => [
+                u.No,
+                u.Before,
+                u.Change,
+                u.After,
+                u.Types,
+                u.Status,
+                u.Date,
+                u.Invoice
+            ])
+        }).render(document.getElementById("Exampletable"));
+    });
+
+</script>
+ *@
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById("Exampletable");
+        var list = @Html.Raw(JsonSerializer.Serialize(Model.Balance));
+        let gridInstance = null;
+        let isInteracting = false; // Biến để theo dõi trạng thái tương tác
+
+        // Hàm khởi tạo bảng
+        function initializeGrid(data) {
+            if (!container.dataset.gridInitialized) {
+                container.innerHTML = "";
+                gridInstance = new gridjs.Grid({
+                    columns: [
+                        { name: "NO.", width: "90px", formatter: (e) => gridjs.html(`<p>${e}</p>`) },
+                        { name: "Before", width: "110px", formatter: (e) => gridjs.html(`<p>${e}</p>`) },
+                        {
+                            name: "Change", // Đổi tên để tránh trùng "Before"
+                            width: "110px",
+                            formatter: (e) => {
+                                const color = e < 0 ? "red" : "green";
+                                return gridjs.html(`<p style="color:${color}">${e}</p>`);
+                            }
+                        },
+                        { name: "After", width: "110px", formatter: (e) => gridjs.html(`<p>${e}</p>`) },
+                        { name: "Type", width: "110px", formatter: (e) => gridjs.html(`<p>${e}</p>`) },
+                        {
+                            name: "Status",
+                            width: "130px",
+                            formatter: (e) => {
+                                let color = "#C3A73A";
+                                const status = e ? e.toLowerCase() : "";
+
+                                if (status === "paid" || status === "success") {
+                                    color = "green";
+                                } else if (status === "cancelled") {
+                                    color = "#C10103";
+                                }
+
+                                return gridjs.html(`<p style="color:${color}; font-weight:bold;">${e || "N/A"}</p>`);
+                            }
+
+                        },
+                        {
+                            name: "Date", // Đổi tên để tránh trùng "Type"
+                            width: "100px",
+                            formatter: (e) => {
+                                const date = new Date(e);
+                                const formatted = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
+                                return gridjs.html(`<p>${formatted}</p>`);
+                            }
+                        },
+                        {
+                            name: "Invoice",
+                            width: "150px",
+                            formatter: (e) => gridjs.html(`<button type="button" class="btn btn-sm btn-light" onclick="window.open('${e}', '_blank')">Details</button>`)
+                        }
+                    ],
+                    pagination: {
+                        enabled: true,
+                        limit: 5,
+                        summary: true
+                    },
+                    pageSize: [5, 10, 20, 50],
+                    sort: true,
+                    search: true,
+                    data: data.map(u => [
+                        u.No,
+                        u.Before,
+                        u.Change,
+                        u.After,
+                        u.Types,
+                        u.Status,
+                        u.Date,
+                        u.Invoice
+                    ])
+                }).render(container);
+
+                container.dataset.gridInitialized = "true";
+
+                container.addEventListener("click", () => isInteracting = true);
+                container.addEventListener("input", () => isInteracting = true);
+                const paginationButtons = container.querySelectorAll(".gridjs-pagination .gridjs-pages button");
+                paginationButtons.forEach(button => {
+                    button.addEventListener("click", () => {
+                        isInteracting = true;
+                        console.log("Pagination button clicked, stopping updates");
+                    });
+                });
+
+
+                const sortButtons = container.querySelectorAll(".gridjs-sort");
+                sortButtons.forEach(button => {
+                    button.addEventListener("click", () => {
+                        isInteracting = true;
+                        console.log("Sort button clicked, stopping updates");
+                    });
+                });
+
+
+
+                container.addEventListener("mouseleave", () => isInteracting = false);
+                container.addEventListener("blur", () => isInteracting = false, true);
+
+            }
+        }
+
+        // Khởi tạo bảng lần đầu
+        initializeGrid(list);
+
+        // Hàm lấy dữ liệu mới qua AJAX
+        function fetchUpdatedData() {
+            if (!isInteracting) { // Chỉ cập nhật khi không tương tác
+                fetch('/Users/LoadBalance', { // Thay bằng URL endpoint thực tế
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => response.json())
+                    .then(newData => {
+                        if (gridInstance) {
+                            gridInstance.updateConfig({
+                                data: newData.map(u => [
+                                    u.no,
+                                    u.before,
+                                    u.change,
+                                    u.after,
+                                    u.types,
+                                    u.status,
+                                    u.date,
+                                    u.invoice
+                                ])
+                            }).forceRender(); // Cập nhật dữ liệu mà không reload toàn bộ
+                        }
+                    })
+                    .catch(error => console.error('Error fetching data:', error));
+            }
+        }
+
+    const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chathub")
+            .build();
+
+        connection.on("ReceiveUpdate", function (data) {
+            console.log("Received update:", data);
+            fetchUpdatedData();
+        });
+
+        connection.start().catch(function (err) {
+            return console.error(err.toString());
+        });
+        fetchUpdatedData();
+    });
+</script>
+
+<script type="text/javascript">
+    $("#btnDeposit").on("click", function () {
+
+        $('#btnDeposit').html('<i class="fa fa-spinner fa-spin"></i> Processing...')
+            .prop('disabled', true);
+        var checkbox = parseInt($("#numOrder").val(), 10);
+        var token = $("input[name='__RequestVerificationToken']").val();
+
+        if (isNaN(checkbox) || checkbox <= 0) {
+            setTimeout(() => {
+                new Notify({
+                    status: 'error',
+                    title: 'Failed',
+                    text: 'The minimum deposit amount is 100,000 ₫',
+                    effect: 'fade',
+                    speed: 300,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    position: 'right top'
+                });
+
+                $('#btnDeposit').html('Add Payment').prop('disabled', false);
+            }, 100);
+            return;
+        }
+
+        $('#btnDeposit').html('<i class="fa fa-spinner fa-spin"></i> Processing...')
+            .prop('disabled', true);
+
+        $.ajax({
+            url: "@Url.Action("AddBalance", "Users")",
+            method: "POST",
+            dataType: "JSON",
+            data: {
+                number: $("#numOrder").val(),
+                __RequestVerificationToken: token
+            },
+            success: function (response) {
+                if (response.success) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'You will be redirected to the payment page...',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed || result.isDismissed) {
+                            window.location.href = response.msg;
+                        }
+                    });
+
+                } else {
+                    new Notify({
+                        status: 'error',
+                        title: 'Failed',
+                        text: response.msg || 'Failed to send!',
+                        effect: 'fade',
+                        speed: 300,
+                        showIcon: true,
+                        showCloseButton: true,
+                        autoclose: true,
+                        autotimeout: 3000,
+                        position: 'right top'
+                    });
+                }
+                $('#btnDeposit').html('Add Payment').prop('disabled', false);
+            },
+            error: function () {
+                new Notify({
+                    status: 'error',
+                    title: 'Failed',
+                    text: response.msg || 'Failed to send!',
+                    effect: 'fade',
+                    speed: 300,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    position: 'right top'
+                });
+                $('#btnDeposit').html('Add Payment').prop('disabled', false);
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $("#btnWithdraw").on("click", function () {
+        $('#btnWithdraw').html('<i class="fa fa-spinner fa-spin"></i> Processing...')
+            .prop('disabled', true);
+        var checkbox = parseInt($("#numOrderVut").val(), 10);
+        var token = $("input[name='__RequestVerificationToken']").val();
+
+        if (isNaN(checkbox) || checkbox < 10000) {
+            setTimeout(() => {
+                new Notify({
+                    status: 'error',
+                    title: 'Failed',
+                    text: 'The minimum withdrawal amount is 10,000 ₫',
+                    effect: 'fade',
+                    speed: 300,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    position: 'right top'
+                });
+
+                $('#btnWithdraw').html('Withdraw').prop('disabled', false);
+            }, 100);
+            return;
+
+        }
+
+        $('#btnWithdraw').html('<i class="fa fa-spinner fa-spin"></i> Processing...')
+            .prop('disabled', true);
+
+        $.ajax({
+            url: "@Url.Action("Withdraw", "Users")",
+            method: "POST",
+            dataType: "JSON",
+            data: {
+                number: $("#numOrderVut").val(),
+                nameAcc: $("#nameAcc").val(),
+                numAccount: $("#umaccou").val(),
+                code: $("#bankSelect").val(),
+                __RequestVerificationToken: token
+            },
+            success: function (response) {
+                if (response.success) {
+                    new Notify({
+                        status: 'success',
+                        title: 'Success!',
+                        text: response.msg || 'Send successful!',
+                        effect: 'fade',
+                        speed: 300,
+                        showIcon: true,
+                        showCloseButton: true,
+                        autoclose: true,
+                        autotimeout: 3000,
+                        position: 'right top'
+                    });
+
+                } else {
+                    new Notify({
+                        status: 'error',
+                        title: 'Failed',
+                        text: response.msg || 'Failed to send!',
+                        effect: 'fade',
+                        speed: 300,
+                        showIcon: true,
+                        showCloseButton: true,
+                        autoclose: true,
+                        autotimeout: 3000,
+                        position: 'right top'
+                    });
+                }
+                $('#btnWithdraw').html('Withdraw').prop('disabled', false);
+            },
+            error: function () {
+                Swal.fire(
+                    'Failed',
+                    'An error has occurred',
+                    'error'
+                );
+                $('#btnWithdraw').html('Withdraw').prop('disabled', false);
+            }
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById("table-feedback");
+
+        // ✅ Hàm định dạng ngày (không có giờ)
+        function formatDate(dateStr) {
+            if (!dateStr) return "N/A";
+            const date = new Date(dateStr);
+            return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
+        }
+
+        function loadFeedback() {
+            fetch('/Users/ViewMyFeedBack')
+                .then(response => {
+                    if (!response.ok) throw new Error("Failed to fetch");
+                    return response.json();
+                })
+                .then(feedbackList => {
+                    new gridjs.Grid({
+                        columns: [
+                            { name: "No", width: "100px" },
+                            { name: "ProductName", width: "150px" },
+                            { name: "Comment", width: "350px" },
+                            { name: "Comment Date", width: "180px" },
+                            { name: "Reply", width: "250px" },
+                        ],
+                        data: feedbackList.map((fb, index) => [
+                            index + 1,
+                            fb.productName || "Unknown",  // <-- đúng key JS
+                            fb.comment,
+                            formatDate(fb.commentDate),
+                            fb.reply || "N/A"
+                        ]),
+                        pagination: {
+                            enabled: true,
+                            limit: 5,
+                            summary: true
+                        },
+                        sort: true,
+                        search: true
+                    }).render(container);
+                })
+                .catch(error => {
+                    container.innerHTML = `<p class="text-danger">Error loading feedback.</p>`;
+                    console.error(error);
+                });
+        }
+
+        // Gọi khi load trang
+        loadFeedback();
+    });
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        fetch("https://api.vietqr.io/v2/banks")
+            .then(res => res.json())
+            .then(result => {
+                if (result.code === "00" && result.data.length > 0) {
+                    $("#bankSelect").empty();
+                    result.data.forEach(bank => {
+                        $("#bankSelect").append(
+                            $("<option>", {
+                                value: bank.code,
+                                text: `${bank.name} (${bank.shortName})`
+                            })
+                        );
+                    });
+                    // Bắt buộc gọi select2 ở đây
+                    $('#bankSelect').select2({
+                        placeholder: "Select bank",
+                        dropdownParent: $('#withdrawModal')
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Lỗi khi lấy danh sách ngân hàng:", error);
+            });
+    });
+</script>
+<script>
+    const connectionOrder = new signalR.HubConnectionBuilder()
+        .withUrl("/chathub")
+        .build();
+
+    connectionOrder.on("ReceiveOrders", function () {
+    loadOrdersData();
+    });
+
+    connectionOrder.start()
+        .then(() => console.log("✅ SignalR Orders connected"))
+        .catch(err => console.error("❌ SignalR error:", err));
+</script>

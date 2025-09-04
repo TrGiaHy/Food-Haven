@@ -1,0 +1,504 @@
+﻿<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
+    data-sidebar-image="none" data-preloader="disable">
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Admin - Manager ExpertRecipe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/assetsAdmin/images/favicon.ico">
+
+    <!-- gridjs css -->
+    <link rel="stylesheet" href="~/assetsAdmin/libs/gridjs/theme/mermaid.min.css">
+
+    <!-- Layout config Js -->
+    <script src="~/assetsAdmin/js/layout.js"></script>
+    <!-- Bootstrap Css -->
+    <link href="~/assetsAdmin/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="~/assetsAdmin/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="~/assetsAdmin/css/app.min.css" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="~/assetsAdmin/css/custom.min.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+        @await Html.PartialAsync("_headeradmin")
+
+        <div id="removeNotificationModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            id="NotificationModalbtn-close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mt-2 text-center">
+                            <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                                colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                            <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                                <h4>Are you sure ?</h4>
+                                <p class="text-muted mx-4 mb-0">Are you sure you want to remove this Notification ?</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                            <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn w-sm btn-danger" id="delete-notification">
+                                Yes, Delete
+                                It!
+                            </button>
+                        </div>
+                    </div>
+
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <!-- ========== App Menu ========== -->
+        <div class="app-menu navbar-menu">
+            <!-- LOGO -->
+            <div class="navbar-brand-box">
+                <!-- Dark Logo-->
+                <a class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="~/assetsAdmin/images/logo-sm.svg" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="~/assetsAdmin/images/logo-dark.svg" alt="" height="35">
+                    </span>
+                </a>
+                <!-- Light Logo-->
+                <a class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="~/assetsAdmin/images/logo-sm.svg" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="~/assetsAdmin/images/logo-light.svg" alt="" height="35">
+                    </span>
+                </a>
+                <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+                    id="vertical-hover">
+                    <i class="ri-record-circle-line"></i>
+                </button>
+            </div>
+
+            <div id="scrollbar">
+                <div class="container-fluid">
+                    <div id="two-column-menu">
+                    </div>
+                    <ul class="navbar-nav" id="navbar-nav">
+                        <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="Index">
+                                <i class=" ri-pie-chart-line"></i> <span>Revenue Statistics</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="WithdrawList">
+                            <i class="ri-exchange-dollar-line"></i> <span>Withdrawal Requests From Users</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="Managercomplant">
+                            <i class="ri-error-warning-line"></i> <span>Order Complaint Reports From Seller</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagerUser">
+                                <i class="ri-account-circle-line"></i> <span>User Accounts</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagementSeller">
+                                <i class="ri-user-add-line"></i> <span>Seller Registration Requests</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="ViewStoreRegistration">
+                            <i class="ri-file-add-line"></i> <span>Store Registration Requests</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ViewAdminStore">
+                                <i class="ri-store-2-line"></i> <span>Store</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagementReportStore">
+                            <i class="ri-alert-line"></i> <span>Store Reports From User</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ViewCategories">
+                                <i class="ri-folder-2-line"></i> <span>Categories</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link " asp-controller="Admin" asp-action="ManagementRecipe">
+                                <i class="ri-restaurant-2-line"></i> <span>Cooking Recipes</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link active" asp-controller="Admin"
+                                asp-action="ManagerExpertRecipe">
+                                <i class="ri-restaurant-2-line"></i> <span>Expert Recipe</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="GetAllIngredientTag">
+                            <i class=" ri-price-tag-3-line"></i> <span>Ingredient Tag</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="GetAllTypeOfDish">
+                            <i class="ri-restaurant-line"></i> <span>Type of Dish</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagerVoucher">
+                            <i class=" ri-coupon-2-line"></i> <span>Voucher</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="Chat">
+                                <i class="ri-chat-3-line"></i> <span>Chat</span>
+                            </a>
+                        </li>
+                        <!--<li class="nav-item">
+                            <a class="nav-link menu-link" href="">
+                                <i class="ri-notification-2-line"></i> <span>Notifications</span>
+                            </a>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+            <!-- Sidebar -->
+        </div>
+        <div class="sidebar-background"></div>
+
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h4 class="mb-sm-0">Manager Expert Recipe</h4>
+
+                                @* <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
+                                        <li class="breadcrumb-item active">Manager ExpertRecipe</li>
+                                    </ol>
+                                </div> *@
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+
+                                    <h4 class="card-title mb-0">Expert Recipe List</h4>
+
+
+
+                                </div>
+                                <div class="card-body">
+                                    
+                                        <a href="/Admin/createExpertRecipe" class="btn btn-sm btn-success">
+                                            <i class="ri-add-line"></i> Create Expert Recipe
+                                        </a>
+                                    
+
+                                    <!-- Tabs -->
+                                    <ul class="nav nav-tabs mt-3 mb-3" id="recipeTab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="all-tab" data-bs-toggle="tab"
+                                                data-bs-target="#all" type="button" role="tab">All</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="active-tab" data-bs-toggle="tab"
+                                                data-bs-target="#active" type="button" role="tab">Active</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="inactive-tab" data-bs-toggle="tab"
+                                                data-bs-target="#inactive" type="button" role="tab">Inactive</button>
+                                        </li>
+                                    </ul>
+
+                                    <!-- Tab Content -->
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade show active" id="all" role="tabpanel">
+                                            <div id="loader-all" class="text-center my-3">
+                                                <div class="spinner-border text-primary" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                            </div>
+                                            <div id="table-all"></div>
+                                        </div>
+
+                                        <div class="tab-pane fade" id="active" role="tabpanel">
+                                            <div id="loader-active" class="text-center my-3">
+                                                <div class="spinner-border text-primary" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                            </div>
+                                            <div id="table-active"></div>
+                                        </div>
+
+                                        <div class="tab-pane fade" id="inactive" role="tabpanel">
+                                            <div id="loader-inactive" class="text-center my-3">
+                                                <div class="spinner-border text-primary" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                            </div>
+                                            <div id="table-inactive"></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        let allGrid, activeGrid, inactiveGrid;
+
+                        document.addEventListener("DOMContentLoaded", function () {
+                            loadExpertRecipes();
+                        });
+
+                        function loadExpertRecipes() {
+                            fetch("/Admin/GetAllExpertRecipes", {
+                                method: "GET",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-Requested-With": "XMLHttpRequest"
+                                }
+                            })
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (!Array.isArray(data)) return showErrorMessage("Dữ liệu trả về không hợp lệ.");
+
+                                    const activeData = data.filter(r => r.isActive);
+                                    const inactiveData = data.filter(r => !r.isActive);
+                                    if (allGrid) {
+                                        allGrid.updateConfig({ data: buildGridData(data) }).forceRender();
+                                    } else {
+                                        allGrid = renderExpertGrid(data, "table-all", "loader-all");
+                                    }
+                                    if (activeGrid) {
+                                        activeGrid.updateConfig({ data: buildGridData(activeData) }).forceRender();
+                                    } else {
+                                        activeGrid = renderExpertGrid(activeData, "table-active", "loader-active");
+                                    }
+
+                                    if (inactiveGrid) {
+                                        inactiveGrid.updateConfig({ data: buildGridData(inactiveData) }).forceRender();
+                                    } else {
+                                        inactiveGrid = renderExpertGrid(inactiveData, "table-inactive", "loader-inactive");
+                                    }
+                                })
+                                .catch(err => {
+                                    console.error(err);
+                                    showErrorMessage("Không thể tải dữ liệu.");
+                                });
+                        }
+
+                        function renderExpertGrid(data, containerId, loaderId) {
+                            const loader = document.getElementById(loaderId);
+                            if (loader) loader.style.display = "none";
+
+                            return new gridjs.Grid({
+                                columns: [
+                                    { name: "No", width: 60 },
+                                    { name: "ID", hidden: true },
+                                    { name: "Title", width: 200 },
+                                    {
+                                        name: "Ingredients", width: 250,
+                                        formatter: cell => formatArrayDisplay(cell)
+                                    },
+                                    {
+                                        name: "Directions", width: 250,
+                                        formatter: cell => formatArrayDisplay(cell)
+                                    },
+                                    {
+                                        name: "NER", width: 150,
+                                        formatter: cell => formatArrayDisplay(cell)
+                                    },
+                                    {
+                                        name: "Link", width: 100,
+                                        formatter: cell => gridjs.html(`<a href="${cell}" target="_blank">Link</a>`)
+                                    },
+                                    { name: "Source", width: 100 },
+                                    {
+                                        name: "IsActive", width: 100,
+                                        formatter: cell => gridjs.html(
+                                            `<span class="badge ${cell ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'}">
+                                                ${cell ? 'Active' : 'Inactive'}
+                                            </span>`
+                                        )
+                                    },
+                                    {
+                                        name: "CreatedDate", width: 150,
+                                        formatter: cell => new Date(cell).toLocaleString()
+                                    },
+                                    {
+                                        name: "Action", width: 200,
+                                        formatter: (_, row) => {
+                                            const id = row.cells[1].data;
+                                            const isActive = row.cells[8].data;
+
+                                            return gridjs.html(`
+                                            <a class="btn btn-sm btn-primary" href="/Admin/EditExpertRecipe?id=${id}">
+                                                    <i class="ri-edit-2-line"></i> Edit
+                                                </a>
+                                            <button class="btn btn-sm ${isActive ? "btn-danger" : "btn-success"} me-1"
+                                                    onclick="toggleExpertVisibility('${id}', ${isActive})">
+                                                    <i class="${isActive ? "ri-eye-off-line" : "ri-eye-line"} me-1"></i>
+                                                    ${isActive ? "Hide" : "Show"}
+                                                </button
+                                            `);
+                                        }
+                                    }
+                                ],
+                                data: buildGridData(data),
+                                pagination: { limit: 10, enabled: true },
+                                sort: true,
+                                search: true
+                            }).render(document.getElementById(containerId));
+                        }
+
+                        function buildGridData(data) {
+                            return data.map((r, i) => [
+                                i + 1,
+                                r.id || r.ID,
+                                r.title,
+                                r.ingredients,
+                                r.directions,
+                                r.ner,
+                                r.link,
+                                r.source,
+                                r.isActive,
+                                r.createdDate
+                            ]);
+                        }
+
+                        function formatArrayDisplay(raw) {
+                            try {
+                                const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
+                                return Array.isArray(parsed) ? parsed.join(", ") : raw;
+                            } catch {
+                                return raw;
+                            }
+                        }
+
+                        function toggleExpertVisibility(id, isCurrentlyActive) {
+                            const nextAction = isCurrentlyActive ? "Hide" : "Show";
+                            const apiUrl = `/Admin/${nextAction}ExpertRecipe/${id}`;
+
+                            Swal.fire({
+                                title: `${nextAction} this recipe?`,
+                                icon: "question",
+                                showCancelButton: true,
+                                confirmButtonText: "Yes"
+                            }).then(result => {
+                                if (!result.isConfirmed) return;
+
+                                fetch(apiUrl, {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "RequestVerificationToken": document.querySelector('input[name="__RequestVerificationToken"]')?.value || ""
+                                    }
+                                })
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            Swal.fire("Success", "Recipe updated!", "success");
+                                            loadExpertRecipes(); // ✅ Refresh bảng sau khi cập nhật
+                                        } else {
+                                            Swal.fire("Error", data.message || "Update failed", "error");
+                                        }
+                                    })
+                                    .catch(err => {
+                                        console.error(err);
+                                        Swal.fire("Error", err.message, "error");
+                                    });
+                            });
+                        }
+
+                        function showErrorMessage(msg) {
+                            Swal.fire("Error", msg, "error");
+                        }
+                    </script>
+
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+
+    <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+        <i class="ri-arrow-up-line"></i>
+    </button>
+    <!--end back-to-top-->
+
+    <!--preloader-->
+    <div id="preloader">
+        <div id="status">
+            <div class="spinner-border text-primary avatar-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- JAVASCRIPT -->
+    <script src="~/assetsAdmin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assetsAdmin/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/assetsAdmin/libs/node-waves/waves.min.js"></script>
+    <script src="~/assetsAdmin/libs/feather-icons/feather.min.js"></script>
+    <script src="~/assetsAdmin/js/pages/plugins/lord-icon-2.1.0.js"></script>
+    <script src="~/assetsAdmin/js/plugins.js"></script>
+
+    <!-- prismjs plugin -->
+    <script src="~/assetsAdmin/libs/prismjs/prism.js"></script>
+
+    <!-- gridjs js -->
+    <script src="~/assetsAdmin/libs/gridjs/gridjs.umd.js"></script>
+    <!-- gridjs init -->
+    <script src="~/assetsAdmin/js/pages/gridjs.init.js"></script>
+
+    <!-- App js -->
+    <script src="~/assetsAdmin/js/app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Models
+{
+    public class Recipe
+    {
+        [Key]
+        public Guid ID { get; set; } = Guid.NewGuid();
+        [StringLength(500)]
+        public string Title { get; set; }
+        public string CookingStep { get; set; }
+        [StringLength(500)]
+        public string ShortDescriptions { get; set; }
+        [StringLength(70)]
+        public string PreparationTime { get; set; }
+        [StringLength(70)]
+        public string CookTime { get; set; }
+        [StringLength(70)]
+        public string TotalTime { get; set; }
+        [StringLength(70)]
+        public string DifficultyLevel { get; set; }
+        public string Ingredient { get; set; }
+        [StringLength(70)]
+        public string Servings { get; set; }
+        public int RecipesMadeItCount { get; set; } = 0;
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public DateTime? ModifiedDate { get; set; }
+        public bool IsActive { get; set; } = false;
+        public string ThumbnailImage { get; set; }
+        public string? FinishedDishImage { get; set; }
+        [StringLength(500)]
+        public string? RejectNote { get; set; }
+        public int view { get; set; } = 0;
+        [StringLength(10)]
+        public string status { get; set; } = "";
+        [ForeignKey("Categories")]
+        public Guid CateID { get; set; }
+        public virtual Categories Categories { get; set; }
+
+        [ForeignKey("AppUser")]
+        [StringLength(450)]
+        public string UserID { get; set; }
+        public virtual AppUser AppUser { get; set; }
+
+        [ForeignKey("TypeOfDish")]
+        public Guid TypeOfDishID { get; set; }
+        public virtual TypeOfDish TypeOfDish { get; set; }
+
+        public ICollection<RecipeIngredientTag> RecipeIngredientTags { get; set; } = new List<RecipeIngredientTag>();
+
+        public ICollection<FavoriteRecipe> FavoriteRecipes { get; set; }
+        public ICollection<RecipeReview> RecipeReviews { get; set; }
+    }
+}

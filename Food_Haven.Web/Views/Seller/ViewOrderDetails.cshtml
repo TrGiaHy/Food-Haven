@@ -1,0 +1,811 @@
+﻿@model Repository.ViewModels.manageOrderDetail
+
+@{
+    Layout =null;
+}
+
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
+    data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default">
+
+
+<!-- Mirrored from themesbrand.com/velzon/html/master/apps-ecommerce-order-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Feb 2025 12:20:46 GMT -->
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Seller - View Order Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/assetsAdmin/images/favicon.svg">
+
+    <!-- Sweet Alert css-->
+    <link href="~/assetsAdmin/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Layout config Js -->
+    <script src="~/assetsAdmin/js/layout.js"></script>
+    <!-- Bootstrap Css -->
+    <link href="~/assetsAdmin/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="~/assetsAdmin/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="~/assetsAdmin/css/app.min.css" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="~/assetsAdmin/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/~/assetsAdmin/libs/gridjs/gridjs.umd.js">
+    <link rel="stylesheet" href="/~/assetsAdmin/libs/gridjs/theme/mermaid.min.css">
+    <!-- Grid.js CSS -->
+    <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+    <!-- Bootstrap CSS -->
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Lord Icon -->
+    <script src="https://cdn.lordicon.com/libs/mssddfmo/lord-icon-2.1.0.js"></script>
+
+</head>
+
+<body>
+
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+        @await Html.PartialAsync("_headeradmin")
+
+        <!-- removeNotificationModal -->
+        <div id="removeNotificationModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            id="NotificationModalbtn-close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mt-2 text-center">
+                            <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                                colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                            <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                                <h4>Are you sure ?</h4>
+                                <p class="text-muted mx-4 mb-0">Are you sure you want to remove this Notification ?</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                            <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn w-sm btn-danger" id="delete-notification">Yes, Delete
+                                It!</button>
+                        </div>
+                    </div>
+
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <!-- ========== App Menu ========== -->
+        <div class="app-menu navbar-menu">
+            <!-- LOGO -->
+            <div class="navbar-brand-box">
+                <!-- Dark Logo-->
+                <a href="/" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="~/assetsAdmin/images/logo-sm.svg" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="~/assetsAdmin/images/logo-dark.svg" alt="" height="35">
+                    </span>
+                </a>
+                <!-- Light Logo-->
+                <a href="/" class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="~/assetsAdmin/images/logo-sm.svg" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="~/assetsAdmin/images/logo-light.svg" alt="" height="35">
+                    </span>
+                </a>
+                <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+                    id="vertical-hover">
+                    <i class="ri-record-circle-line"></i>
+                </button>
+            </div>
+
+            <div class="dropdown sidebar-user m-1 rounded">
+                <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="d-flex align-items-center gap-2">
+                        <img class="rounded header-profile-user" src="assets/images/users/avatar-1.jpg"
+                            alt="Header Avatar">
+                        <span class="text-start">
+                            <span class="d-block fw-medium sidebar-user-name-text">Anna Adame</span>
+                            <span class="d-block fs-14 sidebar-user-name-sub-text"><i
+                                    class="ri ri-circle-fill fs-10 text-success align-baseline"></i> <span
+                                    class="align-middle">Online</span></span>
+                        </span>
+                    </span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end">
+                    <!-- item-->
+                    <h6 class="dropdown-header">Welcome Anna!</h6>
+                    <a class="dropdown-item" href="pages-profile.html"><i
+                            class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Profile</span></a>
+                    <a class="dropdown-item" href="apps-chat.html"><i
+                            class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Messages</span></a>
+                    <a class="dropdown-item" href="apps-tasks-kanban.html"><i
+                            class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Taskboard</span></a>
+                    <a class="dropdown-item" href="pages-faqs.html"><i
+                            class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Help</span></a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="pages-profile.html"><i
+                            class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Balance : <b>$5971.67</b></span></a>
+                    <a class="dropdown-item" href="pages-profile-settings.html"><span
+                            class="badge bg-success-subtle text-success mt-1 float-end">New</span><i
+                            class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Settings</span></a>
+                    <a class="dropdown-item" href="auth-lockscreen-basic.html"><i
+                            class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Lock
+                            screen</span></a>
+                    <a class="dropdown-item" href="auth-logout-basic.html"><i
+                            class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle"
+                            data-key="t-logout">Logout</span></a>
+                </div>
+            </div>
+            <div id="scrollbar">
+                <div class="container-fluid">
+                    <div id="two-column-menu">
+                    </div>
+                    <ul class="navbar-nav" id="navbar-nav">
+                        <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="index">
+                                <i class=" ri-pie-chart-line"></i> <span>Revenue Statistics</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ViewStore">
+                                <i class="ri-store-2-line"></i> <span>Store</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ViewProductList">
+                                <i class="ri-restaurant-2-fill"></i> <span>Products</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link active" asp-controller="seller" asp-action="ManageOrder">
+                                <i class="ri-file-copy-2-line"></i> <span>Sales History</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ManagerComplant">
+                                <i class="ri-error-warning-line"></i> <span>Order Complaint</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="feedbacklist">
+                                <i class="ri-question-answer-line"></i> <span>Feedback</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ManagerVoucher">
+                                <i class="ri-price-tag-3-line"></i> <span>Vouchers</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="Chat">
+                                <i class=" ri-chat-3-line"></i> <span>Chat</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <!-- Sidebar -->
+        </div>
+        <div class="sidebar-background"></div>
+        </div>
+        <!-- Left Sidebar End -->
+        <!-- Vertical Overlay-->
+        <div class="vertical-overlay"></div>
+
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div
+                                class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                                <h4 class="mb-sm-0">Order Details</h4>
+
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="/seller/ManageOrder">Order History List</a></li>
+                                        <li class="breadcrumb-item active">Order Details</li>
+                                    </ol>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+
+                    <div class="row">
+                        <div class="col-xl-9">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="d-flex align-items-center">
+                                        <h5 class="card-title flex-grow-1 mb-0">Order #@Model.OrderTracking</h5>
+                                        @* <div class="flex-shrink-0">
+                                            <a href="apps-invoices-details.html" class="btn btn-success btn-sm"><i
+                                                    class="ri-download-2-fill align-middle me-1"></i> Invoice</a>
+                                        </div> *@
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive table-card">
+                                        <table class="table table-nowrap align-middle table-borderless mb-0">
+                                            <thead class="">
+                                                <tr>
+                                                    <th scope="col">Product Details</th>
+                                                    <th scope="col">Item Price</th>
+                                                    <th scope="col">Quantity</th>                                                   
+                                                    <th scope="col">Status</th>                                                   
+                                                    <th scope="col" class="text-end">Total Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @if (Model.ItemDetail.Any())
+                                                {
+                                                    @foreach(var item in Model.ItemDetail){
+                                                     <tr>
+                                                    <td>
+                                                        <div class="d-flex">
+                                                            <div class="flex-shrink-0 avatar-md bg-light rounded p-1">
+                                                                <img src="@item.ImageProduct" alt="Image Product"
+                                                                    class="img-fluid d-block">
+                                                            </div>
+                                                            <div class="flex-grow-1 ms-3">
+                                                                <h5 class="fs-15"><a
+                                                                        href="/Home/ProductDetail/@item.ProductID"
+                                                                        class="link-primary">@item.Produtype</a></h5>
+                                                                <p class="text-muted mb-0">Product: <span
+                                                                        class="fw-medium">@item.Product</span></p>
+                                                                <p class="text-muted mb-0">Shop: <span
+                                                                        class="fw-medium">@item.NameShop</span></p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>@item.ItemPrice</td>
+                                                    <td>@item.Quantity</td>                                                 
+                                                    <td>@item.Status</td>                                                 
+                                                    <td class="fw-medium text-end">
+                                                        @item.Totals
+                                                    </td>
+                                                </tr>
+                                                    }
+
+                                                      <tr class="border-top border-top-dashed">
+                                                    <td colspan="3" class="align-top">
+                                                        <div class="p-2">
+                                                            <strong>Order notes:</strong><br />
+                                                            <span style="white-space: pre-line">
+                                                              @Model.Note
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td colspan="2" class="fw-medium p-0">
+                                                        <table class="table table-borderless mb-0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>Sub Total :</td>
+                                                                    <td class="text-end">@Model.Subtotal</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Discount <span
+                                                                            class="text-muted">@Model.NameVocher</span> :</td>
+                                                                    <td class="text-end">-@Model.Discount</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Shipping Charge :</td>
+                                                                    <td class="text-end">0</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Estimated Tax :</td>
+                                                                    <td class="text-end">0</td>
+                                                                </tr>
+                                                                <tr class="border-top border-top-dashed">
+                                                                    <th scope="row">Total (₫) :</th>
+                                                                    <th class="text-end">@Model.TotalOrder</th>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                }else{
+                                                      <tr class="border-top border-top-dashed">
+                                                    <td colspan="3" class="align-top">
+                                                        <div class="p-2">
+                                                            <strong>Order notes:</strong><br />
+                                                            <span style="white-space: pre-line">
+                                                             
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td colspan="2" class="fw-medium p-0">
+                                                        <table class="table table-borderless mb-0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>Sub Total :</td>
+                                                                    <td class="text-end">0</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Discount <span
+                                                                            class="text-muted"></span> :</td>
+                                                                    <td class="text-end">-0</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Shipping Charge :</td>
+                                                                    <td class="text-end">0</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Estimated Tax :</td>
+                                                                    <td class="text-end">0</td>
+                                                                </tr>
+                                                                <tr class="border-top border-top-dashed">
+                                                                    <th scope="row">Total (₫) :</th>
+                                                                    <th class="text-end">0</th>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                }
+                                              
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end card-->
+                            <div class="card">
+                                <div class="card-header">
+                                    @{
+                                        var latestStatus = Model.StatusHistories.LastOrDefault()?.Status ?? "";
+                                    }
+
+                                    <div class="d-sm-flex align-items-center">
+                                        <h5 class="card-title flex-grow-1 mb-0">Order Status</h5>
+                                        <div class="flex-shrink-0 mt-2 mt-sm-0" id="order-action-buttons">
+
+                                            @if (latestStatus == "PENDING")
+                                            {
+                                                <a href="javascript:void(0);" class="btn btn-soft-danger btn-sm mt-2 mt-sm-0"
+                                                   onclick="handleStatusChange('@Url.Action("CancelOrder", "Seller", new { id = Model.OrderID })', 'CANCELLED ')">
+                                                    <i class="mdi mdi-archive-remove-outline align-middle me-1"></i> Cancel Order
+                                                </a>
+
+                                                <a href="javascript:void(0);" class="btn btn-soft-info btn-sm mt-2 mt-sm-0"
+                                                   onclick="handleStatusChange('@Url.Action("UpdateOrderStatus", "Seller", new { id = Model.OrderID, status = "PREPARING IN KITCHEN" })', 'PREPARING IN KITCHEN')">
+                                                    <i class="ri-restaurant-line align-middle me-1"></i> Set Preparing in Kitchen
+                                                </a>
+                                            }
+                                            else if (latestStatus == "PREPARING IN KITCHEN")
+                                            {
+                                                <a href="javascript:void(0);" class="btn btn-soft-danger btn-sm mt-2 mt-sm-0"
+                                                   onclick="handleStatusChange('@Url.Action("CancelOrder", "Seller", new { id = Model.OrderID })', 'CANCELLED')">
+                                                    <i class="mdi mdi-archive-remove-outline align-middle me-1"></i> Cancel Order
+                                                </a>
+
+                                                <a href="javascript:void(0);" class="btn btn-soft-primary btn-sm mt-2 mt-sm-0"
+                                                   onclick="handleStatusChange('@Url.Action("UpdateOrderStatus", "Seller", new { id = Model.OrderID, status = "DELIVERING" })', 'DELIVERING')">
+                                                    <i class="ri-truck-line align-middle me-1"></i> Set Delivering
+                                                </a>
+                                            }
+                                            else if (latestStatus == "DELIVERING")
+                                            {
+                                                <a href="javascript:void(0);" class="btn btn-dark btn-sm mt-2 mt-sm-0 text-white"
+                                                   onclick="handleStatusChange('@Url.Action("UpdateOrderStatus", "Seller", new { id = Model.OrderID, status = "DELIVERY FAILED" })', 'DELIVERY FAILED')">
+                                                    <i class="ri-error-warning-line align-middle me-1"></i> Mark as Failed
+                                                </a>
+
+                                                <a href="javascript:void(0);" class="btn btn-success btn-sm mt-2 mt-sm-0"
+                                                   onclick="handleStatusChange('@Url.Action("UpdateOrderStatus", "Seller", new { id = Model.OrderID, status = "CONFIRMED" })', 'CONFIRMED')">
+                                                    <i class="ri-checkbox-circle-line align-middle me-1"></i> Confirm Delivery
+                                                </a>
+                                            }
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                                @{
+                                    var allSteps = new List<string>
+                                {
+                                "PENDING",
+                                "PREPARING IN KITCHEN",
+                                "DELIVERING",
+                                "CONFIRMED",            // Chỉ hiện khi chưa failed
+                                "DELIVERY FAILED",      // Chỉ hiện khi thật sự có
+                                "CANCELLED BY USER",
+                                "CANCELLED BY SHOP"
+                                };
+
+                                    bool isCancelled = Model.StatusHistories.Any(x => x.Status == "CANCELLED BY USER" || x.Status == "CANCELLED BY SHOP");
+                                    bool hasFailed = Model.StatusHistories.Any(x => x.Status == "DELIVERY FAILED");
+                                }
+
+                                @foreach (var step in allSteps)
+                                {
+                                    var status = Model.StatusHistories.FirstOrDefault(x => x.Status == step);
+                                    bool isReached = status != null;
+
+                                    // Nếu đã hủy, chỉ hiển thị các bước trước đó và bước hủy (nếu có)
+                                    if (isCancelled)
+                                    {
+                                        // Nếu không phải là CANCELLED và không có trong lịch sử thì bỏ qua
+                                        if (!isReached && step != "CANCELLED BY USER" && step != "CANCELLED BY SHOP")
+                                        {
+                                            continue;
+                                        }
+
+                                        // Không hiển thị các bước sau hủy (vì đơn đã dừng)
+                                        var cancelTime = Model.StatusHistories.FirstOrDefault(x => x.Status == "CANCELLED BY USER" || x.Status == "CANCELLED BY SHOP")?.Time;
+                                        if (cancelTime != null && status != null && status.Time > cancelTime)
+                                        {
+                                            continue;
+                                        }
+                                    }
+
+                                    // Nếu DELIVERY FAILED đã xảy ra thì không hiển thị CONFIRMED
+                                    if (step == "CONFIRMED" && hasFailed)
+                                    {
+                                        continue;
+                                    }
+
+                                    // DELIVERY FAILED chỉ hiển thị khi thật sự có
+                                    if (step == "DELIVERY FAILED" && !isReached)
+                                    {
+                                        continue;
+                                    }
+
+                                    // CANCELLED chỉ hiện nếu đã xảy ra
+                                    if ((step == "CANCELLED BY USER" || step == "CANCELLED BY SHOP") && !isReached)
+                                    {
+                                        continue;
+                                    }
+
+                                    var icon = step switch
+                                    {
+                                        "PENDING" => "ri-time-line",
+                                        "PREPARING IN KITCHEN" => "ri-restaurant-line",
+                                        "DELIVERING" => "ri-truck-line",
+                                        "CONFIRMED" => "ri-checkbox-circle-line",
+                                        "CANCELLED BY USER" => "ri-close-circle-line",
+                                        "CANCELLED BY SHOP" => "ri-store-3-line",
+                                        "DELIVERY FAILED" => "ri-error-warning-line",
+                                        _ => "ri-information-line"
+                                    };
+
+                                    var badgeColor = step switch
+                                    {
+                                        "PENDING" => "warning",
+                                        "PREPARING IN KITCHEN" => "info",
+                                        "DELIVERING" => "primary",
+                                        "CONFIRMED" => "success",
+                                        "CANCELLED BY USER" or "CANCELLED BY SHOP" => "danger",
+                                        "DELIVERY FAILED" => "dark text-white",
+                                        _ => "secondary"
+                                    };
+
+                                    var readableText = step switch
+                                    {
+                                        "PENDING" => "An order has been placed and is waiting for approval.",
+                                        "PREPARING IN KITCHEN" => "Seller is preparing your items.",
+                                        "DELIVERING" => "Your item is on the way.",
+                                        "CONFIRMED" => "Order successfully delivered and confirmed.",
+                                        "DELIVERY FAILED" => "Delivery was not successful. Please contact support.",
+                                        "CANCELLED BY USER" => "The order was cancelled by the customer.",
+                                        "CANCELLED BY SHOP" => "The order was cancelled by the shop.",
+                                        _ => "In progress..."
+                                    };
+
+                                    string collapseId = $"collapse_{step.Replace(" ", "")}";
+                                    string timeText = isReached ? status.Time.ToString("dd MMM yyyy - hh:mmtt") : "";
+                                    string collapseClass = isReached ? "accordion-collapse collapse show" : "accordion-collapse collapse";
+                                    string disabledClass = isReached ? "" : "opacity-50 pointer-events-none";
+
+                                    <div class="accordion-item border-0 @disabledClass">
+                                        <div class="accordion-header">
+                                            <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse"
+                                               href="#@collapseId" aria-expanded="true">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex-shrink-0 avatar-xs">
+                                                        <div class="avatar-title bg-@badgeColor rounded-circle material-shadow">
+                                                            <i class="@icon"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <h6 class="fs-15 mb-0 fw-semibold">
+                                                            @step
+                                                            @if (isReached)
+                                                            {
+                                                                <span class="fw-normal"> - @timeText</span>
+                                                            }
+                                                        </h6>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div id="@collapseId" class="@collapseClass">
+                                            <div class="accordion-body ms-2 ps-5 pt-0">
+                                                <h6 class="mb-1">@readableText</h6>
+                                                @if (isReached)
+                                                {
+                                                    <p class="text-muted">@timeText</p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+
+                            </div>
+                            <!--end card-->
+                        </div>
+                        <!--end col-->
+                        <div class="col-xl-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="d-flex">
+                                        <h5 class="card-title flex-grow-1 mb-0"><i
+                                                class="mdi mdi-truck-fast-outline align-middle me-1 text-muted"></i>
+                                            Logistics Details</h5>
+                                        @* <div class="flex-shrink-0">
+                                            <a href="javascript:void(0);"
+                                                class="badge bg-primary-subtle text-primary fs-11">Track Order</a>
+                                        </div> *@
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="text-center">
+                                        <lord-icon src="https://cdn.lordicon.com/uetqnvvg.json" trigger="loop"
+                                            colors="primary:#405189,secondary:#0ab39c"
+                                            style="width:80px;height:80px"></lord-icon>
+                                        <h5 class="fs-16 mt-2">RQK Logistics</h5>
+                                        <p class="text-muted mb-0">ID: @Model.IDLogistics</p>
+                                        <p class="text-muted mb-0">Payment Mode : @Model.PaymentMethod</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end card-->
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="d-flex">
+                                        <h5 class="card-title flex-grow-1 mb-0">Customer Details</h5>
+                                        <div class="flex-shrink-0">
+                                            <a href="/Home/UserInformation/@Model.userId" target="_blank">View Profile</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled mb-0 vstack gap-3">
+                                        <li>
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-shrink-0">
+                                                    <img src="@Model.ImageCus"  width="48px" height="48px"
+                                                        class="avatar-sm rounded material-shadow">
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <h6 class="fs-14 mb-1"><span style="white-space: pre-line">@Model.UserNameCus</span></h6>
+                                                    <p class="text-muted mb-0">Customer</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li><i
+                                                class="ri-mail-line me-2 align-middle text-muted fs-16"></i>@Model.EmailCustomer
+                                        </li>
+                                        <li><i class="ri-phone-line me-2 align-middle text-muted fs-16"></i>
+                                           @Model.PhoneCustomer </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--end card-->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0"><i
+                                            class="ri-map-pin-line align-middle me-1 text-muted"></i> Billing Address
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled vstack gap-2 fs-13 mb-0">
+                                        <li class="fw-medium fs-14">@Model.NameCustomer</li>
+                                        <li>@Model.PhoneCustomer</li>
+                                        <li style="white-space: pre-line">@Model.ShippingAddress</li>
+                                      @*   <li>New York - 25645</li>
+                                        <li>United States</li> *@
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--end card-->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0"><i
+                                            class="ri-map-pin-line align-middle me-1 text-muted"></i> Shipping Address
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled vstack gap-2 fs-13 mb-0">
+                                        <li class="fw-medium fs-14">@Model.NameCustomer</li>
+                                        <li>@Model.PhoneCustomer</li>
+                                        <li style="white-space: pre-line">@Model.ShippingAddress</li>
+                                        @*   <li>New York - 25645</li>
+                                        <li>United States</li> *@
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--end card-->
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0"><i
+                                            class="ri-secure-payment-line align-bottom me-1 text-muted"></i> Payment
+                                        Details</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="flex-shrink-0">
+                                            <p class="text-muted mb-0">Transactions:</p>
+                                        </div>
+                                        <div class="flex-grow-1 ms-2">
+                                            <h6 class="mb-0">#@Model.OrderTracking</h6>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="flex-shrink-0">
+                                            <p class="text-muted mb-0">Payment Method:</p>
+                                        </div>
+                                        <div class="flex-grow-1 ms-2">
+                                            <h6 class="mb-0">@Model.PaymentMethod</h6>
+                                        </div>
+                                    </div>
+                                    @* <div class="d-flex align-items-center mb-2">
+                                        <div class="flex-shrink-0">
+                                            <p class="text-muted mb-0">Card Holder Name:</p>
+                                        </div>
+                                        <div class="flex-grow-1 ms-2">
+                                            <h6 class="mb-0">Joseph Parker</h6>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="flex-shrink-0">
+                                            <p class="text-muted mb-0">Card Number:</p>
+                                        </div>
+                                        <div class="flex-grow-1 ms-2">
+                                            <h6 class="mb-0">xxxx xxxx xxxx 2456</h6>
+                                        </div>
+                                    </div> *@
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0">
+                                            <p class="text-muted mb-0">Total Amount:</p>
+                                        </div>
+                                        <div class="flex-grow-1 ms-2">
+                                            <h6 class="mb-0">$@Model.TotalOrder
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end card-->
+                        </div>
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+
+                </div><!-- container-fluid -->
+            </div><!-- End Page-content -->
+        @await Html.PartialAsync("_Footer_Admin_Seller")
+        </div>
+        <!-- end main content-->
+
+    </div>
+    <!-- END layout-wrapper -->
+
+
+
+    <!--start back-to-top-->
+    <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+        <i class="ri-arrow-up-line"></i>
+    </button>
+    <!--end back-to-top-->
+
+    <!--preloader-->
+    <div id="preloader">
+        <div id="status">
+            <div class="spinner-border text-primary avatar-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+   
+    </div>
+   
+    <!-- Luôn load jQuery trước -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        function handleStatusChange(url, status) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: `Do you want to set status to "${status}"?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        method: 'POST',
+                        success: function (response) {
+                            Swal.fire(
+                                response.success ? 'Success' : 'Failed',
+                                response.message || 'Status updated.',
+                                response.success ? 'success' : 'error'
+                            ).then(() => {
+                                if (response.success) {
+                                    location.reload();
+                                }
+                            });
+                        },
+                        error: function () {
+                            Swal.fire('Error', 'Could not connect to the server.', 'error');
+                        }
+                    });
+                }
+            });
+        }
+
+    </script>
+
+    
+
+    <!-- JAVASCRIPT -->
+    <script src="~/assetsAdmin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assetsAdmin/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/assetsAdmin/libs/node-waves/waves.min.js"></script>
+    <script src="~/assetsAdmin/libs/feather-icons/feather.min.js"></script>
+    <script src="~/assetsAdmin/js/pages/plugins/lord-icon-2.1.0.js"></script>
+    <script src="~/assetsAdmin/js/plugins.js"></script>
+
+    <!-- list.js min js -->
+    <script src="~/assetsAdmin/libs/list.js/list.min.js"></script>
+
+    <!--list pagination js-->
+    <script src="~/assetsAdmin/libs/list.pagination.js/list.pagination.min.js"></script>
+
+    <!-- ecommerce-order init js -->
+    <script src="~/assetsAdmin/js/pages/ecommerce-order.init.js"></script>
+
+    <!-- Sweet Alerts js -->
+    <script src="~/assetsAdmin/libs/sweetalert2/sweetalert2.min.js"></script>
+
+    <!-- App js -->
+    <script src="~/assetsAdmin/js/app.js"></script>
+
+</body>
+
+</html>

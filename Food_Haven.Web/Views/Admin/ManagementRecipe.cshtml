@@ -1,0 +1,517 @@
+@model List<Repository.ViewModels.RecipeViewModels>
+@using Newtonsoft.Json
+@using System.Text.Json
+
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
+    data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default">
+
+
+<!-- Mirrored from EasyFood.com/velzon/html/master/forms-layouts.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Feb 2025 12:22:12 GMT -->
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Admin - Manage Recipe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="EasyFood" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/assetsAdmin/images/favicon.svg">
+
+    <!-- gridjs css -->
+    <link rel="stylesheet" href="~/assetsAdmin/libs/gridjs/theme/mermaid.min.css">
+
+    <!-- Layout config Js -->
+    <script src="~/assetsAdmin/js/layout.js"></script>
+    <!-- Bootstrap Css -->
+    <link href="~/assetsAdmin/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="~/assetsAdmin/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="~/assetsAdmin/css/app.min.css" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="~/assetsAdmin/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        /* Đồng bộ màu nền toàn bộ phần content */
+        @* .main-content,
+        .page-content,
+        .card-body,
+        .tab-content,
+        .gridjs-wrapper {
+            background-color: #ffffff !important;
+            /* hoặc đổi sang #f3f3f9 nếu bạn thích nền xám nhẹ */
+        } *@
+
+        /* Nếu muốn lược bỏ bóng của card (tùy template) */
+        .card-body {
+            box-shadow: none !important;
+        }
+
+        /* Chỉnh màu bảng nếu Grid.js vẫn lệch */
+        @* .gridjs-table {
+            background-color: #ffffff !important;
+        } *@
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+        @await Html.PartialAsync("_headeradmin")
+
+
+        <!-- ========== App Menu ========== -->
+        <div class="app-menu navbar-menu">
+            <!-- LOGO -->
+            <div class="navbar-brand-box">
+                <!-- Dark Logo-->
+                <a class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="~/assetsAdmin/images/logo-sm.svg" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="~/assetsAdmin/images/logo-dark.svg" alt="" height="35">
+                    </span>
+                </a>
+                <!-- Light Logo-->
+                <a class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="~/assetsAdmin/images/logo-sm.svg" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="~/assetsAdmin/images/logo-light.svg" alt="" height="35">
+                    </span>
+                </a>
+                <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+                    id="vertical-hover">
+                    <i class="ri-record-circle-line"></i>
+                </button>
+            </div>
+
+            <div id="scrollbar">
+                <div class="container-fluid">
+                    <div id="two-column-menu">
+                    </div>
+                    <ul class="navbar-nav" id="navbar-nav">
+                        <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="Index">
+                                <i class=" ri-pie-chart-line"></i> <span>Revenue Statistics</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="WithdrawList">
+                            <i class="ri-exchange-dollar-line"></i> <span>Withdrawal Requests From Users</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="Managercomplant">
+                            <i class="ri-error-warning-line"></i> <span>Order Complaint Reports From Seller</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagerUser">
+                                <i class="ri-account-circle-line"></i> <span>User Accounts</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagementSeller">
+                                <i class="ri-user-add-line"></i> <span>Seller Registration Requests</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="ViewStoreRegistration">
+                            <i class="ri-file-add-line"></i> <span>Store Registration Requests</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ViewAdminStore">
+                                <i class="ri-store-2-line"></i> <span>Store</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagementReportStore">
+                            <i class="ri-alert-line"></i> <span>Store Reports From User</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ViewCategories">
+                                <i class="ri-folder-2-line"></i> <span>Categories</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link active" asp-controller="Admin" asp-action="ManagementRecipe">
+                                <i class="ri-restaurant-2-line"></i> <span>Cooking Recipes</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagerExpertRecipe">
+                                <i class="ri-restaurant-2-line"></i> <span>Expert Recipe</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="GetAllIngredientTag">
+                            <i class=" ri-price-tag-3-line"></i> <span>Ingredient Tag</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="GetAllTypeOfDish">
+                            <i class="ri-restaurant-line"></i> <span>Type of Dish</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagerVoucher">
+                            <i class=" ri-coupon-2-line"></i> <span>Voucher</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="Chat">
+                                <i class="ri-chat-3-line"></i> <span>Chat</span>
+                            </a>
+                        </li>
+                        <!--<li class="nav-item">
+                            <a class="nav-link menu-link" href="">
+                                <i class="ri-notification-2-line"></i> <span>Notifications</span>
+                            </a>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+            <!-- Sidebar -->
+        </div>
+        <div class="sidebar-background"></div>
+    </div>
+    <!-- Left Sidebar End -->
+    <!-- Vertical Overlay-->
+    <div class="vertical-overlay"></div>
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+
+        <div class="page-content">
+            <div class="container-fluid">
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div
+                            class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                            <h4 class="mb-sm-0">Management Recipe</h4>
+
+                            @* <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
+                                    <li class="breadcrumb-item active">Management Recipe</li>
+                                </ol>
+                            </div> *@
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h4 class="card-title mb-0">Recipes List</h4>
+                            </div>
+                            <div class="card-body">
+                                <!-- Tabs -->
+                                <ul class="nav nav-tabs mb-3" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-bs-toggle="tab" href="#tab-visible"
+                                            role="tab">Recipe
+                                            Management</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#tab-manage" role="tab">Pending
+                                            Recipe
+                                        </a>
+                                    </li>
+
+                                </ul>
+
+                                <!-- Tab Content -->
+                                <div class="tab-content">
+                                    <div class="tab-pane fade" id="tab-manage" role="tabpanel">
+                                        <div id="table-manage"></div>
+                                    </div>
+                                    <div class="tab-pane fade show active" id="tab-visible" role="tabpanel">
+                                        <div id="table-visible"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- end row -->
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const recipeData = @Html.Raw(Json.Serialize(Model));
+
+                        // 👉 Lọc & sort trước theo ModifiedDate giảm dần (mới nhất lên trước)
+                        const table1Data = recipeData
+                            .filter(r => {
+                                const status = (r.status || r.Status || "").toLowerCase();
+                                return status === "pending" || status === "reject";
+                            })
+                            .sort((a, b) => new Date(a.modifiedDate || a.ModifiedDate) - new Date(b.modifiedDate || b.ModifiedDate)); // ✅ Sort tăng dần
+
+                        new gridjs.Grid({
+                            columns: [
+                                { name: "No", width: 100 },
+                                { name: "ID", hidden: true },
+                                { name: "Username" },
+                                { name: "Title", width: 450 },
+                                { name: "TotalTime" },
+                                {
+                                    name: "Thumbnail",
+                                    formatter: cell => gridjs.html(`<img src="${cell}" width="50" height="50">`)
+                                },
+                                {
+                                    name: "Status", width: 150,
+                                    formatter: cell => {
+                                        const color = {
+                                            pending: "bg-warning-subtle text-warning",
+                                            approved: "bg-success-subtle text-success",
+                                            rejected: "bg-danger-subtle text-danger"
+                                        }[(cell || "").toLowerCase()] || "bg-secondary-subtle text-secondary";
+                                        return gridjs.html(`<span class="badge ${color}">${cell}</span>`);
+                                    }
+                                },
+                                {
+                                    name: "IsActive", width: 150,
+                                    formatter: cell => {
+                                        const isActive = cell === true || cell === "true";
+                                        return gridjs.html(
+                                            `<span class="badge ${isActive ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'}">
+                        ${isActive ? 'Active' : 'Hidden'}
+                    </span>`
+                                        );
+                                    }
+                                },
+                                { name: "ModifiedDate", hidden: true }, // ✅ Cột ẩn, nhưng vẫn sort dựa vào
+                                {
+                                    name: "Action",
+                                    formatter: (_, row) => {
+                                        const id = row.cells[1].data;
+                                        const btn = `<a class="btn btn-sm btn-primary" href="http://localhost:5057/Admin/RecipeDetail?id=${id}"><i class="ri-pencil-fill align-bottom me-1"></i> Details</a>`;
+                                        return gridjs.html(btn);
+                                    }
+                                }
+                            ],
+                            data: table1Data.map((r, index) => [
+                                index + 1,
+                                r.ID || r.id,
+                                r.username || r.Username,
+                                r.title || r.Title,
+                                r.totalTime || r.TotalTime,
+                                r.thumbnailImage || r.ThumbnailImage,
+                                r.status || r.Status,
+                                r.isActive || r.IsActive,
+                                r.modifiedDate || r.ModifiedDate, // ✅ Dữ liệu vẫn có
+                            ]),
+                            pagination: { enabled: true, limit: 10 },
+                            search: true,
+                            sort: true
+                        }).render(document.getElementById("table-manage"));
+
+
+
+
+
+                        // Table 2: Hide / Show
+                        new gridjs.Grid({
+                            columns: [
+                                { name: "No", width: 100 },
+                                { name: "ID", hidden: true },
+                                { name: "Username" },
+                                { name: "Title", width: 450 },
+                                { name: "Total Time" },
+                                {
+                                    name: "Thumbnail",
+                                    formatter: cell => gridjs.html(
+                                        `<img src="${cell}" width="50" height="50" style="border-radius:5px;">`
+                                    )
+                                },
+                                {
+                                    name: "Status", width: 150,
+                                    formatter: cell => {
+                                        const value = (cell || "").toLowerCase();
+                                        const map = {
+                                            pending: { text: "Pending", color: "bg-warning-subtle text-warning" },
+                                            accept: { text: "Accept", color: "bg-success-subtle text-success" },
+                                            rejected: { text: "Rejected", color: "bg-danger-subtle text-danger" }
+                                        };
+                                        const status = map[value] || { text: "Unknown", color: "bg-secondary-subtle text-secondary" };
+                                        return gridjs.html(`<span class="badge ${status.color}">${status.text}</span>`);
+                                    }
+                                },
+                                {
+                                    name: "IsActive", width: 150,
+                                    formatter: cell => {
+                                        const isActive = cell === true || cell === "true";
+                                        return gridjs.html(
+                                            `<span class="badge ${isActive ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'}">
+                        ${isActive ? 'Active' : 'Hidden'}
+                    </span>`
+                                        );
+                                    }
+                                },
+                                {
+                                    name: "Action",
+                                    formatter: (_, row) => {
+                                        const id = row.cells[1].data;
+                                        const isActive = row.cells[7].data === true || row.cells[7].data === "true";
+
+                                        return gridjs.html(
+                                            isActive
+                                                ? `<button class="btn btn-sm btn-danger" onclick="toggleVisibility('${id}', 'Hide')"><i class="ri-eye-off-line align-bottom me-1"></i> Hide</button>`
+                                                : `<button class="btn btn-sm btn-success" onclick="toggleVisibility('${id}', 'Show')"><i class="ri-eye-line align-bottom me-1"></i> Show</button>`
+                                        );
+
+                                    }
+                                }
+
+                            ],
+
+                            // ✅ Chỉ hiển thị các recipe có status === "accept"
+                            data: recipeData
+                                .filter(r => (r.status || r.Status || "").toLowerCase() === "accept")
+                                .map((r, index) => [
+                                    index + 1,
+                                    r.ID || r.id,
+                                    r.username || r.Username,
+                                    r.title || r.Title,
+                                    r.totalTime || r.TotalTime,
+                                    r.thumbnailImage || r.ThumbnailImage,
+                                    r.status || r.Status,
+                                    r.isActive || r.IsActive
+                                ]),
+
+                            pagination: { enabled: true, limit: 10 },
+                            search: true,
+                            sort: true
+                        }).render(document.getElementById("table-visible"));
+
+
+
+                    });
+
+                    function updateRecipeStatus(id, newStatus) {
+                        Swal.fire({
+                            title: "Confirmation",
+                            text: `Are you sure you want to change status to ${newStatus}?`,
+                            icon: "question",
+                            showCancelButton: true,
+                            confirmButtonText: "Confirm"
+                        }).then(result => {
+                            if (result.isConfirmed) {
+                                fetch(`/Admin/UpdateRecipeStatus/${id}/${newStatus}`, {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "RequestVerificationToken": document.querySelector('input[name="__RequestVerificationToken"]')?.value || ""
+                                    }
+                                }).then(r => r.json())
+                                    .then(data => {
+                                        if (data.success) Swal.fire("Success", "Status updated successfully.", "success").then(() => location.reload());
+                                        else Swal.fire("Error", data.message || "Update failed", "error");
+                                    }).catch(e => Swal.fire("Error", e.message, "error"));
+                            }
+                        });
+                    }
+
+                    function toggleVisibility(id, action) {
+                        Swal.fire({
+                            title: `Are you sure you want to ${action === "Hide" ? "hide" : "show"} this recipe?`,
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: "Confirm"
+                        }).then(result => {
+                            if (result.isConfirmed) {
+                                fetch(`/Admin/ToggleRecipeVisibility/${id}/${action}`, {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "RequestVerificationToken": document.querySelector('input[name="__RequestVerificationToken"]')?.value || ""
+                                    }
+                                }).then(r => r.json())
+                                    .then(data => {
+                                        if (data.success) Swal.fire("Success", "Visibility updated.", "success").then(() => location.reload());
+                                        else Swal.fire("Error", data.message || "Update failed", "error");
+                                    }).catch(e => Swal.fire("Error", e.message, "error"));
+                            }
+                        });
+                    }
+                </script>
+
+
+
+
+
+                <!-- end row -->
+
+            </div>
+            <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+        @await Html.PartialAsync("_Footer_Admin_Seller")
+    </div>
+    <!-- end main content-->
+    </div>
+    <!-- END layout-wrapper -->
+    <!--start back-to-top-->
+    <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+        <i class="ri-arrow-up-line"></i>
+    </button>
+    <!--end back-to-top-->
+    <!--preloader-->
+    <div id="preloader">
+        <div id="status">
+            <div class="spinner-border text-primary avatar-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- JAVASCRIPT -->
+    <script src="~/assetsAdmin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assetsAdmin/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/assetsAdmin/libs/node-waves/waves.min.js"></script>
+    <script src="~/assetsAdmin/libs/feather-icons/feather.min.js"></script>
+    <script src="~/assetsAdmin/js/pages/plugins/lord-icon-2.1.0.js"></script>
+    <script src="~/assetsAdmin/js/plugins.js"></script>
+
+    <!-- prismjs plugin -->
+    <script src="~/assetsAdmin/libs/prismjs/prism.js"></script>
+
+    <!-- gridjs js -->
+    <script src="~/assetsAdmin/libs/gridjs/gridjs.umd.js"></script>
+    <!-- gridjs init -->
+    <script src="~/assetsAdmin/js/pages/gridjs.init.js"></script>
+
+    <!-- App js -->
+    <script src="~/assetsAdmin/js/app.js"></script>
+
+</body>
+
+
+<!-- Mirrored from EasyFood.com/velzon/html/master/forms-layouts.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Feb 2025 12:22:12 GMT -->
+
+</html>

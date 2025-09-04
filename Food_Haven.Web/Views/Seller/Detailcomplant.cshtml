@@ -1,0 +1,647 @@
+﻿@model Repository.ViewModels.ComplantDetailViewmodels;
+
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
+    data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default">
+
+
+<!-- Mirrored from themesbrand.com/velzon/html/master/apps-ecommerce-product-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Feb 2025 12:20:21 GMT -->
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Seller - Complaint Detail</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/assetsAdmin/images/favicon.svg">
+
+    <!--Swiper slider css-->
+    <link href="~/assetsAdmin/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Layout config Js -->
+    <script src="~/assetsAdmin/js/layout.js"></script>
+    <!-- Bootstrap Css -->
+    <link href="~/assetsAdmin/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="~/assetsAdmin/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="~/assetsAdmin/css/app.min.css" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="~/assetsAdmin/css/custom.min.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+        @await Html.PartialAsync("_headeradmin")
+
+        <!-- removeNotificationModal -->
+        <div id="removeNotificationModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            id="NotificationModalbtn-close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mt-2 text-center">
+                            <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                                colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                            <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                                <h4>Are you sure ?</h4>
+                                <p class="text-muted mx-4 mb-0">Are you sure you want to remove this Notification ?</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                            <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn w-sm btn-danger" id="delete-notification">Yes, Delete
+                                It!</button>
+                        </div>
+                    </div>
+
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <!-- ========== App Menu ========== -->
+        <div class="app-menu navbar-menu">
+            <!-- LOGO -->
+            <div class="navbar-brand-box">
+                <!-- Dark Logo-->
+                <a href="/" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="~/assetsAdmin/images/logo-sm.svg" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="~/assetsAdmin/images/logo-dark.svg" alt="" height="35">
+                    </span>
+                </a>
+                <!-- Light Logo-->
+                <a href="/" class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="~/assetsAdmin/images/logo-sm.svg" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="~/assetsAdmin/images/logo-light.svg" alt="" height="35">
+                    </span>
+                </a>
+                <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+                    id="vertical-hover">
+                    <i class="ri-record-circle-line"></i>
+                </button>
+            </div>
+
+            @* <div class="dropdown sidebar-user m-1 rounded">
+                <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="d-flex align-items-center gap-2">
+                        <img class="rounded header-profile-user" src="~/assetsAdmin/images/users/avatar-1.jpg"
+                            alt="Header Avatar">
+                        <span class="text-start">
+                            <span class="d-block fw-medium sidebar-user-name-text">Anna Adame</span>
+                            <span class="d-block fs-14 sidebar-user-name-sub-text"><i
+                                    class="ri ri-circle-fill fs-10 text-success align-baseline"></i> <span
+                                    class="align-middle">Online</span></span>
+                        </span>
+                    </span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end">
+                    <!-- item-->
+                    <h6 class="dropdown-header">Welcome Anna!</h6>
+                    <a class="dropdown-item" href="pages-profile.html"><i
+                            class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Profile</span></a>
+                    <a class="dropdown-item" href="apps-chat.html"><i
+                            class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Messages</span></a>
+                    <a class="dropdown-item" href="apps-tasks-kanban.html"><i
+                            class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Taskboard</span></a>
+                    <a class="dropdown-item" href="pages-faqs.html"><i
+                            class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Help</span></a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="pages-profile.html"><i
+                            class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Balance : <b>$5971.67</b></span></a>
+                    <a class="dropdown-item" href="pages-profile-settings.html"><span
+                            class="badge bg-success-subtle text-success mt-1 float-end">New</span><i
+                            class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span
+                            class="align-middle">Settings</span></a>
+                    <a class="dropdown-item" href="auth-lockscreen-basic.html"><i
+                            class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Lock
+                            screen</span></a>
+                    <a class="dropdown-item" href="auth-logout-basic.html"><i
+                            class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle"
+                            data-key="t-logout">Logout</span></a>
+                </div>
+            </div> *@
+            <div id="scrollbar">
+                <div class="container-fluid">
+                    <div id="two-column-menu">
+                    </div>
+                    <ul class="navbar-nav" id="navbar-nav">
+                        <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="index">
+                                <i class=" ri-pie-chart-line"></i> <span>Revenue Statistics</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ViewStore">
+                                <i class="ri-store-2-line"></i> <span>Store</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ViewProductList">
+                                <i class="ri-restaurant-2-fill"></i> <span>Products</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ManageOrder">
+                                <i class="ri-file-copy-2-line"></i> <span>Sales History</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link active" asp-controller="seller" asp-action="ManagerComplant">
+                                <i class="ri-error-warning-line"></i> <span>Order Complaint</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="seller" asp-action="feedbacklist">
+                            <i class="ri-question-answer-line"></i> <span>Feedback</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ManagerVoucher">
+                                <i class="ri-price-tag-3-line"></i> <span>Vouchers</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="Chat">
+                                <i class=" ri-chat-3-line"></i> <span>Chat</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <!-- Sidebar -->
+        </div>
+        <div class="sidebar-background"></div>
+    </div>
+    <!-- Left Sidebar End -->
+    <!-- Vertical Overlay-->
+    <div class="vertical-overlay"></div>
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+
+        <div class="page-content">
+            <div class="container-fluid">
+
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div
+                            class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                            <h4 class="mb-sm-0">Complaint Details</h4>
+
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="/seller/ManagerComplant">Complaint List</a>
+                                    </li>
+                                    <li class="breadcrumb-item active">Complaint Details</li>
+                                </ol>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row gx-lg-5">
+                                    <div class="col-xl-4 col-md-8 mx-auto">
+                                        <div class="product-img-slider sticky-side-div">
+                                            <div class="swiper product-thumbnail-slider p-2 rounded bg-light">
+                                                <div class="swiper-wrapper">
+                                                    @if (Model.image.Any())
+                                                    {
+                                                        foreach (var image in Model.image)
+                                                        {
+                                                            <div class="swiper-slide">
+                                                                <img src="@image" alt="" class="img-fluid d-block" />
+                                                            </div>
+                                                        }
+                                                    }
+
+                                                </div>
+                                                <div class="swiper-button-next material-shadow"></div>
+                                                <div class="swiper-button-prev material-shadow"></div>
+                                            </div>
+                                            <!-- end swiper thumbnail slide -->
+                                            <div class="swiper product-nav-slider mt-2">
+                                                <div class="swiper-wrapper">
+                                                    @if (Model.image.Any())
+                                                    {
+                                                        foreach (var image in Model.image)
+                                                        {
+                                                            <div class="swiper-slide">
+                                                                <div class="nav-slide-item">
+                                                                    <img src="@image" alt="" class="img-fluid d-block" />
+                                                                </div>
+                                                            </div>
+
+                                                        }
+                                                    }
+
+                                                </div>
+                                            </div>
+                                            <!-- end swiper nav slide -->
+                                        </div>
+                                    </div>
+                                    <!-- end col -->
+
+                                    <div class="col-xl-8">
+                                        <div class="mt-xl-0 mt-5">
+                                            <div class="d-flex">
+                                                <div class="flex-grow-1">
+                                                    <h4>@Model.ProductName</h4>
+                                                    <div class="hstack gap-3 flex-wrap">
+                                                        <div class="text-muted">
+                                                            ProductType : <span
+                                                                class="text-body fw-medium">@Model.ProductType</span>
+                                                        </div>
+                                                        <div class="vr"></div>
+                                                        <div class="text-muted">Shop : <span
+                                                                class="text-body fw-medium">@Model.NameShop</span>
+                                                        </div>
+                                                        <div class="vr"></div>
+                                                        <div class="text-muted">Date Complant : <span
+                                                                class="text-body fw-medium">@Model.CreateDate</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <!-- <div class="d-flex flex-wrap gap-2 align-items-center mt-3">
+                                                    <div class="text-muted fs-16">
+                                                        <span class="mdi mdi-star text-warning"></span>
+                                                        <span class="mdi mdi-star text-warning"></span>
+                                                        <span class="mdi mdi-star text-warning"></span>
+                                                        <span class="mdi mdi-star text-warning"></span>
+                                                        <span class="mdi mdi-star text-warning"></span>
+                                                    </div>
+                                                    <div class="text-muted">( 5.50k Customer Review )</div>
+                                                </div> -->
+                                            <div class="mt-3 d-flex align-items-center justify-content-between">
+                                                <!-- Trạng thái khiếu nại -->
+                                                <div>
+                                                    <span class="fw-bold me-2">Status:</span>
+                                                    <span class="badge 
+            @(Model.Status == "Pending" ? "bg-warning" :
+                                                                        Model.Status == "Refund" ? "bg-success" :
+                                                                        Model.Status == "Product Warranty" ? "bg-info" :
+                                                                        Model.Status == "Report to Admin" ? "bg-danger" :
+                                                                        "bg-secondary")">
+                                                        @Model.Status
+                                                    </span>
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="mt-3 d-flex align-items-center justify-content-between">
+                                                <!-- Trạng thái khiếu nại -->
+                                                <div>
+                                                    <span class="fw-bold me-2">Order Code:</span>
+                                                    <span class="badge bg-success">
+                                                        @Model.OrderTracking
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                            <!-- end row -->
+
+                                            <div class="mt-4 text-muted">
+                                                <h5 class="fs-14">Complaint from user (@Model.UserName) :</h5>
+                                                <p>
+                                                    @Model.Description
+                                                </p>
+                                            </div>
+
+
+
+
+
+                                            <!-- product-content -->
+
+                                            <div class="mt-5">
+                                                <div class="row gy-4 gx-0">
+                                                    <div class="col-lg-8">
+                                                        <div class="ps-lg-4">
+
+
+                                                            @if (!string.IsNullOrWhiteSpace(Model.SellerReply))
+                                                            {
+                                                                <div class="d-flex flex-wrap align-items-start gap-3 mb-3">
+                                                                    <h5 class="fs-14">Response details:</h5>
+                                                                </div>
+
+                                                                <div class="me-lg-n3 pe-lg-4" data-simplebar
+                                                                    style="max-height: 225px;">
+                                                                    <ul class="list-unstyled mb-0">
+                                                                        <li class="py-2">
+                                                                            <!-- Phản hồi từ Seller -->
+                                                                            <div class="bg-light rounded p-3 mt-2">
+                                                                                <div class="d-flex align-items-center mb-2">
+                                                                                    <div
+                                                                                        class="badge bg-info-subtle text-info me-2">
+                                                                                        Response from Shop
+                                                                                    </div>
+                                                                                    <h6 class="fs-13 mb-0">@Model.NameShop -
+                                                                                        @Model.DateReply</h6>
+                                                                                </div>
+                                                                                <p class="text-muted mb-0 fst-italic">
+                                                                                    @Model.SellerReply
+                                                                                </p>
+                                                                            </div>
+
+                                                                            @if (!string.IsNullOrWhiteSpace(Model.AdminrReply))
+                                                                            {
+                                                                                <!-- Phản hồi từ Admin -->
+                                                                                <div class="bg-light rounded p-3 mt-2">
+                                                                                    <div class="d-flex align-items-center mb-2">
+                                                                                        <div
+                                                                                            class="badge bg-danger-subtle text-danger me-2">
+                                                                                            Response from Admin
+                                                                                        </div>
+                                                                                        <h6 class="fs-13 mb-0">Administrator -
+                                                                                            @Model.DateAdminCreate</h6>
+                                                                                    </div>
+                                                                                    <p class="text-muted mb-0 fst-italic">
+                                                                                        @Model.AdminrReply
+                                                                                    </p>
+                                                                                </div>
+                                                                            }
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            }
+
+                                                        </div>
+                                                    </div>
+                                                    <!-- end col -->
+                                                </div>
+                                            </div>
+                                            <!-- Nếu Seller chưa phản hồi -->
+                                            @if (Model.Status == "Pending")
+                                            {
+                                                <div class="mt-3">
+                                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                                        data-bs-target="#resolveModal">
+                                                        Resolve Complaint
+                                                    </button>
+                                                </div>
+                                            }
+
+                                            <!-- Modal giải quyết khiếu nại -->
+                                            <div class="modal fade" id="resolveModal" tabindex="-1"
+                                                aria-labelledby="resolveModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content border-0">
+                                                        <div class="modal-header bg-light">
+                                                            <h5 class="modal-title" id="resolveModalLabel">Resolve
+                                                                Complaint</h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            @Html.AntiForgeryToken()
+                                                            <!-- Hidden input containing complaint ID -->
+                                                            <input type="hidden" id="complaintId"
+                                                                value="@Model.ComplantID" />
+
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Resolution Action</label>
+                                                                <select class="form-select" id="resolutionAction"
+                                                                    required>
+                                                                    <option value="">-- Select an action --</option>
+                                                                    <option value="refund">Refund</option>
+                                                                    <option value="warranty">Warranty</option>
+                                                                    <option value="dispute">Dispute</option>
+                                                                </select>
+                                                                <span class="text-danger d-none" id="actionError">Please
+                                                                    select a resolution action.</span>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Detailed Description</label>
+                                                                <textarea class="form-control" id="resolutionNote"
+                                                                    rows="3"
+                                                                    placeholder="Enter resolution description..."
+                                                                    required></textarea>
+                                                                <span class="text-danger d-none" id="noteError">Please
+                                                                    enter a detailed description.</span>
+                                                            </div>
+
+                                                            <div class="text-end">
+                                                                <button type="button" class="btn btn-success"
+                                                                    id="btnResolveSubmit">
+                                                                    <span
+                                                                        class="spinner-border spinner-border-sm d-none"
+                                                                        role="status" aria-hidden="true"></span>
+                                                                    <span class="btn-text">Confirm Resolution</span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                    </div>
+                    <!-- end card body -->
+                </div>
+                <!-- end card -->
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+
+    </div>
+    <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Auto height + hide error when typing in textarea
+            $('#resolutionNote').on('input', function () {
+                $('#noteError').addClass('d-none');
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+            });
+
+            // Hide error when selecting action again
+            $('#resolutionAction').on('change', function () {
+                if ($(this).val()) {
+                    $('#actionError').addClass('d-none');
+                }
+            });
+
+            $('#btnResolveSubmit').on('click', function (e) {
+                e.preventDefault();
+
+                // Reset errors
+                $('#actionError').addClass('d-none');
+                $('#noteError').addClass('d-none');
+
+                const btn = $(this);
+                const spinner = btn.find('.spinner-border');
+                const btnText = btn.find('.btn-text');
+
+                const complaintId = $('#complaintId').val();
+                const action = $('#resolutionAction').val();
+                const note = $('#resolutionNote').val().trim();
+
+                let hasError = false;
+
+                if (!action) {
+                    $('#actionError').removeClass('d-none');
+                    hasError = true;
+                }
+
+                if (!note) {
+                    $('#noteError').removeClass('d-none');
+                    hasError = true;
+                }
+
+                if (!complaintId || hasError) {
+                    // Show brief loading to give feedback feeling
+                    btn.prop('disabled', true);
+                    spinner.removeClass('d-none');
+                    btnText.text('Processing...');
+
+                    setTimeout(() => {
+                        btn.prop('disabled', false);
+                        spinner.addClass('d-none');
+                        btnText.text('Confirm Resolution');
+                    }, 300);
+
+                    return;
+                }
+
+                // Send AJAX if valid
+                btn.prop('disabled', true);
+                spinner.removeClass('d-none');
+                btnText.text('Processing...');
+
+                $.ajax({
+                    url: '/Seller/ResolveComplaint',
+                    type: 'POST',
+                    data: {
+                        id: complaintId,
+                        action: action,
+                        note: note
+                    },
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire("Success", "Complaint resolved!", "success").then(() => {
+                                $('#resolveModal').modal('hide');
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire("Error", response.message || "Resolution failed!", "error");
+                        }
+                    },
+                    error: function () {
+                        Swal.fire("Error", "An error occurred while sending the request.", "error");
+                    },
+                    complete: function () {
+                        btn.prop('disabled', false);
+                        spinner.addClass('d-none');
+                        btnText.text('Confirm Resolution');
+                    }
+                });
+            });
+        });
+    </script>
+
+
+
+
+    @await Html.PartialAsync("_Footer_Admin_Seller")
+    </div>
+    <!-- end main content-->
+
+    </div>
+    <!-- END layout-wrapper -->
+
+
+
+    <!--start back-to-top-->
+    <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+        <i class="ri-arrow-up-line"></i>
+    </button>
+    <!--end back-to-top-->
+
+    <!--preloader-->
+    <div id="preloader">
+        <div id="status">
+            <div class="spinner-border text-primary avatar-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script src="~/assetsAdmin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assetsAdmin/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/assetsAdmin/libs/node-waves/waves.min.js"></script>
+    <script src="~/assetsAdmin/libs/feather-icons/feather.min.js"></script>
+    <script src="~/assetsAdmin/js/pages/plugins/lord-icon-2.1.0.js"></script>
+    <script src="~/assetsAdmin/js/plugins.js"></script>
+
+    <!--Swiper slider js-->
+    <script src="~/assetsAdmin/libs/swiper/swiper-bundle.min.js"></script>
+
+    <!-- ecommerce product details init -->
+    <script src="~/assetsAdmin/js/pages/ecommerce-product-details.init.js"></script>
+
+    <!-- App js -->
+    <script src="~/assetsAdmin/js/app.js"></script>
+</body>
+
+
+<!-- Mirrored from themesbrand.com/velzon/html/master/apps-ecommerce-product-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Feb 2025 12:20:22 GMT -->
+
+</html>

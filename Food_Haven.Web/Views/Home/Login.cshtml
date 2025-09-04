@@ -1,0 +1,384 @@
+﻿<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Food Haven - Login</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:title" content="" />
+    <meta property="og:type" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/assets/imgs/theme/favicon.svg" />
+    <link rel="stylesheet" href="~/assets/css/main.css?v=6.0" />
+    <script src="https://cdn.jsdelivr.net/npm/cute-alert@0.0.3/dist/cute-alert.min.js"></script>
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="chrome-extension://mooikfkahbdckldjjndioackbalphokd/~/assets/prompt.js"></script>
+    @Html.Raw(" <link href='https://cdn.jsdelivr.net/npm/@flaticon/flaticon-uicons/css/all/all.css' rel='stylesheet'>")
+
+    <link rel="stylesheet" href="~/assets/js/gridjs/theme/mermaid.min.css">
+    <!-- Icons Css -->
+    <link href="~/assetsAdmin/css/icons.min.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    @await Html.PartialAsync("_Header")
+    <!--End header-->
+    <main class="main pages">
+        @* <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="/" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                    <span></span> Home <span></span> My Account
+                </div>
+            </div>
+        </div> *@
+        <div class="page-content pt-80 pb-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-8 col-lg-10 col-md-12 m-auto">
+                        <div class="row">
+                            <div class="col-lg-6 pr-30 d-none d-lg-block">
+                                <img class="border-radius-15" src="~/assets/imgs/page/login-1.png" alt="" />
+                            </div>
+                            <div class="col-lg-6 col-md-8">
+                                <div class="login_wrap widget-taber-content background-white">
+                                    <div class="padding_eight_all bg-white">
+                                        <div class="heading_s1 logintxt">
+                                            <h1 class="mb-5">Login</h1>
+                                            <p class="mb-30">
+                                                Don't have an account? <a asp-controller="Home" asp-action="Register">
+                                                    Create
+                                                    here
+                                                </a>
+                                            </p>
+
+                                        </div>
+                                        <div class="heading_s1 logintxt">
+
+                                            <p class="mb-30 ">
+                                                <button
+                                                    onclick="window.location.href='@Url.Action("LoginWithProdider", "Home", new { provider = "Google" })'"
+                                                    type="button" class="login-with-google-btn">
+                                                    Sign in with Google
+                                                </button>
+
+                                            </p>
+
+                                        </div>
+
+                                        ﻿@{
+
+                                            string returnUrl = ViewData["ReturnUrl"]?.ToString() ?? "/";
+                                        }
+                                        <form>
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" id="ReturnUrl" value="@returnUrl" />
+                                            <div class="form-group">
+                                                <input type="text" id="username" placeholder="Username or Email *" />
+                                            </div>
+                                            <div class="form-group">
+                                                <input id="password" type="password" name="password"
+                                                    placeholder="Your password *" />
+                                            </div>
+                                        </form>
+
+                                        <div class="login_footer form-group mb-50">
+                                            <div class="chek-form">
+                                                <div class="custome-checkbox">
+                                                    <input class="form-check-input" type="checkbox" name="checkbox"
+                                                        id="remembers_me" />
+                                                    <label class="form-check-label" for="remembers_me"><span>Remember
+                                                            me</span></label>
+                                                </div>
+                                            </div>
+                                            <a asp-controller="Home" asp-action="Forgot">Forgot Password?</a>
+                                        </div>
+                                        <div class="form-group logintxt">
+                                            <button type="button" id="btnLogin"
+                                                class="btn btn-heading btn-block hover-up" name="login">
+                                                Login
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <style>
+        .login-with-google-btn {
+            transition: background-color .3s, box-shadow .3s;
+            padding: 12px 16px 12px 42px;
+            border: none;
+            border-radius: 3px;
+            box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 1px 1px rgba(0, 0, 0, .25);
+            color: #757575;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+            background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=);
+            background-color: white;
+            background-repeat: no-repeat;
+            background-position: 12px 11px;
+
+            &:hover {
+                box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 2px 4px rgba(0, 0, 0, .25);
+            }
+
+            &:active {
+                background-color: #eeeeee;
+            }
+
+            &:focus {
+                outline: none;
+                box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 2px 4px rgba(0, 0, 0, .25), 0 0 0 3px #c8dafc;
+            }
+
+            &:disabled {
+                filter: grayscale(100%);
+                background-color: #ebebeb;
+                box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 1px 1px rgba(0, 0, 0, .25);
+                cursor: not-allowed;
+            }
+
+        }
+
+        .logintxt {
+            text-align: center;
+
+        }
+    </style>
+    @await Html.PartialAsync("_Footer_User")
+    <!-- Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <img src="~/assets/imgs/theme/loading.gif" alt="" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Vendor JS-->
+    <script src="~/assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="~/assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="~/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="~/assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/plugins/slick.js"></script>
+    <script src="~/assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="~/assets/js/plugins/wow.js"></script>
+    <script src="~/assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="~/assets/js/plugins/magnific-popup.js"></script>
+    <script src="~/assets/js/plugins/select2.min.js"></script>
+    <script src="~/assets/js/plugins/waypoints.js"></script>
+    <script src="~/assets/js/plugins/counterup.js"></script>
+    <script src="~/assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="~/assets/js/plugins/images-loaded.js"></script>
+    <script src="~/assets/js/plugins/isotope.js"></script>
+    <script src="~/assets/js/plugins/scrollup.js"></script>
+    <script src="~/assets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="~/assets/js/plugins/jquery.theia.sticky.js"></script>
+    <script src="~/assets/js/plugins/jquery.elevatezoom.js"></script>
+    <!-- Template  JS -->
+    <script src="~/assets/js/main.js?v=6.0"></script>
+    <script src="~/assets/js/shop.js?v=6.0"></script>
+</body>
+
+</html>
+
+<script type="text/javascript">
+    $("#btnLogin").on("click", function () {
+        $('#btnLogin').html('<i class="fa fa-spinner fa-spin"></i> Processing...').prop('disabled', true);
+        var username = $("#username").val();
+        var password = $("#password").val();
+        var ReturnUrl = $("#ReturnUrl").val();
+        var rememberMe = $("#remembers_me").is(":checked");
+        var token = $("input[name='__RequestVerificationToken']").val();
+        $.ajax({
+            url: '@Url.Action("Login", "Home")',
+            method: "POST",
+            dataType: "JSON",
+            data: {
+                username: username,
+                password: password,
+                ReturnUrl: ReturnUrl,
+                rememberMe: rememberMe,
+                __RequestVerificationToken: token
+            },
+            success: function (response) {
+                if (response.status == 'success') {
+                    cuteToast({
+                        type: "success",
+                        message: response.msg,
+                        timer: 5000
+                    });
+                    setTimeout("location.href = '" + response.redirectUrl + "';", 100);
+                } else if (response.status == 'verify') {
+                    Swal.fire({
+                        title: "Enter two-step verification code",
+                        input: "text",
+                        inputAttributes: {
+                            autocapitalize: "off"
+                        },
+                        showCancelButton: true,
+                        confirmButtonText: "Confirm",
+                        showLoaderOnConfirm: true,
+                        preConfirm: async (otp) => {
+                            if (!otp) {
+                                Swal.showValidationMessage("Please enter the verification code.");
+                            }
+                            return otp;
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+                            var otp = result.value;
+
+                            $.ajax({
+                                url: '@Url.Action("VerifyTwoFactor", "Home")',
+                                method: "POST",
+                                dataType: "JSON",
+                                data: {
+                                    username: username,
+                                    otp: otp,
+                                    __RequestVerificationToken: token,
+                                    ReturnUrl: ReturnUrl,
+
+                                },
+                                success: function (response) {
+                                    if (response.status == 'success') {
+                                        cuteToast({
+                                            type: "success",
+                                            message: response.msg,
+                                            timer: 5000
+                                        });
+                                        setTimeout("location.href = '" + response.redirectUrl + "';", 100);
+                                    } else {
+                                        Swal.fire(
+                                            'Failed',
+                                            response.msg,
+                                            'error'
+                                        );
+
+                                    }
+                                },
+                                error: function () {
+                                    cuteToast({
+                                        type: "error",
+                                        message: 'Cannot process',
+                                        timer: 5000
+                                    });
+
+                                }
+                            });
+                        }
+                    });
+                } else if (response.status == 'notcomfirm') {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Account Not Verified',
+                        text: "Your account has not been verified yet. Please check your email to confirm your registration.",
+                        footer: '<a href="#" onclick="resendVerificationEmail()" style="text-decoration: underline;">Click here to resend the verification email</a>',
+                    }).then((result) => {
+
+                    });
+                } else {
+                    Swal.fire(
+                        'Failed',
+                        response.msg,
+                        'error'
+                    );
+
+                }
+                $('#btnLogin').html('Login').prop('disabled', false);
+            },
+            error: function () {
+                cuteToast({
+                    type: "error",
+                    message: 'Cannot process',
+                    timer: 5000
+                });
+
+                $('#btnLogin').html('Login').prop('disabled', false);
+            }
+        });
+    });
+
+    function resendVerificationEmail() {
+        var username = $("#username").val();
+        var token = $("input[name='__RequestVerificationToken']").val();
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to resend the verification email?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let timerInterval;
+                Swal.fire({
+                    title: "Sending Email...",
+                    html: "Please wait, we are resending the email. <b></b> seconds remaining.",
+                    timer: 10000, // 10 seconds
+                    timerProgressBar: true,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        const timer = Swal.getPopup().querySelector("b");
+                        timerInterval = setInterval(() => {
+                            const timeLeft = Swal.getTimerLeft();
+                            if (timeLeft !== undefined) {
+                                timer.textContent = Math.ceil(timeLeft / 1000);
+                            }
+                        }, 200); // cập nhật mỗi 0.2 giây
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval);
+                    }
+                });
+
+                // AJAX call ngay lập tức
+                $.ajax({
+                    url: '/Home/ResendConfirmationEmail',
+                    type: 'POST',
+                    data: {
+                        username: username,
+                        __RequestVerificationToken: token
+                    },
+                    success: function (response) {
+                        Swal.close(); // Đóng loading Swal
+                        Swal.fire({
+                            icon: "info",
+                            title: "Verification Email Resent",
+                            text: "A new verification email has been sent to your inbox. Please check your email.",
+                        });
+                    },
+                    error: function () {
+                        Swal.close(); // Đóng loading Swal
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "There was an issue resending the email. Please try again later.",
+                        });
+                    }
+                });
+            }
+
+        });
+    }
+
+</script>

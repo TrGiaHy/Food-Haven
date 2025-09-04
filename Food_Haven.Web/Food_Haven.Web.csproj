@@ -1,0 +1,74 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-Food_Haven.Web-c1618ecd-5402-4d82-a589-ae3cbdd7971d</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\Dataset\**" />
+    <Compile Remove="wwwroot\microsoft\**" />
+    <Content Remove="Data\Dataset\**" />
+    <Content Remove="wwwroot\microsoft\**" />
+    <EmbeddedResource Remove="Data\Dataset\**" />
+    <EmbeddedResource Remove="wwwroot\microsoft\**" />
+    <None Remove="Data\Dataset\**" />
+    <None Remove="wwwroot\microsoft\**" />
+  </ItemGroup>
+
+  <!-- <ItemGroup>
+    <Content Remove="Views\Admin\ManagerUser.cshtml" />
+  </ItemGroup> -->
+
+<!-- Thêm mục này để bao gồm view -->
+  <!-- <ItemGroup>
+    <Content Include="Views\Admin\ManagerUser.cshtml" CopyToOutputDirectory="Always" />
+  </ItemGroup> -->
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.11" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="8.0.11" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.5" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.5" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.5" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.5" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.5">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.5" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Quartz" Version="3.14.0" />
+		<PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.14.0" />
+		<PackageReference Include="Quartz.Extensions.Hosting" Version="3.14.0" />
+		<PackageReference Include="Quartz.Jobs" Version="3.14.0" />
+        <PackageReference Include="X.PagedList.Mvc.Core" Version="8.1.1" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.4" />
+		<PackageReference Include="CsvHelper" Version="33.1.0" />
+
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="assets\imgs\theme\icons\" />
+	</ItemGroup>
+
+	<!-- <ItemGroup>
+	  <UpToDateCheckInput Remove="Views\Admin\ManagerUser.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="Views\Admin\ManagerUser.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="Views\Admin\ManagerUser.cshtml" />
+	</ItemGroup> -->
+
+</Project>

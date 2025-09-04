@@ -1,0 +1,168 @@
+﻿@model List<Repository.ViewModels.StoreViewModel>;
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Food Haven - Stores List</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:title" content="" />
+    <meta property="og:type" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="~/assets/imgs/theme/favicon.svg" />
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="~/assets/css/main.css?v=6.0" />
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="chrome-extension://mooikfkahbdckldjjndioackbalphokd/~/assets/prompt.js"></script>
+    @Html.Raw(" <link href='https://cdn.jsdelivr.net/npm/@flaticon/flaticon-uicons/css/all/all.css' rel='stylesheet'>")
+
+    <link rel="stylesheet" href="~/assets/js/gridjs/theme/mermaid.min.css">
+            <!-- Icons Css -->
+    <link href="~/assetsAdmin/css/icons.min.css" rel="stylesheet" type="text/css" />
+   
+</head>
+
+<body>
+    @await Html.PartialAsync("_Header")
+   
+    <!--End header-->
+    <main class="main pages mb-80">
+        @* <div class="page-header breadcrumb-wrap">   
+        </div> *@
+        <div class="page-content pt-50">
+            <div class="container">
+                <div class="archive-header-2 text-center">
+                    <h1 class="display-2 mb-50">Stores List</h1>
+                    <div class="row">
+                        <div class="col-lg-5 mx-auto">
+                            <div class="sidebar-widget-2 widget_search mb-50">
+                                <div class="search-form">
+                                    <form asp-controller="Home" asp-action="GetAllStore" method="get">
+                                        <input name="searchName" placeholder="Search product by name" />
+                                        <button type="submit"><i class="fi-rs-search"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @* <div class="row mb-50">
+                    <div class="col-12 col-lg-8 mx-auto">
+                        <div class="shop-product-fillter">
+                        </div>
+                    </div>
+                </div> *@
+               <div class="row vendor-grid">
+    @if (Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <div class="col-lg-6 col-md-6 col-12 col-sm-6">
+                <div class="vendor-wrap style-2 mb-40 position-relative">
+                    <div class="vendor-img-action-wrap">
+                        <div class="vendor-img">
+                            <a asp-action="GetStoreDetail" asp-controller="Home" asp-route-id="@item.ID">
+                                <img class="default-img" src="@item.Img" alt="" />
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="vendor-content-wrap">
+                        <div class="mb-30">
+                            <div class="product-category">
+                                <span class="text-muted">@(item.CreatedDate.ToString("dd/MM/yyyy") ?? "N/A")</span>
+                            </div>
+
+                            <h4>
+                                <a asp-action="GetStoreDetail" asp-controller="Home" asp-route-id="@item.ID">
+                                    @item.Name
+                                </a>
+                            </h4>
+
+                            <div class="product-rate-cover">
+                                <div class="product-rate d-inline-block">
+                                    <div class="product-rating" style="width: 90%"></div>
+                                </div>
+                                <span class="font-small ml-5 text-muted"> (4.0)</span>
+                            </div>
+
+                            <div class="vendor-info d-flex justify-content-between align-items-end mt-30">
+                                <ul class="contact-infor text-muted">
+                                    <li>
+                                        <img src="~/assets/imgs/theme/icons/icon-location.svg" alt="" />
+                                        <strong>Shop: </strong> <span>@item.Address</span>
+                                    </li>
+                                    <li>
+                                        <img src="~/assets/imgs/theme/icons/icon-contact.svg" alt="" />
+                                        <strong>Call Us:</strong> <span>@item.Phone</span>
+                                    </li>
+                                    <li>
+                                        <img src="~/assets/imgs/theme/icons/icon-location.svg" alt="" />
+                                        <strong>Description:</strong> <span>@item.ShortDescriptions</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nút Visit Store cố định ở góc dưới bên phải -->
+                    <div class="position-absolute" style="bottom: 20px; right: 20px;">
+                        <a asp-action="GetStoreDetail" asp-controller="Home" asp-route-id="@item.ID" class="btn btn-xs">
+                            Visit Store <i class="fi-rs-arrow-small-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+            </div>
+
+         
+    </main>
+    @await Html.PartialAsync("_Footer_User")
+    <!-- Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <img src="~/assets/imgs/theme/loading.gif" alt="" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Vendor JS-->
+    <script src="~/assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="~/assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="~/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="~/assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/plugins/slick.js"></script>
+    <script src="~/assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="~/assets/js/plugins/wow.js"></script>
+    <script src="~/assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="~/assets/js/plugins/magnific-popup.js"></script>
+    <script src="~/assets/js/plugins/select2.min.js"></script>
+    <script src="~/assets/js/plugins/waypoints.js"></script>
+    <script src="~/assets/js/plugins/counterup.js"></script>
+    <script src="~/assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="~/assets/js/plugins/images-loaded.js"></script>
+    <script src="~/assets/js/plugins/isotope.js"></script>
+    <script src="~/assets/js/plugins/scrollup.js"></script>
+    <script src="~/assets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="~/assets/js/plugins/jquery.theia.sticky.js"></script>
+    <script src="~/assets/js/plugins/jquery.elevatezoom.js"></script>
+    <!-- Template  JS -->
+    <script src="~/assets/js/main.js?v=6.0"></script>
+    <script src="~/assets/js/shop.js?v=6.0"></script>
+</body>
+
+</html>

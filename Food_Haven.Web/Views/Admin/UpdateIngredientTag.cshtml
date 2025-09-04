@@ -1,0 +1,379 @@
+﻿@model Repository.ViewModels.IngredientTagUpdateViewModel
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
+    data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default">
+
+
+<!-- Mirrored from EasyFood.com/velzon/html/master/forms-layouts.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Feb 2025 12:22:12 GMT -->
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Admin - Edit IngredientTag</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="EasyFood" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/assetsAdmin/images/favicon.svg">
+    <!-- Plugins css -->
+    <link href="~/assetsAdmin/libs/dropzone/dropzone.css" rel="stylesheet" type="text/css" />
+    <!-- Layout config Js -->
+    <script src="~/assetsAdmin/js/layout.js"></script>
+    <!-- Bootstrap Css -->
+    <link href="~/assetsAdmin/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="~/assetsAdmin/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="~/assetsAdmin/css/app.min.css" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="~/assetsAdmin/css/custom.min.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+        @await Html.PartialAsync("_headeradmin")
+
+
+        <!-- ========== App Menu ========== -->
+        <div class="app-menu navbar-menu">
+            <!-- LOGO -->
+            <div class="navbar-brand-box">
+                <!-- Dark Logo-->
+                <a class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="~/assetsAdmin/images/logo-sm.svg" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="~/assetsAdmin/images/logo-dark.svg" alt="" height="35">
+                    </span>
+                </a>
+                <!-- Light Logo-->
+                <a class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="~/assetsAdmin/images/logo-sm.svg" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="~/assetsAdmin/images/logo-light.svg" alt="" height="35">
+                    </span>
+                </a>
+                <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+                    id="vertical-hover">
+                    <i class="ri-record-circle-line"></i>
+                </button>
+            </div>
+
+            <div id="scrollbar">
+                <div class="container-fluid">
+                    <div id="two-column-menu">
+                    </div>
+                    <ul class="navbar-nav" id="navbar-nav">
+                        <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="Index">
+                                <i class=" ri-pie-chart-line"></i> <span>Revenue Statistics</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="WithdrawList">
+                            <i class="ri-exchange-dollar-line"></i> <span>Withdrawal Requests From Users</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="Managercomplant">
+                            <i class="ri-error-warning-line"></i> <span>Order Complaint Reports From Seller</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagerUser">
+                                <i class="ri-account-circle-line"></i> <span>User Accounts</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagementSeller">
+                                <i class="ri-user-add-line"></i> <span>Seller Registration Requests</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="ViewStoreRegistration">
+                            <i class="ri-file-add-line"></i> <span>Store Registration Requests</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ViewAdminStore">
+                                <i class="ri-store-2-line"></i> <span>Store</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagementReportStore">
+                            <i class="ri-alert-line"></i> <span>Store Reports From User</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ViewCategories">
+                                <i class="ri-folder-2-line"></i> <span>Categories</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagementRecipe">
+                                <i class="ri-restaurant-2-line"></i> <span>Cooking Recipes</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagerExpertRecipe">
+                                <i class="ri-restaurant-2-line"></i> <span>Expert Recipe</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link active" asp-controller="Admin" asp-action="GetAllIngredientTag">
+                            <i class=" ri-price-tag-3-line"></i> <span>Ingredient Tag</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="GetAllTypeOfDish">
+                            <i class="ri-restaurant-line"></i> <span>Type of Dish</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagerVoucher">
+                            <i class=" ri-coupon-2-line"></i> <span>Voucher</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="Chat">
+                                <i class="ri-chat-3-line"></i> <span>Chat</span>
+                            </a>
+                        </li>
+                        <!--<li class="nav-item">
+                            <a class="nav-link menu-link" href="">
+                                <i class="ri-notification-2-line"></i> <span>Notifications</span>
+                            </a>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+            <!-- Sidebar -->
+        </div>
+        <div class="sidebar-background"></div>
+    </div>
+    <!-- Left Sidebar End -->
+    <!-- Vertical Overlay-->
+    <div class="vertical-overlay"></div>
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+
+        <div class="page-content">
+            <div class="container-fluid">
+
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div
+                            class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                            <h4 class="mb-sm-0">Update Ingredient Tag </h4>
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="/Admin/GetAllIngredientTag">Ingredient Tags
+                                            List</a></li>
+                                    <li class="breadcrumb-item active">Update Ingredient Tag</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+
+                <div class="row">
+                    <div class="col-xxl-12">
+                        <div class="card">
+                            <div class="card-header align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1">Update Ingredient Tag</h4>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="live-preview">
+                                    <form method="post" asp-action="UpdateIngredientTag" asp-controller="Admin"
+                                        enctype="multipart/form-data">
+                                        <input type="hidden" asp-for="ID" />
+
+                                        <div class="row">
+                                            <!-- Tên danh mục -->
+                                            <div class="col-md-12">
+                                                <div class="mb-3">
+                                                    <label asp-for="Name" class="form-label">Ingredient Tag Name</label>
+                                                    <input asp-for="Name" class="form-control" required />
+                                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+
+
+
+
+                                            <!-- Hình ảnh danh mục -->
+
+
+                                            <div class="col-lg-12 text-end">
+                                                <a href="/Admin/GetAllIngredientTag" class="btn btn-secondary px-4">Back
+                                                    To List</a>
+                                                <button type="submit" class="btn btn-primary px-4">Update
+                                                    IngredientTag</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+                @{
+                    ViewData["Title"] = "Update IngredientTag";
+                }
+
+                @if (ViewBag.RedirectWithSuccess != null && ViewBag.RedirectWithSuccess == true)
+                {
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                    <script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'IngredientTag updated successfully!',
+                            showConfirmButton: false,
+                            timer: 2000
+                        }).then(() => {
+                            window.location.href = '/Admin/GetAllIngredientTag';
+                        });
+                    </script>
+                }
+
+
+                <!-- JavaScript để xem trước ảnh -->
+                <script>
+                    // Kiểm tra số thứ tự (Number) có bị trùng không khi edit
+                    document.querySelector("input[name='Number']").addEventListener("input", function () {
+                        let number = this.value;
+                        let errorSpan = document.querySelector("span[data-valmsg-for='Number']");
+                        let submitBtn = document.querySelector("button[type='submit']");
+
+                        if (number) {
+                            fetch(`/Admin/CheckNumberExists?number=${number}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.exists) {
+                                        errorSpan.innerText = "This display order already exists. Choose another!";
+                                        submitBtn.disabled = true;
+                                    } else {
+                                        errorSpan.innerText = "";
+                                        submitBtn.disabled = false;
+                                    }
+                                });
+                        } else {
+                            errorSpan.innerText = "";
+                            submitBtn.disabled = false;
+                        }
+                    });
+
+                    document.getElementById("imgInput").addEventListener("change", function (event) {
+                        var file = event.target.files[0];
+                        if (file) {
+                            var reader = new FileReader();
+
+                            reader.onload = function (e) {
+                                var preview = document.getElementById("previewImage");
+                                preview.src = e.target.result;
+                                preview.classList.remove("d-none"); // Hiện ảnh xem trước
+                            };
+
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                </script>
+
+                @section Scripts {
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                            const swalSuccess = '@TempData["SuccessMessage"]';
+                            const swalError = '@TempData["SwalError"]';
+
+                            if (swalError) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: swalError,
+                                    confirmButtonColor: '#d33'
+                                });
+                            }
+
+                            if (swalSuccess) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success!',
+                                    text: swalSuccess,
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                            }
+                        });
+                    </script>
+                }
+
+
+
+                @await Html.PartialAsync("_Footer_Admin_Seller")
+            </div>
+            <!-- end main content-->
+            <!-- END layout-wrapper -->
+            <!--start back-to-top-->
+            <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+                <i class="ri-arrow-up-line"></i>
+            </button>
+            <!--end back-to-top-->
+            <!--preloader-->
+            <div id="preloader">
+                <div id="status">
+                    <div class="spinner-border text-primary avatar-sm" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- JAVASCRIPT -->
+            <script src="~/assetsAdmin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="~/assetsAdmin/libs/simplebar/simplebar.min.js"></script>
+            <script src="~/assetsAdmin/libs/node-waves/waves.min.js"></script>
+            <script src="~/assetsAdmin/libs/feather-icons/feather.min.js"></script>
+            <script src="~/assetsAdmin/js/pages/plugins/lord-icon-2.1.0.js"></script>
+            <script src="~/assetsAdmin/js/plugins.js"></script>
+            <!-- ckeditor -->
+            <script src="~/assetsAdmin/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
+
+            <!-- dropzone js -->
+            <script src="~/assetsAdmin/libs/dropzone/dropzone-min.js"></script>
+
+            <script src="~/assetsAdmin/js/pages/ecommerce-product-create.init.js"></script>
+
+            <!-- prismjs plugin -->
+            <script src="~/assetsAdmin/libs/prismjs/prism.js"></script>
+
+            <script src="~/assetsAdmin/js/app.js"></script>
+
+</body>
+
+
+<!-- Mirrored from EasyFood.com/velzon/html/master/forms-layouts.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Feb 2025 12:22:12 GMT -->
+
+</html>

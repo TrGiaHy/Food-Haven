@@ -1,0 +1,447 @@
+@using Repository.ViewModels
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+@model IPagedList<FavoriteRecipeViewModel>
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>User - Favorite Recipes</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:title" content="" />
+    <meta property="og:type" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
+    <!-- Favicon -->
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="~/assets/imgs/theme/favicon.svg" />
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="~/assets/css/main.css?v=6.0" />
+
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="chrome-extension://mooikfkahbdckldjjndioackbalphokd/~/assets/prompt.js"></script>
+    @Html.Raw(" <link href='https://cdn.jsdelivr.net/npm/@flaticon/flaticon-uicons/css/all/all.css' rel='stylesheet'>")
+
+    <link rel="stylesheet" href="~/assets/js/gridjs/theme/mermaid.min.css">
+    <!-- Icons Css -->
+    <link href="~/assetsAdmin/css/icons.min.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    @await Html.PartialAsync("_Header")
+    <!--End header-->
+    <main class="main">
+        @* <div class="page-header mt-30 mb-75">
+            <div class="container">
+                <div class="archive-header">
+                    <div class="row align-items-center">
+                        <div class="col-xl-3">
+                            <h1 class="mb-15">Blog & News</h1>
+                            <div class="breadcrumb">
+                                <a href="/" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                                <span></span> Blog & News
+                            </div>
+                        </div>
+                        <div class="col-xl-9 text-end d-none d-xl-block">
+                            <ul class="tags-list">
+                                <li class="hover-up">
+                                    <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Shopping</a>
+                                </li>
+                                <li class="hover-up active">
+                                    <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Recips</a>
+                                </li>
+                                <li class="hover-up">
+                                    <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Kitchen</a>
+                                </li>
+                                <li class="hover-up">
+                                    <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>News</a>
+                                </li>
+                                <li class="hover-up mr-0">
+                                    <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Food</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> *@
+        <div class="page-content mt-30 mb-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="shop-product-fillter mb-50 pr-30">
+                            <div class="totall-product">
+                                <h2>
+                                    <img class="w-36px mr-10" src="assets/imgs/theme/icons/category-1.svg" alt="" />
+                                    My FavoriteRecipes
+                                </h2>
+                            </div>
+                            @* <div class="sort-by-product-area">
+                                <div class="sort-by-cover mr-10">
+                                    <div class="sort-by-product-wrap">
+                                        <div class="sort-by">
+                                            <span><i class="fi-rs-apps"></i>Show:</span>
+                                        </div>
+                                        <div class="sort-by-dropdown-wrap">
+                                            <span> 50 <i class="fi-rs-angle-small-down"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="sort-by-dropdown">
+                                        <ul>
+                                            <li><a class="active" href="#">50</a></li>
+                                            <li><a href="#">100</a></li>
+                                            <li><a href="#">150</a></li>
+                                            <li><a href="#">200</a></li>
+                                            <li><a href="#">All</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="sort-by-cover">
+                                    <div class="sort-by-product-wrap">
+                                        <div class="sort-by">
+                                            <span><i class="fi-rs-apps-sort"></i>Sort:</span>
+                                        </div>
+                                        <div class="sort-by-dropdown-wrap">
+                                            <span>Featured <i class="fi-rs-angle-small-down"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="sort-by-dropdown">
+                                        <ul>
+                                            <li><a class="active" href="#">Featured</a></li>
+                                            <li><a href="#">Newest</a></li>
+                                            <li><a href="#">Most comments</a></li>
+                                            <li><a href="#">Release Date</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div> *@
+                        </div>
+                        <div class="loop-grid loop-list pr-30 mb-50">
+                            @foreach (var item in Model)
+                            {
+                                <article id="article-@item.ID"
+                                    class="wow fadeIn animated hover-up mb-30 animated position-relative">
+                                    <div class="post-thumb" style="background-image: url('@item.ThumbnailImage');">
+                                        @* <div class="entry-meta">
+                                            <a class="entry-meta meta-2" href="#"><i class="fi-rs-play-alt"></i></a>
+                                        </div> *@
+                                    </div>
+
+                                    <!-- Thùng rác ở góc phải -->
+                                    <a href="javascript:void(0);" class="text-danger remove-favorite" data-id="@item.ID"
+                                        title="Remove from favorites"
+                                        style="position: absolute; top: 15px; right: 15px; z-index: 10;">
+                                        <i class="fas fa-trash fa-lg"></i>
+                                    </a>
+
+                                    <div class="entry-content-2 pl-50">
+                                        <h3 class="post-title mb-20">
+                                            <a href="blog-post-right.html">@item.Title</a>
+                                        </h3>
+                                        <p class="post-exerpt mb-40">@item.ShortDescriptions</p>
+                                        <div class="entry-meta meta-1 font-xs color-grey mt-10 pb-10">
+
+                                            <div>
+
+                                                <span class="post-on">@item.TypeOfDishName</span>
+                                                <span class="post-on has-dot">@item.DifficultyLevel</span>
+                                                <span
+                                                    class="post-on has-dot">@item.CreatedDate.ToString("dd/MM/yyyy")</span>
+                                                <span class="hit-count has-dot">126k Views</span>
+                                                @* <span class="hit-count has-dot">@item.status</span> *@
+                                            </div>
+                                            <a asp-action="RecipeDetail" asp-controller="Users" asp-route-id="@item.ID"
+                                                class="text-brand font-heading font-weight-bold">Read more <i
+                                                    class="fi-rs-arrow-right"></i></a>
+                                        </div>
+
+                                    </div>
+                                </article>
+                            }
+
+
+                        </div>
+                        <div class="pagination-area mt-15 mb-sm-5 mb-lg-0">
+                            @Html.PagedListPager(
+                            Model,
+                            page => Url.Action("FavoriteRecipes", new { page }),
+                                                        new X.PagedList.Web.Common.PagedListRenderOptions
+                                                        {
+                                                            LiElementClasses = new[] { "page-item" },
+                                                            PageClasses = new[] { "page-link" },
+                                                            UlElementClasses = new[] { "pagination", "justify-content-start" },
+                                                            ActiveLiElementClass = "active",
+                                                            LinkToPreviousPageFormat = "<i class='fi-rs-arrow-small-left'></i>",
+                                                            LinkToNextPageFormat = "<i class='fi-rs-arrow-small-right'></i>"
+                                                        })
+                        </div>
+
+
+                    </div>
+                @*     <div class="col-lg-3 primary-sidebar sticky-sidebar">
+                        <div class="widget-area">
+                            <div class="sidebar-widget-2 widget_search mb-50">
+                                <div class="search-form">
+                                    <form action="#">
+                                        <input type="text" placeholder="Search…" />
+                                        <button type="submit"><i class="fi-rs-search"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <div class="sidebar-widget-2 widget_search mb-50">
+                                    <a asp-action="MyViewRecipe" asp-controller="Users" class="btn btn-primary w-100">
+                                        My View Recipe <i class="fi-rs-arrow-right ms-1"></i>
+                                    </a>
+                                </div>
+                            }
+
+
+                            <div class="sidebar-widget widget-category-2 mb-50">
+                                <h5 class="section-title style-1 mb-30">Category</h5>
+                                <ul>
+                                    <li>
+                                        <a href="shop-grid-right.html"> <img
+                                                src="assets/imgs/theme/icons/category-1.svg" alt="" />Milks &
+                                            Dairies</a><span class="count">30</span>
+                                    </li>
+                                    <li>
+                                        <a href="shop-grid-right.html"> <img
+                                                src="assets/imgs/theme/icons/category-2.svg" alt="" />Clothing</a><span
+                                            class="count">35</span>
+                                    </li>
+                                    <li>
+                                        <a href="shop-grid-right.html"> <img
+                                                src="assets/imgs/theme/icons/category-3.svg" alt="" />Pet Foods
+                                        </a><span class="count">42</span>
+                                    </li>
+                                    <li>
+                                        <a href="shop-grid-right.html"> <img
+                                                src="assets/imgs/theme/icons/category-4.svg" alt="" />Baking
+                                            material</a><span class="count">68</span>
+                                    </li>
+                                    <li>
+                                        <a href="shop-grid-right.html"> <img
+                                                src="assets/imgs/theme/icons/category-5.svg" alt="" />Fresh
+                                            Fruit</a><span class="count">87</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- Product sidebar Widget -->
+                            <div class="sidebar-widget product-sidebar mb-50 p-30 bg-grey border-radius-10">
+                                <h5 class="section-title style-1 mb-30">Trending Now</h5>
+                                <div class="single-post clearfix">
+                                    <div class="image">
+                                        <img src="assets/imgs/shop/thumbnail-3.jpg" alt="#" />
+                                    </div>
+                                    <div class="content pt-10">
+                                        <h5><a href="shop-product-detail.html">Chen Cardigan</a></h5>
+                                        <p class="price mb-0 mt-5">$99.50</p>
+                                        <div class="product-rate">
+                                            <div class="product-rating" style="width: 90%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="single-post clearfix">
+                                    <div class="image">
+                                        <img src="assets/imgs/shop/thumbnail-4.jpg" alt="#" />
+                                    </div>
+                                    <div class="content pt-10">
+                                        <h6><a href="shop-product-detail.html">Chen Sweater</a></h6>
+                                        <p class="price mb-0 mt-5">$89.50</p>
+                                        <div class="product-rate">
+                                            <div class="product-rating" style="width: 80%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="single-post clearfix">
+                                    <div class="image">
+                                        <img src="assets/imgs/shop/thumbnail-5.jpg" alt="#" />
+                                    </div>
+                                    <div class="content pt-10">
+                                        <h6><a href="shop-product-detail.html">Colorful Jacket</a></h6>
+                                        <p class="price mb-0 mt-5">$25</p>
+                                        <div class="product-rate">
+                                            <div class="product-rating" style="width: 60%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="single-post clearfix">
+                                    <div class="image">
+                                        <img src="assets/imgs/shop/thumbnail-6.jpg" alt="#" />
+                                    </div>
+                                    <div class="content pt-10">
+                                        <h6><a href="shop-product-detail.html">Lorem, ipsum</a></h6>
+                                        <p class="price mb-0 mt-5">$25</p>
+                                        <div class="product-rate">
+                                            <div class="product-rating" style="width: 60%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sidebar-widget widget_instagram mb-50">
+                                <h5 class="section-title style-1 mb-30">Gallery</h5>
+                                <div class="instagram-gellay">
+                                    <ul class="insta-feed">
+                                        <li>
+                                            <a href="#"><img class="border-radius-5"
+                                                    src="assets/imgs/shop/thumbnail-1.jpg" alt="" /></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><img class="border-radius-5"
+                                                    src="assets/imgs/shop/thumbnail-2.jpg" alt="" /></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><img class="border-radius-5"
+                                                    src="assets/imgs/shop/thumbnail-3.jpg" alt="" /></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><img class="border-radius-5"
+                                                    src="assets/imgs/shop/thumbnail-4.jpg" alt="" /></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><img class="border-radius-5"
+                                                    src="assets/imgs/shop/thumbnail-5.jpg" alt="" /></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><img class="border-radius-5"
+                                                    src="assets/imgs/shop/thumbnail-6.jpg" alt="" /></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--Tags-->
+                            <div class="sidebar-widget widget-tags mb-50 pb-10">
+                                <h5 class="section-title style-1 mb-30">Popular Tags</h5>
+                                <ul class="tags-list">
+                                    <li class="hover-up">
+                                        <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Cabbage</a>
+                                    </li>
+                                    <li class="hover-up">
+                                        <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Broccoli</a>
+                                    </li>
+                                    <li class="hover-up">
+                                        <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Smoothie</a>
+                                    </li>
+                                    <li class="hover-up">
+                                        <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Fruit</a>
+                                    </li>
+                                    <li class="hover-up mr-0">
+                                        <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Salad</a>
+                                    </li>
+                                    <li class="hover-up mr-0">
+                                        <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Appetizer</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="banner-img wow fadeIn mb-50 animated d-lg-block d-none">
+                                <img src="assets/imgs/banner/banner-11.png" alt="" />
+                                <div class="banner-text">
+                                    <span>Oganic</span>
+                                    <h4>
+                                        Save 17% <br />
+                                        on <span class="text-brand">Oganic</span><br />
+                                        Juice
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div> *@
+                </div>
+            </div>
+        </div>
+    </main>
+    @await Html.PartialAsync("_Footer_User")
+    <!-- Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <img src="assets/imgs/theme/loading.gif" alt="" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Vendor JS-->
+    <script src="~/assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="~/assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="~/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="~/assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/plugins/slick.js"></script>
+    <script src="~/assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="~/assets/js/plugins/wow.js"></script>
+    <script src="~/assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="~/assets/js/plugins/magnific-popup.js"></script>
+    <script src="~/assets/js/plugins/select2.min.js"></script>
+    <script src="~/assets/js/plugins/waypoints.js"></script>
+    <script src="~/assets/js/plugins/counterup.js"></script>
+    <script src="~/assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="~/assets/js/plugins/images-loaded.js"></script>
+    <script src="~/assets/js/plugins/isotope.js"></script>
+    <script src="~/assets/js/plugins/scrollup.js"></script>
+    <script src="~/assets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="~/assets/js/plugins/jquery.theia.sticky.js"></script>
+    <script src="~/assets/js/plugins/jquery.elevatezoom.js"></script>
+    <!-- Template  JS -->
+    <script src="~/assets/js/main.js?v=6.0"></script>
+    <script src="~/assets/js/shop.js?v=6.0"></script>
+    <script src="~/assets/js/gridjs/gridjs.umd.js"></script>
+    <!-- Template  JS -->
+    <script src="./assets/js/main.js?v=6.0"></script>
+    <script src="./assets/js/shop.js?v=6.0"></script>
+
+    <script>
+        $(document).on('click', '.remove-favorite', function () {
+            const id = $(this).data('id');
+            console.log("ID to be sent:", id); // ✅ Debug
+
+            if (!id) {
+                console.error("ID is missing.");
+                return;
+            }
+
+            Swal.fire({
+                title: "Confirm Deletion?",
+                text: "Are you sure you want to remove this item from your favorites?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                confirmButtonText: "Delete",
+                cancelButtonText: "Cancel"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/Users/DeleteFavoriteRecipe',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(id),
+                        success: function (res) {
+                            if (res.success) {
+                                Swal.fire("Deleted!", res.message, "success");
+                                $('#article-' + id).remove(); // ✅ đúng ID
+                            } else {
+                                Swal.fire("Error", res.message, "error");
+                            }
+                        },
+                        error: function () {
+                            Swal.fire("Error", "Failed to remove from favorites.", "error");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

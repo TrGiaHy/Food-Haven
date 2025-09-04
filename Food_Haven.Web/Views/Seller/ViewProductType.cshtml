@@ -1,0 +1,390 @@
+﻿@model List<Repository.ViewModels.ProductVariantViewModel>
+@* @using Newtonsoft.Json *@
+@using System.Text.Json
+@{
+    var productId = ViewBag.ProductId;
+    var storeId = ViewBag.StoreId;
+    string storeStatusText = ViewBag.StoreStatusText as string ?? "Approved";
+}
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
+    data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default">
+
+
+<!-- Mirrored from EasyFood.com/velzon/html/master/forms-layouts.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Feb 2025 12:22:12 GMT -->
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Seller - Product Type List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="EasyFood" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/assetsAdmin/images/favicon.svg">
+
+    <!-- gridjs css -->
+    <link rel="stylesheet" href="~/assetsAdmin/libs/gridjs/theme/mermaid.min.css">
+
+    <!-- Layout config Js -->
+    <script src="~/assetsAdmin/js/layout.js"></script>
+    <!-- Bootstrap Css -->
+    <link href="~/assetsAdmin/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="~/assetsAdmin/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="~/assetsAdmin/css/app.min.css" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="~/assetsAdmin/css/custom.min.css" rel="stylesheet" type="text/css" />
+    @* <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> *@
+</head>
+
+<body>
+
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+        @await Html.PartialAsync("_headeradmin")
+
+
+        <!-- ========== App Menu ========== -->
+        <div class="app-menu navbar-menu">
+            <!-- LOGO -->
+            <div class="navbar-brand-box">
+                <!-- Dark Logo-->
+                <a href="/" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="~/assetsAdmin/images/logo-sm.svg" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="~/assetsAdmin/images/logo-dark.svg" alt="" height="35">
+                    </span>
+                </a>
+                <!-- Light Logo-->
+                <a href="/" class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="~/assetsAdmin/images/logo-sm.svg" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="~/assetsAdmin/images/logo-light.svg" alt="" height="35">
+                    </span>
+                </a>
+                <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+                    id="vertical-hover">
+                    <i class="ri-record-circle-line"></i>
+                </button>
+            </div>
+
+            <div id="scrollbar">
+                <div class="container-fluid">
+                    <div id="two-column-menu">
+                    </div>
+                    <ul class="navbar-nav" id="navbar-nav">
+                        <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="index">
+                                <i class=" ri-pie-chart-line"></i> <span>Revenue Statistics</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ViewStore">
+                                <i class="ri-store-2-line"></i> <span>Store</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link active" asp-controller="seller" asp-action="ViewProductList">
+                                <i class="ri-restaurant-2-fill"></i> <span>Products</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ManageOrder">
+                                <i class="ri-file-copy-2-line"></i> <span>Sales History</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ManagerComplant">
+                                <i class="ri-error-warning-line"></i> <span>Order Complaint</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="seller" asp-action="feedbacklist">
+                            <i class="ri-question-answer-line"></i> <span>Feedback</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ManagerVoucher">
+                                <i class="ri-price-tag-3-line"></i> <span>Vouchers</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="Chat">
+                                <i class=" ri-chat-3-line"></i> <span>Chat</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <!-- Sidebar -->
+        </div>
+        <div class="sidebar-background"></div>
+    </div>
+    <!-- Left Sidebar End -->
+    <!-- Vertical Overlay-->
+    <div class="vertical-overlay"></div>
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+
+        <div class="page-content">
+            <div class="container-fluid">
+
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div
+                            class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                            <h4 class="mb-sm-0">Product Type List</h4>
+
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="/seller/ViewProductList">Product List</a></li>
+                                    <li class="breadcrumb-item active">Product Type List</li>
+                                </ol>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+                @if (storeStatusText == "Rejected")
+                {
+                    <div class="alert alert-danger text-center">
+                        <p><strong>Your store has been rejected by admin!</strong></p>
+                        <p>Please update your store information and register store again.</p>
+                    </div>
+                }
+                else if (storeStatusText == "Pending")
+                {
+                    <div class="alert alert-warning text-center">
+                        <p><strong>Your store is currently pending approval.</strong></p>
+                        <p>Please wait while we review your request.</p>
+                    </div>
+                }
+                else if (storeStatusText == "Approved")
+                {
+                    @if (ViewBag.IsStoreActive == false)
+                    {
+                        <div class="alert alert-danger text-center">
+                            <p><strong>Your store has been locked due to a policy violation!</strong></p>
+                            <p>Please contact support for further assistance.</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title mb-0 flex-grow-1">Product Type List</h4>
+                                    </div><!-- end card header -->
+
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-start mb-3">
+                                            <a href="/Seller/CreateProductType?productId=@productId"
+                                                class="btn btn-sm btn-success">
+                                                <i class="ri-add-line"></i> Create Product Type
+                                            </a>
+                                        </div>
+                                        <div id="table-product-variants"></div>
+                                        <div class="d-flex justify-content-end mt-3">
+                                            <a href="/Seller/ViewProductList?storeId=@ViewBag.StoreId"
+                                                class="btn btn-sm btn-secondary px-3">Back to Product List</a>
+                                        </div>
+                                    </div><!-- end card-body -->
+
+                                </div><!-- end card -->
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                if (document.getElementById("table-product-variants")) {
+                                    var productVariants = @Html.Raw(JsonSerializer.Serialize(Model, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }));
+
+                                    new gridjs.Grid({
+                                        columns: [
+                                            { name: "No.", width: "60px" },
+                                            { name: "ID", hidden: true },
+                                            { name: "Name", width: "150px" },
+                                            { name: "Original Price", width: "150px" },
+                                            { name: "Sell Price", width: "150px" },
+                                            { name: "Stock", width: "100px" },
+                                            { name: "Modified Date", width: "150px" },
+                                            { name: "Manufacture Date", width: "180px" },
+                                            {
+                                                name: "Status",
+                                                width: "100px",
+                                                formatter: (cell) => {
+                                                    let statusText = cell ? "Active" : "Disable";
+                                                    let statusClass = cell ? "bg-success-subtle text-success" : "bg-danger-subtle text-danger";
+                                                    return gridjs.html(`<span class="badge ${statusClass}">${statusText}</span>`);
+                                                }
+                                            },
+                                            {
+                                                name: "Actions",
+                                                width: "200px",
+                                                formatter: (_, row) => {
+                                                    let variantId = row.cells[1].data;
+                                                    let isActive = row.cells[8].data;
+
+                                                    let toggleButton = isActive
+                                                        ? `<button class="btn btn-sm btn-danger me-1 update-status-btn" data-id="${variantId}" data-status="false"><i class="ri-eye-off-line align-bottom me-1"></i> Hide</button>`
+                                                        : `<button class="btn btn-sm btn-success me-1 update-status-btn" data-id="${variantId}" data-status="true"><i class="ri-eye-line align-bottom me-1"></i> Show</button>`;
+
+                                                    return gridjs.html(`
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    <a class="btn btn-sm btn-primary" href="/Seller/UpdateProductType?variantId=${variantId}"><i class="ri-pencil-fill align-bottom me-1"></i> Edit</a>
+                                                    ${toggleButton}
+                                                </div>
+                                            `);
+                                                }
+                                            }
+
+                                        ],
+                                        pagination: { enabled: true, limit: 10 },
+                                        search: true,
+                                        sort: true,
+                                        data: productVariants.map((variant, index) => [
+                                            index + 1,
+                                            variant.id,
+                                            variant.size,
+                                            variant.originalPrice,
+                                            variant.price,
+                                            variant.stock,
+                                            formatDate(variant.modifiedDate),
+                                            formatDate(variant.manufactureDate),
+                                            variant.isActive
+                                        ])
+                                    }).render(document.getElementById("table-product-variants"));
+
+                                    function formatDate(dateString) {
+                                        if (!dateString) return "";
+                                        let date = new Date(dateString);
+                                        return date.toLocaleDateString("en-GB");
+                                    }
+
+                                    document.addEventListener("click", function (event) {
+                                        let toggleBtn = event.target.closest(".update-status-btn");
+                                        if (toggleBtn) {
+                                            let variantId = toggleBtn.dataset.id;
+                                            let newStatus = toggleBtn.dataset.status === "true";
+
+                                            Swal.fire({
+                                                title: "Are you sure?",
+                                                text: `Do you want to ${newStatus ? "show" : "hide"} this variant?`,
+                                                icon: "warning",
+                                                showCancelButton: true,
+                                                confirmButtonColor: newStatus ? "#28a745" : "#dc3545",
+                                                cancelButtonColor: "#6c757d",
+                                                confirmButtonText: `Yes, ${newStatus ? "show" : "hide"} it!`
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    fetch(`/Seller/UpdateProductTypeStatus?variantId=${variantId}&isActive=${newStatus}`, {
+                                                        method: "POST"
+                                                    })
+                                                        .then(response => response.json())
+                                                        .then(data => {
+                                                            if (data.success) {
+                                                                Swal.fire({
+                                                                    icon: "success",
+                                                                    title: "Product type status updated.",
+                                                                    showConfirmButton: false,
+                                                                    timer: 1500
+                                                                }).then(() => location.reload());
+                                                            } else {
+                                                                Swal.fire({
+                                                                    icon: "error",
+                                                                    title: "Failed to update product type status.",
+                                                                    showConfirmButton: false,
+                                                                    timer: 1500
+                                                                });
+                                                            }
+                                                        })
+                                                        .catch(error => {
+                                                            console.error("Error:", error);
+                                                            Swal.fire({
+                                                                icon: "error",
+                                                                title: "An unexpected error occurred.",
+                                                                showConfirmButton: false,
+                                                                timer: 1500
+                                                            });
+                                                        });
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        </script>
+                    }
+                }
+
+
+                <!-- end row -->
+
+            </div>
+            <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+        @await Html.PartialAsync("_Footer_Admin_Seller")
+    </div>
+    <!-- end main content-->
+    </div>
+    <!-- END layout-wrapper -->
+    <!--start back-to-top-->
+    <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+        <i class="ri-arrow-up-line"></i>
+    </button>
+    <!--end back-to-top-->
+    <!--preloader-->
+    <div id="preloader">
+        <div id="status">
+            <div class="spinner-border text-primary avatar-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- JAVASCRIPT -->
+    <script src="~/assetsAdmin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assetsAdmin/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/assetsAdmin/libs/node-waves/waves.min.js"></script>
+    <script src="~/assetsAdmin/libs/feather-icons/feather.min.js"></script>
+    <script src="~/assetsAdmin/js/pages/plugins/lord-icon-2.1.0.js"></script>
+    <script src="~/assetsAdmin/js/plugins.js"></script>
+
+    <!-- prismjs plugin -->
+    <script src="~/assetsAdmin/libs/prismjs/prism.js"></script>
+
+    <!-- gridjs js -->
+    <script src="~/assetsAdmin/libs/gridjs/gridjs.umd.js"></script>
+    <!-- gridjs init -->
+    <script src="~/assetsAdmin/js/pages/gridjs.init.js"></script>
+
+    <!-- App js -->
+    <script src="~/assetsAdmin/js/app.js"></script>
+
+</body>
+
+
+<!-- Mirrored from EasyFood.com/velzon/html/master/forms-layouts.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Feb 2025 12:22:12 GMT -->
+
+</html>

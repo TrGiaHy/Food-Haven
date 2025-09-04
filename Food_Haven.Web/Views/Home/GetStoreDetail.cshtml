@@ -1,0 +1,599 @@
+﻿@using Models
+@model Repository.ViewModels.StoreDetailsViewModels;
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Food Haven - Store Detail</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:title" content="" />
+    <meta property="og:type" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="~/assets/imgs/theme/favicon.svg" />
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="~/assets/css/plugins/slider-range.css" />
+    <link rel="stylesheet" href="~/assets/css/main.css" asp-append-version="true" />
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <script src="chrome-extension://mooikfkahbdckldjjndioackbalphokd/~/assets/prompt.js"></script>
+    @Html.Raw(" <link href='https://cdn.jsdelivr.net/npm/@flaticon/flaticon-uicons/css/all/all.css' rel='stylesheet'>")
+
+    <link rel="stylesheet" href="~/assets/js/gridjs/theme/mermaid.min.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+            <!-- Icons Css -->
+    <link href="~/assetsAdmin/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+    @await Html.PartialAsync("_Header")
+    <!--End header-->
+    <main class="main">
+        <div class="container mb-30">
+            <div class="archive-header-2 text-center pt-50 pb-50">
+                <h1 class="display-2">@Model.Name Store</h1>
+                @* <div class="row">
+                    <div class="col-lg-5 mx-auto">
+                        <div class="sidebar-widget-2 widget_search mb-50">
+                             <div class="search-form"> 
+                                 <form action="#"> 
+                                     <input type="text" placeholder="Search product by Store" /> 
+                                     <button type="submit"><i class="fi-rs-search"></i></button> 
+                                 </form> 
+                             </div> 
+                        </div>
+                    </div>
+                </div> *@
+            </div>
+            <div class="row flex-row-reverse">
+                <div class="col-lg-4-5">
+                    <div class="row product-grid">
+
+                        @foreach (var item in Model.ProductViewModel)
+                        {
+                            double averageRating = 5;
+                            if (item.Reviews != null && item.Reviews.Any())
+                            {
+                                var reviewList = item.Reviews ?? new List<Review>();
+                                var reviews = reviewList.Where(r => r.Rating >= 1 && r.Rating <= 5).ToList();
+                                int totalReviews = reviews.Count;
+                                averageRating = totalReviews > 0 ? reviews.Average(r => r.Rating) : 0;
+                            }
+                            else
+                            {
+                                item.Reviews = new List<Review>();
+                            }
+                            <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                                <div class="product-cart-wrap mb-30">
+                                    <div class="product-img-action-wrap mb-10">
+                                        <div class="product-img product-img-zoom">
+                                            <a href="@Url.Action("ProductDetail", "Home", new { id = item.ID })">
+                                                <img class="default-img"
+                                                     src="@(item.Img?.FirstOrDefault() ?? "/assets/imgs/shop/product-5-1.jpg")"
+                                                     alt="@item.Name" />
+                                                <img class="hover-img"
+                                                     src="@(item.Img.Skip(1).FirstOrDefault() ?? item.Img?.FirstOrDefault() ?? "/assets/imgs/shop/product-5-2.jpg")"
+                                                     alt="@item.Name" />
+                                            </a>
+                                        </div>
+                                        <div class="product-action-1">
+                                            @Html.AntiForgeryToken()
+
+                                            @if (item.isWish)
+                                            {
+                                                <a aria-label="@(item.isWish ? "Remove wishlist" : "Add To Wishlist")"
+                                                   class="action-btn" onclick="AddWishlist(this, '@item.ID')">
+                                                    <i class="fi-rs-heart@(item.isWish ? " text-danger" : "")"></i>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a aria-label="Add To Wishlist" class="action-btn"
+                                                   onclick="AddWishlist(this, '@item.ID')">
+                                                    <i class="fi-rs-heart"></i>
+                                                </a>
+                                            }
+                                        </div>
+                                        @* <div class="product-badges product-badges-position product-badges-mrg">
+                                            <span class="hot">Hot</span>
+                                        </div> *@
+                                    </div>
+                                    <div class="product-content-wrap">
+                                        @*  <div class="product-category">
+                                            <a href="shop-grid-right.html">Snack</a>
+                                        </div> *@
+                                        <h2>
+                                            <a href="@Url.Action("ProductDetail", "Home", new { id = item.ID })">@item.Name</a>
+                                        </h2>
+                                        <div class="product-rate-cover">
+                                            <div class="product-rate d-inline-block">
+                                                <div class="product-rating" style="width: @(averageRating * 20)%"></div>
+                                            </div>
+                                            <span class="font-small ml-5 text-muted">(@item.Reviews.Count())</span>
+                                        </div>
+                                        <div>
+                                            <span class="font-small text-muted">
+                                                By <a href="@Url.Action("GetStoreDetail", "Home", new { id = item.StoreId })">
+                                                    @item.StoreName
+                                                </a>
+                                            </span>
+                                            <br />
+                                            <span class="font-small text-muted">
+                                                Category: <a href="@Url.Action("GetAllProductOfCategory", "Home", new { id = item.CateID })">
+                                                    @item.CategoryName
+                                                </a>
+                                            </span>
+                                        </div>
+                                        <div class="product-card-bottom">
+                                            <div class="product-price">
+                                                <span>
+                                                    @{
+                                                        decimal minPrice = 0;
+                                                        decimal maxPrice = 0;
+
+                                                        if (item.ProductTypes != null && item.ProductTypes.Any())
+                                                        {
+                                                            minPrice = item.ProductTypes.Min(pt => pt.SellPrice);
+                                                            maxPrice = item.ProductTypes.Max(pt => pt.SellPrice);
+                                                        }
+                                                    }
+
+                                                    @if (minPrice == 0 && maxPrice == 0)
+                                                    {
+                                                        <span>0 đ</span>
+                                                    }
+                                                    else if (minPrice == maxPrice)
+                                                    {
+                                                        <span>@minPrice.ToString("N0") đ</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>@minPrice.ToString("N0") đ - @maxPrice.ToString("N0") đ</span>
+                                                    }
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                        <div class="product-card-bottom">
+
+                                            <div class="add-cart">
+                                                <a class="add"
+                                                   href="@Url.Action("ProductDetail", "Home", new { id = item.ID })">
+                                                    <i class="fi-rs-shopping-cart mr-5"></i>View Detail
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        }
+                    </div>
+                    <!--product grid-->
+
+
+
+
+                    <!--End Deals-->
+                </div>
+
+                <div class="col-lg-1-5 primary-sidebar sticky-sidebar">
+                    <div class="sidebar-widget widget-store-info mb-30 bg-3 border-0">
+                        <div class="vendor-logo mb-30">
+                            <img src="@Model.Img" alt="" />
+                        </div>
+                        <div class="vendor-info">
+                            <div class="product-category">
+                                <span class="text-muted">Since @Model.CreatedDate.ToString("dd/MM/yyyy")</span>
+
+                            </div>
+                            <h4 class="mb-5"><a href="vendor-details-1.html" class="text-heading">@Model.Name</a></h4>
+
+                            <div class="vendor-des mb-30">
+                                <strong>
+                                    Owner: <a asp-action="UserInformation" asp-controller="Home"
+                                        asp-route-id="@Model.UserID">
+                                        <span class="text-brand">@Model.UserName</span>
+                                    </a>
+                                </strong>
+                            </div>
+                            <div class="product-rate-cover mb-15">
+                                <div class="product-rate d-inline-block">
+                                    <div class="product-rating" style="width: 90%"></div>
+                                </div>
+                                <span class="font-small ml-5 text-muted"> (4.0)</span>
+                            </div>
+
+                            <div class="follow-social mb-20">
+                                <h6 class="mb-15">Follow Us</h6>
+                                <ul class="social-network">
+                                    <li class="hover-up">
+                                        <a href="#">
+                                            <img src="~/assets/imgs/theme/icons/social-tw.svg" alt="" />
+                                        </a>
+                                    </li>
+                                    <li class="hover-up">
+                                        <a href="#">
+                                            <img src="~/assets/imgs/theme/icons/social-fb.svg" alt="" />
+                                        </a>
+                                    </li>
+                                    <li class="hover-up">
+                                        <a href="#">
+                                            <img src="~/assets/imgs/theme/icons/social-insta.svg" alt="" />
+                                        </a>
+                                    </li>
+                                    <li class="hover-up">
+                                        <a href="#">
+                                            <img src="~/assets/imgs/theme/icons/social-pin.svg" alt="" />
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="vendor-info">
+                                <ul class="font-sm mb-20">
+                                    <li><img class="mr-5" src="~/assets/imgs/theme/icons/icon-location.svg"
+                                            alt="" /><strong>Address: </strong> <span>@Model.Address</span></li>
+                                    <li><img class="mr-5" src="~/assets/imgs/theme/icons/icon-contact.svg"
+                                            alt="" /><strong>Call Us:</strong><span>@Model.Phone</span></li>
+                                </ul>
+                                @* <a href="vendor-details-1.html" class="btn btn-xs">Contact Seller <i class="fi-rs-arrow-small-right"></i></a> *@
+                            </div>
+                            <!-- Nút dùng file-signature -->
+@if (User.Identity.IsAuthenticated && Model.UserID != User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
+{
+
+ <div class="d-flex gap-2">
+    <!-- Nút REPORT -->
+    <button type="button" class="btn btn-success btn-sm fw-bold" data-bs-toggle="modal" data-bs-target="#reportModal">
+        <i class="fas fa-file-signature me-1"></i> REPORT
+    </button>
+
+    <!-- Nút FOLLOW -->
+  <button id="followBtn" class="btn btn-success btn-sm fw-bold" data-store-id="@Model.ID">
+    <i class="fas fa-heart me-1"></i> FOLLOW
+</button>
+
+</div>
+
+
+
+
+}
+
+
+
+                         
+
+
+                        </div>
+                    </div>
+                    @* <div class="sidebar-widget widget-category-2 mb-30">
+                        <h5 class="section-title style-1 mb-30">@Model.CategoryName</h5>
+
+                        <ul>
+
+                            <li>
+                                <a href="shop-grid-right.html"> <img src="~/assets/imgs/theme/icons/category-1.svg"
+                                        alt="" />@Model.CategoryName</a><span class="count"></span>
+                            </li>
+
+
+
+                        </ul>
+
+
+                    </div> *@
+
+                    <!-- Fillter By Price -->
+
+
+
+
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form id="reportForm" method="post">
+                            @Html.AntiForgeryToken()
+                            <div class="modal-content">
+
+                                <input type="hidden" name="StoreID" value="@Model.ID" />
+
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="reportModalLabel">Report Store</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Username</label>
+                                        <input type="text" class="form-control" value="@Model.UserNameRepo" disabled>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-control" value="@Model.Email" disabled>
+                                    </div>
+
+                                    <label class="form-label">Reason</label>
+                                    <select class="form-select" name="Reason" id="reasonSelect" required>
+                                        <option selected disabled>-- Select a reason --</option>
+                                        <option>The seller posted prohibited products</option>
+                                        <option>The user shows signs of fraud</option>
+                                        <option>The seller posted counterfeit/fake products</option>
+                                        <option>Spam messages / Inappropriate content</option>
+                                        <option>Transactions outside the platform</option>
+                                        <option>Violation of privacy rights</option>
+                                        <option>Offensive or vulgar content</option>
+                                        <option>Placed multiple COD orders but did not receive</option>
+                                        <option>Placed multiple fake orders</option>
+                                        <option>Other</option>
+                                    </select>
+
+                                    <div id="reasonDetail" class="mt-2 text-muted" style="display: none;"></div>
+
+                                    <div class="mt-3">
+                                        <label for="reportDescription" class="form-label fw-bold">
+                                            Message Reason <span class="text-danger">*</span>
+                                        </label>
+                                        <textarea class="form-control" id="reportDescription" name="Message" rows="4"
+                                            maxlength="200" placeholder="Enter message..."></textarea>
+                                        <div class="text-end text-muted mt-1">
+                                            <span id="charCount">0</span>/200
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-danger">Submit Report</button>
+                                </div>
+                            </div>
+                        </form>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+    @await Html.PartialAsync("_Footer_User")
+    <!-- Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <img src="~/assets/imgs/theme/loading.gif" alt="" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Vendor JS-->
+    <script src="~/assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="~/assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="~/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="~/assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/plugins/slick.js"></script>
+    <script src="~/assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="~/assets/js/plugins/wow.js"></script>
+    <script src="~/assets/js/plugins/slider-range.js"></script>
+    <script src="~/assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="~/assets/js/plugins/magnific-popup.js"></script>
+    <script src="~/assets/js/plugins/select2.min.js"></script>
+    <script src="~/assets/js/plugins/waypoints.js"></script>
+    <script src="~/assets/js/plugins/counterup.js"></script>
+    <script src="~/assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="~/assets/js/plugins/images-loaded.js"></script>
+    <script src="~/assets/js/plugins/isotope.js"></script>
+    <script src="~/assets/js/plugins/scrollup.js"></script>
+    <script src="~/assets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="~/assets/js/plugins/jquery.theia.sticky.js"></script>
+    <script src="~/assets/js/plugins/jquery.elevatezoom.js"></script>
+    <!-- Template  JS -->
+    <script src="~/assets/js/main.js?v=6.0"></script>
+    <script src="~/assets/js/shop.js?v=6.0"></script>
+    
+    <script>
+        const reasonSelect = document.getElementById('reasonSelect');
+        const reasonDetail = document.getElementById('reasonDetail');
+        const textarea = document.getElementById('reportDescription');
+        const charCount = document.getElementById('charCount');
+
+        const reasonDescriptions = {
+            "The seller posted prohibited products": "Products that are banned by law or the platform's policies.",
+            "The user shows signs of fraud": "The user is involved in fraudulent behavior or property appropriation.",
+            "The seller posted counterfeit/fake products": "Non-authentic products that infringe on brand copyrights.",
+            "Spam messages / Inappropriate content": "Sending excessive spam messages or using vulgar language.",
+            "Transactions outside the platform": "The user asks to transact outside the system, which poses a risk.",
+            "Violation of privacy rights": "Misuse of others' personal information.",
+            "Offensive or vulgar content": "Comments or images that are offensive or inappropriate.",
+            "Placed multiple COD orders but did not receive": "Repeatedly placing cash-on-delivery orders but refusing to accept them, affecting the seller.",
+            "Placed multiple fake orders": "Creating fake orders to sabotage or manipulate.",
+            "Other": "Other reasons not listed above."
+        };
+
+
+        reasonSelect.addEventListener('change', function () {
+            const selectedReason = this.value;
+            const detail = reasonDescriptions[selectedReason];
+            if (detail) {
+                reasonDetail.style.display = 'block';
+                reasonDetail.textContent = detail;
+            } else {
+                reasonDetail.style.display = 'none';
+                reasonDetail.textContent = '';
+            }
+        });
+
+        textarea.addEventListener('input', function () {
+            charCount.textContent = this.value.length;
+        });
+    </script>
+
+ <script>
+    $(document).ready(function () {
+        // === 1. Đếm ký tự REPORT ===
+        $('#reportDescription').on('input', function () {
+            $('#charCount').text($(this).val().length);
+        });
+
+        // === 2. Gửi form REPORT bằng AJAX ===
+        $('#reportForm').on('submit', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: '/Home/StoreReport',
+                method: 'POST',
+                data: $(this).serialize(),
+                success: function (response) {
+                    if (response.success) {
+                        new Notify({
+                            status: 'success',
+                            title: 'Success!',
+                            text: response.message || 'Report submitted successfully!',
+                            effect: 'fade',
+                            speed: 300,
+                            showIcon: true,
+                            showCloseButton: true,
+                            autoclose: true,
+                            autotimeout: 3000,
+                            position: 'right top'
+                        });
+
+                        $('#reportModal').modal('hide');
+                        $('#reportForm')[0].reset();
+                        $('#charCount').text('0');
+                        $('#messageValidation').text('');
+                    } else {
+                        new Notify({
+                            status: 'error',
+                            title: 'Error!',
+                            text: response.message || 'Please check your message content.',
+                            effect: 'fade',
+                            speed: 300,
+                            showIcon: true,
+                            showCloseButton: true,
+                            autoclose: true,
+                            autotimeout: 3000,
+                            position: 'right top'
+                        });
+
+                        $('#messageValidation').text(response.message);
+                    }
+                },
+                error: function () {
+                    new Notify({
+                        status: 'error',
+                        title: 'Unexpected Error',
+                        text: 'Something went wrong. Please try again.',
+                        effect: 'fade',
+                        speed: 300,
+                        showIcon: true,
+                        showCloseButton: true,
+                        autoclose: true,
+                        autotimeout: 3000,
+                        position: 'right top'
+                    });
+                }
+            });
+        });
+
+        // === 3. Gửi FOLLOW bằng AJAX (có xác nhận khi UNFOLLOW) ===
+        $('#followBtn').on('click', function () {
+            const storeId = $(this).data('store-id');
+            const isCurrentlyFollowing = $(this).text().trim().toUpperCase() === 'FOLLOWED';
+
+         if (isCurrentlyFollowing) {
+    // Show confirmation using SweetAlert2
+    Swal.fire({
+        title: 'Unfollow Confirmation',
+        text: 'Are you sure you want to unfollow this store?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Unfollow',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            sendFollowRequest(storeId);
+        }
+    });
+} else {
+    sendFollowRequest(storeId);
+}
+
+        });
+
+        function sendFollowRequest(storeId) {
+            $.ajax({
+                url: '/Users/StoreFollowers',
+                type: 'POST',
+                data: { StoreID: storeId },
+                success: function (response) {
+                    if (response.success) {
+                        @* new Notify({
+                            status: 'success',
+                            title: response.isFollowing ? 'Followed' : 'Unfollowed',
+                            text: response.message || (response.isFollowing
+                                ? 'Bạn đã theo dõi cửa hàng.'
+                                : 'Bạn đã bỏ theo dõi cửa hàng.'),
+                            effect: 'fade',
+                            speed: 300,
+                            showIcon: true,
+                            showCloseButton: true,
+                            autoclose: true,
+                            autotimeout: 3000,
+                            position: 'right top'
+                        }); *@
+
+                       if (response.isFollowing) {
+    $('#followBtn').html('<i class="fas fa-heart me-1 text-danger"></i> FOLLOWED');
+} else {
+    $('#followBtn').html('<i class="fas fa-heart me-1"></i> FOLLOW');
+}
+                    }
+                },
+                error: function () {
+                    new Notify({
+                        status: 'error',
+                        title: 'Error!',
+                        text: 'An error occurred. Please try again.',
+                        effect: 'fade',
+                        speed: 300,
+                        showIcon: true,
+                        showCloseButton: true,
+                        autoclose: true,
+                        autotimeout: 3000,
+                        position: 'right top'
+                    });
+                }
+            });
+        }
+    });
+</script>
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,430 @@
+﻿@model List<Repository.ViewModels.ReivewViewModel>
+@using System.Text.Json
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
+    data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default">
+
+
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Seller - Feedback List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="EasyFood" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/assetsAdmin/images/favicon.svg">
+
+    <!-- gridjs css -->
+    <link rel="stylesheet" href="~/assetsAdmin/libs/gridjs/theme/mermaid.min.css">
+
+    <!-- Layout config Js -->
+    <script src="~/assetsAdmin/js/layout.js"></script>
+    <!-- Bootstrap Css -->
+    <link href="~/assetsAdmin/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="~/assetsAdmin/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="~/assetsAdmin/css/app.min.css" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="~/assetsAdmin/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/simple-notify/simple-notify.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+        @await Html.PartialAsync("_headeradmin")
+
+
+        <!-- ========== App Menu ========== -->
+        <div class="app-menu navbar-menu">
+            <!-- LOGO -->
+            <div class="navbar-brand-box">
+                <!-- Dark Logo-->
+                <a href="/" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="~/assetsAdmin/images/logo-sm.svg" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="~/assetsAdmin/images/logo-dark.svg" alt="" height="35">
+                    </span>
+                </a>
+                <!-- Light Logo-->
+                <a href="/" class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="~/assetsAdmin/images/logo-sm.svg" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="~/assetsAdmin/images/logo-light.svg" alt="" height="35">
+                    </span>
+                </a>
+                <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+                    id="vertical-hover">
+                    <i class="ri-record-circle-line"></i>
+                </button>
+            </div>
+
+            <div id="scrollbar">
+                <div class="container-fluid">
+                    <div id="two-column-menu">
+                    </div>
+                    <ul class="navbar-nav" id="navbar-nav">
+                        <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="index">
+                                <i class=" ri-pie-chart-line"></i> <span>Revenue Statistics</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ViewStore">
+                                <i class="ri-store-2-line"></i> <span>Store</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ViewProductList">
+                                <i class="ri-restaurant-2-fill"></i> <span>Products</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ManageOrder">
+                                <i class="ri-file-copy-2-line"></i> <span>Sales History</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ManagerComplant">
+                                <i class="ri-error-warning-line"></i> <span>Order Complaint</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link active" asp-controller="seller" asp-action="feedbacklist">
+                            <i class="ri-question-answer-line"></i> <span>Feedback</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ManagerVoucher">
+                                <i class="ri-price-tag-3-line"></i> <span>Vouchers</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="Chat">
+                                <i class=" ri-chat-3-line"></i> <span>Chat</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <!-- Sidebar -->
+        </div>
+        <div class="sidebar-background"></div>
+    </div>
+    <!-- Left Sidebar End -->
+    <!-- Vertical Overlay-->
+    <div class="vertical-overlay"></div>
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+
+        <div class="page-content">
+            <div class="container-fluid">
+
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div
+                            class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                            <h4 class="mb-sm-0">Feedback List</h4>
+
+                            @* <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item">Tables</li>
+                                    <li class="breadcrumb-item active">Feedback List</li>
+                                     <a class="dropdown-item" target="_blank" asp-controller="Seller" asp-action="ReplyFeedback" asp-route-id="@Model." 
+                                        role="tab" aria-controls="address" aria-selected="true"> 
+                                         <i class="fi-rs-marker mr-10"></i>Management Seller 
+                                     </a> 
+                                </ol>
+                            </div> *@
+
+                        </div>
+                    </div>
+                </div>
+                @Html.AntiForgeryToken()
+
+                <!-- end page title -->
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title mb-0 flex-grow-1">Feedback List</h4>
+                            </div><!-- end card header -->
+
+                            <div class="card-body">
+                                <div id="table-feedback"></div>
+                            </div><!-- end card-body -->
+
+                        </div><!-- end card -->
+                    </div>
+                    <!-- end col -->
+                </div>
+                <!-- end row -->
+
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        if (document.getElementById("table-feedback")) {
+                            var reviews = @Html.Raw(JsonSerializer.Serialize(Model, new JsonSerializerOptions { PropertyNamingPolicy = null }));
+
+                            new gridjs.Grid({
+                                columns: [
+                                    { name: "ID", hidden: true },
+                                    { name: "Product Name", width: "150px" },
+                                    { name: "User Name", width: "150px" },
+                                    { name: "Comment", width: "250px" },
+                                    { name: "Comment Date", width: "150px" },
+                                    { name: "Rating", width: "150px" },
+                                    { name: "Reply", width: "250px" },
+                                    {
+                                        name: "Status",
+                                        width: "150px",
+                                        formatter: (cell, row) => {
+                                            let statusClass = {
+                                                "Active": "bg-success-subtle text-success",
+                                                "Deactive": "bg-danger-subtle text-danger"
+                                            }[cell] || "bg-secondary-subtle text-secondary";
+
+                                            return gridjs.html(`<span id="row-${row.cells[0].data}" class="badge ${statusClass}">${cell}</span>`);
+                                        }
+                                    },
+                                    {
+                                        name: "Actions",
+                                        width: "150px",
+                                        formatter: (_, row) => {
+                                            let status = row.cells[7].data;
+                                            let feedbackId = row.cells[0].data;
+                                            let reply = row.cells[6].data;
+                                            let url = `/Seller/ReplyFeedback/${feedbackId}`;
+
+                                            let actionText = status === "Active" ? "Hide" : "Show";
+                                            let actionIcon = status === "Active" ? "btn btn-sm btn-danger" : "btn btn-sm btn-success";
+                                            let eyeIcon = status === "Active" ? "ri-eye-off-line" : "ri-eye-line";
+
+                                            let replyButton = reply !== "No reply" ? "" : `
+                                                <a class="btn btn-sm btn-primary" target="_blank" href="${url}">
+                                                    <i class="ri-pencil-fill align-bottom me-1"></i> Reply
+                                                </a>
+                                            `;
+
+                                            return gridjs.html(`
+                                                <div class="d-flex gap-2">
+                                                    ${replyButton}
+                                                    <button class="toggle-feedback-btn ${actionIcon}"
+                                                        data-feedbackid="${feedbackId}"
+                                                        data-status="${status}">
+                                                        <i class="${eyeIcon} align-bottom me-1"></i> ${actionText}
+                                                    </button>
+                                                </div>
+                                            `);
+                                        }
+                                    }
+                                ],
+                                pagination: {
+                                    enabled: true,
+                                    limit: 10,
+                                    summary: true
+                                },
+                                pageSize: [10, 20, 30, 40, 50],
+                                sort: true,
+                                search: true,
+                                data: reviews.map(review => [
+                                    review.ID,
+                                    review.ProductName,
+                                    review.Username,
+                                    review.Comment,
+                                    new Date(review.CommentDate).toLocaleDateString(),
+                                    review.Rating,
+                                    review.Reply || "No reply",
+                                    review.Status == 0 ? "Active" : "Deactive"
+                                ])
+                            }).render(document.getElementById("table-feedback"));
+                        }
+                    });
+
+                    document.body.addEventListener("click", function (e) {
+                        let target = e.target.closest(".toggle-feedback-btn");
+                        if (target) {
+                            let feedbackId = target.getAttribute("data-feedbackid");
+                            let currentStatus = target.getAttribute("data-status");
+
+                            if (currentStatus === "Active") {
+                                hideFeedback(feedbackId);
+                            } else {
+                                showFeedback(feedbackId);
+                            }
+                        }
+                    });
+
+                    function showFeedback(feedbackId) {
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: 'Do you want to show this feedback?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#28a745',
+                            cancelButtonColor: '#6c757d',
+                            confirmButtonText: 'Yes, show it!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                var token = $("input[name='__RequestVerificationToken']").val();
+                                $.ajax({
+                                    url: "/Seller/Show",
+                                    method: "POST",
+                                    dataType: "JSON",
+                                    data: {
+                                        id: feedbackId,
+                                        __RequestVerificationToken: token
+                                    },
+                                    success: function (response) {
+                                        if (response.success) {
+                                            Swal.fire({
+                                                title: "Success!",
+                                                text: response.msg || "Feedback is now visible.",
+                                                icon: "success",
+                                                timer: 1500,
+                                                showConfirmButton: false
+                                            }).then(() => location.reload());
+                                        } else {
+                                            Swal.fire("Error!", response.msg || "Failed to update feedback status.", "error");
+                                        }
+                                    },
+                                    error: function () {
+                                        Swal.fire("Error!", "An unexpected error occurred.", "error");
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+                    function hideFeedback(feedbackId) {
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: 'Do you want to hide this feedback?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#dc3545',
+                            cancelButtonColor: '#6c757d',
+                            confirmButtonText: 'Yes, hide it!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                var token = $("input[name='__RequestVerificationToken']").val();
+                                $.ajax({
+                                    url: "/Seller/Hidden",
+                                    method: "POST",
+                                    dataType: "JSON",
+                                    data: {
+                                        id: feedbackId,
+                                        __RequestVerificationToken: token
+                                    },
+                                    success: function (response) {
+                                        if (response.success) {
+                                            Swal.fire({
+                                                title: "Success!",
+                                                text: response.msg || "Feedback has been hidden.",
+                                                icon: "success",
+                                                timer: 1500,
+                                                showConfirmButton: false
+                                            }).then(() => location.reload());
+                                        } else {
+                                            Swal.fire("Error!", response.msg || "Failed to update feedback status.", "error");
+                                        }
+                                    },
+                                    error: function () {
+                                        Swal.fire("Error!", "An unexpected error occurred.", "error");
+                                    }
+                                });
+                            }
+                        });
+                    }
+                </script>
+
+
+
+
+
+                <!-- end row -->
+
+            </div>
+            <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+        @await Html.PartialAsync("_Footer_Admin_Seller")
+    </div>
+    <!-- end main content-->
+
+    </div>
+    <!-- END layout-wrapper -->
+
+
+
+
+
+    <!--start back-to-top-->
+    <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+        <i class="ri-arrow-up-line"></i>
+    </button>
+    <!--end back-to-top-->
+
+    <!--preloader-->
+    <div id="preloader">
+        <div id="status">
+            <div class="spinner-border text-primary avatar-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- JAVASCRIPT -->
+    <script src="~/assetsAdmin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assetsAdmin/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/assetsAdmin/libs/node-waves/waves.min.js"></script>
+    <script src="~/assetsAdmin/libs/feather-icons/feather.min.js"></script>
+    <script src="~/assetsAdmin/js/pages/plugins/lord-icon-2.1.0.js"></script>
+    <script src="~/assetsAdmin/js/plugins.js"></script>
+
+    <!-- prismjs plugin -->
+    <script src="~/assetsAdmin/libs/prismjs/prism.js"></script>
+
+    <!-- gridjs js -->
+    <script src="~/assetsAdmin/libs/gridjs/gridjs.umd.js"></script>
+    <!-- gridjs init -->
+    <script src="~/assetsAdmin/js/pages/gridjs.init.js"></script>
+
+    <!-- App js -->
+    <script src="~/assetsAdmin/js/app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="~/assets/cute-alert/cute-alert.js"></script>
+    <script src="~/assets/sweetalert2/sweetalert2.js"></script>
+    <link rel="stylesheet" href="~/assets/cute-alert/style.css" />
+    <link href="~/assets/sweetalert2/default.css" rel="stylesheet" />
+    <script src="~/assets/simple-notify/simple-notify.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</body>
+
+
+
+
+</html>

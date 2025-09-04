@@ -1,0 +1,395 @@
+﻿@model Repository.ViewModels.CategoryCreateViewModel
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
+    data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default">
+
+
+<!-- Mirrored from EasyFood.com/velzon/html/master/forms-layouts.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Feb 2025 12:22:12 GMT -->
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Admin - Create Category</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="EasyFood" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/assetsAdmin/images/favicon.svg">
+    <!-- Plugins css -->
+    <link href="~/assetsAdmin/libs/dropzone/dropzone.css" rel="stylesheet" type="text/css" />
+    <!-- Layout config Js -->
+    <script src="~/assetsAdmin/js/layout.js"></script>
+    <!-- Bootstrap Css -->
+    <link href="~/assetsAdmin/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="~/assetsAdmin/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="~/assetsAdmin/css/app.min.css" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="~/assetsAdmin/css/custom.min.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+        @await Html.PartialAsync("_headeradmin")
+
+        <!-- ========== App Menu ========== -->
+        <div class="app-menu navbar-menu">
+            <!-- LOGO -->
+            <div class="navbar-brand-box">
+                <!-- Dark Logo-->
+                <a class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="~/assetsAdmin/images/logo-sm.svg" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="~/assetsAdmin/images/logo-dark.svg" alt="" height="35">
+                    </span>
+                </a>
+                <!-- Light Logo-->
+                <a class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="~/assetsAdmin/images/logo-sm.svg" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="~/assetsAdmin/images/logo-light.svg" alt="" height="35">
+                    </span>
+                </a>
+                <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+                    id="vertical-hover">
+                    <i class="ri-record-circle-line"></i>
+                </button>
+            </div>
+
+            <div id="scrollbar">
+                <div class="container-fluid">
+                    <div id="two-column-menu">
+                    </div>
+                    <ul class="navbar-nav" id="navbar-nav">
+                        <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="Index">
+                                <i class=" ri-pie-chart-line"></i> <span>Revenue Statistics</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="WithdrawList">
+                            <i class="ri-exchange-dollar-line"></i> <span>Withdrawal Requests From Users</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="Managercomplant">
+                            <i class="ri-error-warning-line"></i> <span>Order Complaint Reports From Seller</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagerUser">
+                                <i class="ri-account-circle-line"></i> <span>User Accounts</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagementSeller">
+                                <i class="ri-user-add-line"></i> <span>Seller Registration Requests</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="ViewStoreRegistration">
+                            <i class="ri-file-add-line"></i> <span>Store Registration Requests</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ViewAdminStore">
+                                <i class="ri-store-2-line"></i> <span>Store</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagementReportStore">
+                            <i class="ri-alert-line"></i> <span>Store Reports From User</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link active" asp-controller="Admin" asp-action="ViewCategories">
+                                <i class="ri-folder-2-line"></i> <span>Categories</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagementRecipe">
+                                <i class="ri-restaurant-2-line"></i> <span>Cooking Recipes</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagerExpertRecipe">
+                                <i class="ri-restaurant-2-line"></i> <span>Expert Recipe</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="GetAllIngredientTag">
+                            <i class=" ri-price-tag-3-line"></i> <span>Ingredient Tag</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="GetAllTypeOfDish">
+                            <i class="ri-restaurant-line"></i> <span>Type of Dish</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link menu-link" asp-controller="Admin" asp-action="ManagerVoucher">
+                            <i class=" ri-coupon-2-line"></i> <span>Voucher</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="Admin" asp-action="Chat">
+                                <i class="ri-chat-3-line"></i> <span>Chat</span>
+                            </a>
+                        </li>
+                        <!--<li class="nav-item">
+                            <a class="nav-link menu-link" href="">
+                                <i class="ri-notification-2-line"></i> <span>Notifications</span>
+                            </a>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+            <!-- Sidebar -->
+        </div>
+        <div class="sidebar-background"></div>
+    </div>
+    <!-- Left Sidebar End -->
+    <!-- Vertical Overlay-->
+    <div class="vertical-overlay"></div>
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+
+        <div class="page-content">
+            <div class="container-fluid">
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div
+                            class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                            <h4 class="mb-sm-0">Create Category Form</h4>
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="/Admin/ViewCategories">Category List</a></li>
+                                    <li class="breadcrumb-item active">Create Category Form</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+
+                <div class="row">
+                    <div class="col-xxl-12">
+                        <div class="card shadow-lg">
+                            <div class="card-header align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1 text-primary">Create Category Form</h4>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="live-preview">
+                                    <p class="text-muted">Fill in the details below to add a new category.</p>
+
+                                    <form method="post" asp-action="CreateCategory" enctype="multipart/form-data">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label asp-for="Name" class="form-label fw-bold">Category
+                                                        Name</label>
+                                                    <input asp-for="Name" class="form-control"
+                                                        placeholder="Enter category name" id="nameInput" name="Name">
+                                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                                    <span class="text-danger" id="nameError"></span>
+                                                    <!-- ✅ thêm dòng này -->
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label asp-for="Number" class="form-label fw-bold">Display
+                                                        Order</label>
+                                                    <input asp-for="Number" type="number" class="form-control"
+                                                        placeholder="Enter display order" id="numberInput">
+                                                    <span asp-validation-for="Number" class="text-danger"
+                                                        id="numberError"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label asp-for="Commission"
+                                                        class="form-label fw-bold">Commission(%)</label>
+                                                    <input asp-for="Commission" type="number" step="0.1"
+                                                        class="form-control" placeholder="Enter commission percentage">
+                                                    <span asp-validation-for="Commission" class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label fw-bold">Upload Category Image</label>
+                                                    <input type="file" name="Image" class="form-control"
+                                                        accept=".png, .jpeg, .jpg" id="imgInput">
+                                                    <small class="text-muted">Upload a category image (1 image
+                                                        only).</small>
+                                                    <div id="imagePreview" class="mt-3"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-12 text-end">
+                                                <a href="/Admin/ViewCategories"
+                                                    class="btn btn-sm btn-secondary px-3">Back to
+                                                    List</a>
+                                                <button type="submit" class="btn btn-sm btn-success px-3"
+                                                    id="submitBtn"><i class="ri-add-line"></i> Create Category</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+                @if (ViewBag.SuccessMessage != null)
+                {
+                    <text>
+                        <script>
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: '@ViewBag.SuccessMessage',
+                                showConfirmButton: false,
+                                timer: 2000
+                            }).then(() => {
+                                window.location.href = '/Admin/ViewCategories';
+                            });
+                        </script>
+                    </text>
+                }
+
+                <script>
+                    // Kiểm tra số thứ tự (Number) có bị trùng không
+                    document.getElementById("numberInput").addEventListener("input", function () {
+                        let number = this.value;
+                        let errorSpan = document.getElementById("numberError");
+                        let submitBtn = document.getElementById("submitBtn");
+
+                        if (number) {
+                            fetch(`/Admin/CheckNumberExists?number=${number}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.exists) {
+                                        errorSpan.innerText = "This display order already exists. Choose another!";
+                                        submitBtn.disabled = true;
+                                    } else {
+                                        errorSpan.innerText = "";
+                                        submitBtn.disabled = false;
+                                    }
+                                });
+                        } else {
+                            errorSpan.innerText = "";
+                            submitBtn.disabled = false;
+                        }
+                    });
+
+                    // Preview ảnh
+                    document.getElementById("imgInput").addEventListener("change", function (event) {
+                        let files = event.target.files;
+                        let preview = document.getElementById("imagePreview");
+                        preview.innerHTML = "";
+                        if (files.length > 0) {
+                            let reader = new FileReader();
+                            reader.onload = function (e) {
+                                let img = document.createElement("img");
+                                img.src = e.target.result;
+                                img.classList.add("img-thumbnail");
+                                img.style.maxWidth = "150px";
+                                img.style.maxHeight = "150px";
+                                preview.appendChild(img);
+                            };
+                            reader.readAsDataURL(files[0]);
+                        }
+                    });
+
+                    document.getElementById("nameInput").addEventListener("input", function () {
+                        let name = this.value.trim();
+                        let errorSpan = document.getElementById("nameError");
+                        let submitBtn = document.getElementById("submitBtn");
+
+                        if (name) {
+                            fetch(`/Admin/CheckNameExists?name=${encodeURIComponent(name)}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.exists) {
+                                        errorSpan.innerText = "This name already exists. Choose another!";
+                                        submitBtn.disabled = true;
+                                    } else {
+                                        errorSpan.innerText = "";
+                                        submitBtn.disabled = false;
+                                    }
+                                });
+                        } else {
+                            errorSpan.innerText = "";
+                            submitBtn.disabled = false;
+                        }
+                    });
+                </script>
+
+                @await Html.PartialAsync("_Footer_Admin_Seller")
+            </div>
+            <!-- end main content-->
+            <!-- END layout-wrapper -->
+            <!--start back-to-top-->
+            <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+                <i class="ri-arrow-up-line"></i>
+            </button>
+            <!--end back-to-top-->
+            <!--preloader-->
+            <div id="preloader">
+                <div id="status">
+                    <div class="spinner-border text-primary avatar-sm" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- JAVASCRIPT -->
+            <script src="~/assetsAdmin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="~/assetsAdmin/libs/simplebar/simplebar.min.js"></script>
+            <script src="~/assetsAdmin/libs/node-waves/waves.min.js"></script>
+            <script src="~/assetsAdmin/libs/feather-icons/feather.min.js"></script>
+            <script src="~/assetsAdmin/js/pages/plugins/lord-icon-2.1.0.js"></script>
+            <script src="~/assetsAdmin/js/plugins.js"></script>
+            <!-- ckeditor -->
+            <script src="~/assetsAdmin/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
+
+            <!-- dropzone js -->
+            <script src="~/assetsAdmin/libs/dropzone/dropzone-min.js"></script>
+
+            <script src="~/assetsAdmin/js/pages/ecommerce-product-create.init.js"></script>
+
+            <!-- prismjs plugin -->
+            <script src="~/assetsAdmin/libs/prismjs/prism.js"></script>
+
+            <script src="~/assetsAdmin/js/app.js"></script>
+
+
+</body>
+
+
+<!-- Mirrored from EasyFood.com/velzon/html/master/forms-layouts.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Feb 2025 12:22:12 GMT -->
+
+</html>

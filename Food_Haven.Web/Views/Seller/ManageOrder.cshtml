@@ -1,0 +1,674 @@
+﻿<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
+      data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default">
+
+
+<!-- Mirrored from EasyFood.com/velzon/html/master/apps-ecommerce-orders.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Feb 2025 12:20:44 GMT -->
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Seller - Manage Order</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="EasyFood" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/assetsAdmin/images/favicon.svg">
+
+    <!-- gridjs css -->
+    <link rel="stylesheet" href="~/assetsAdmin/libs/gridjs/theme/mermaid.min.css">
+
+    <!-- Layout config Js -->
+    <script src="~/assetsAdmin/js/layout.js"></script>
+    <!-- Bootstrap Css -->
+    <link href="~/assetsAdmin/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="~/assetsAdmin/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="~/assetsAdmin/css/app.min.css" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="~/assetsAdmin/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        /* Đồng bộ màu nền toàn bộ phần content */
+        @* .main-content,
+        .page-content,
+        .card-body,
+        .tab-content,
+        .gridjs-wrapper {
+            background-color: #ffffff !important;
+            /* hoặc đổi sang #f3f3f9 nếu bạn thích nền xám nhẹ */
+        } *@
+        /* Nếu muốn lược bỏ bóng của card (tùy template) */
+        .card-body {
+            box-shadow: none !important;
+        }
+
+        /* Chỉnh màu bảng nếu Grid.js vẫn lệch */
+        @* .gridjs-table {
+            background-color: #ffffff !important;
+        } *@
+    </style>
+
+</head>
+
+<body>
+    <style>
+
+    </style>
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+        @await Html.PartialAsync("_headeradmin")
+
+        <!-- ========== App Menu ========== -->
+        <div class="app-menu navbar-menu">
+            <!-- LOGO -->
+            <div class="navbar-brand-box">
+                <!-- Dark Logo-->
+                <a href="/" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="~/assetsAdmin/images/logo-sm.svg" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="~/assetsAdmin/images/logo-dark.svg" alt="" height="35">
+                    </span>
+                </a>
+                <!-- Light Logo-->
+                <a href="/" class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="~/assetsAdmin/images/logo-sm.svg" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="~/assetsAdmin/images/logo-light.svg" alt="" height="35">
+                    </span>
+                </a>
+                <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+                        id="vertical-hover">
+                    <i class="ri-record-circle-line"></i>
+                </button>
+            </div>
+
+            <div id="scrollbar">
+                <div class="container-fluid">
+                    <div id="two-column-menu">
+                    </div>
+                    <ul class="navbar-nav" id="navbar-nav">
+                        <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="index">
+                                <i class=" ri-pie-chart-line"></i> <span>Revenue Statistics</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ViewStore">
+                                <i class="ri-store-2-line"></i> <span>Store</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ViewProductList">
+                                <i class="ri-restaurant-2-fill"></i> <span>Products</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link active" asp-controller="seller" asp-action="ManageOrder">
+                                <i class="ri-file-copy-2-line"></i> <span>Sales History</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ManagerComplant">
+                                <i class="ri-error-warning-line"></i> <span>Order Complaint</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="feedbacklist">
+                                <i class="ri-question-answer-line"></i> <span>Feedback</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="ManagerVoucher">
+                                <i class="ri-price-tag-3-line"></i> <span>Vouchers</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" asp-controller="seller" asp-action="Chat">
+                                <i class=" ri-chat-3-line"></i> <span>Chat</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <!-- Sidebar -->
+        </div>
+        <div class="sidebar-background"></div>
+    </div>
+    <!-- Left Sidebar End -->
+    <!-- Vertical Overlay-->
+    <div class="vertical-overlay"></div>
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+
+        <div class="page-content">
+            <div class="container-fluid">
+
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                            <h4 class="mb-sm-0">Order History List</h4>
+
+                            @* <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
+                                    <li class="breadcrumb-item active">Orders</li>
+                                </ol>
+                            </div> *@
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card" id="orderList">
+                            <div class="card-header border-0">
+                                <div class="row align-items-center gy-3">
+                                    <div class="col-sm">
+                                        <h5 class="card-title mb-0">Order History</h5>
+                                    </div>
+                                    <!-- <div class="col-sm-auto">
+                                        <div class="d-flex gap-1 flex-wrap">
+                                            <button type="button" class="btn btn-success add-btn"
+                                                data-bs-toggle="modal" id="create-btn"
+                                                data-bs-target="#showModal"><i
+                                                    class="ri-add-line align-bottom me-1"></i> Create Order</button>
+                                            <button type="button" class="btn btn-info"><i
+                                                    class="ri-file-download-line align-bottom me-1"></i>
+                                                Import</button>
+                                            <button class="btn btn-soft-danger" id="remove-actions"
+                                                onClick="deleteMultiple()"><i
+                                                    class="ri-delete-bin-2-line"></i></button>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+
+
+                            <div class="card-body pt-0">
+                                <div>
+                                    <ul class="nav nav-tabs mb-3" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link py-3 active" data-bs-toggle="tab" href="#all" role="tab" aria-selected="true">
+                                                <i class="ri-list-check-2 me-1 align-bottom"></i> All
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link py-3 Pending" data-bs-toggle="tab" href="#pending" role="tab">
+                                                <i class="ri-time-line me-1 align-bottom"></i> Pending
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link py-3 Preparing" data-bs-toggle="tab" href="#preparing" role="tab">
+                                                <i class="ri-restaurant-line me-1 align-bottom"></i> Preparing
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link py-3 Delivering" data-bs-toggle="tab" href="#delivering" role="tab">
+                                                <i class="ri-truck-line me-1 align-bottom"></i> Delivering
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link py-3 Confirmed" data-bs-toggle="tab" href="#confirmed" role="tab">
+                                                <i class="ri-checkbox-circle-line me-1 align-bottom"></i> Confirmed
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link py-3 CancelledUser" data-bs-toggle="tab" href="#cancelledUser" role="tab">
+                                                <i class="ri-close-circle-line me-1 align-bottom"></i> Cancelled by User
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link py-3 CancelledShop" data-bs-toggle="tab" href="#cancelledShop" role="tab">
+                                                <i class="ri-store-3-line me-1 align-bottom"></i> Cancelled by Shop
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link py-3 FailedDelivery" data-bs-toggle="tab" href="#failedDelivery" role="tab">
+                                                <i class="ri-error-warning-line me-1 align-bottom"></i> Delivery Failed
+                                            </a>
+                                        </li>
+                                    </ul>
+
+
+
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="all" role="tabpanel">
+                                            <div class="table-responsive table-card mb-1">
+                                                <div id="allTable"></div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="pending" role="tabpanel">
+                                            <div class="table-responsive table-card mb-1">
+                                                <div id="pendingTable"></div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="preparing" role="tabpanel">
+                                            <div class="table-responsive table-card mb-1">
+                                                <div id="preparingTable"></div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="delivering" role="tabpanel">
+                                            <div class="table-responsive table-card mb-1">
+                                                <div id="deliveringTable"></div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="confirmed" role="tabpanel">
+                                            <div class="table-responsive table-card mb-1">
+                                                <div id="confirmedTable"></div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="cancelledUser" role="tabpanel">
+                                            <div class="table-responsive table-card mb-1">
+                                                <div id="cancelledUserTable"></div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="cancelledShop" role="tabpanel">
+                                            <div class="table-responsive table-card mb-1">
+                                                <div id="cancelledShopTable"></div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="failedDelivery" role="tabpanel">
+                                            <div class="table-responsive table-card mb-1">
+                                                <div id="failedDeliveryTable"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+                            <!-- Grid.js Script -->
+                            <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
+                            <!-- Bootstrap JS -->
+                            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+                       <script>
+                                                           // 🔧 Version cải thiện với error handling và logging tốt hơn
+
+                                let gridInstances = {}; // Lưu trữ instances của các grid
+
+                                const connectionManageOrder = new signalR.HubConnectionBuilder()
+                                    .withUrl("/chathub")
+                                    .configureLogging(signalR.LogLevel.Information)
+                                    .build();
+
+                                connectionManageOrder.on("ReceivManageOrder", function () {
+                                    console.log("📥 Nhận tín hiệu ReceivManageOrder từ server");
+                                    console.log("🔄 Bắt đầu cập nhật orders...");
+                                    fetchOrders();
+                                });
+
+                                connectionManageOrder.start()
+                                    .then(() => {
+                                        console.log("✅ SignalR Orders connected successfully");
+                                        // Test connection
+                                        console.log("Connection State:", connectionManageOrder.state);
+                                    })
+                                    .catch(err => {
+                                        console.error("❌ SignalR connection error:", err);
+                                        // Retry connection after 5 seconds
+                                        setTimeout(() => {
+                                            console.log("🔄 Attempting to reconnect SignalR...");
+                                            connectionManageOrder.start();
+                                        }, 5000);
+                                    });
+
+                                // Handle disconnection
+                                connectionManageOrder.onclose(async () => {
+                                    console.warn("⚠️ SignalR connection lost. Attempting to reconnect...");
+                                    await new Promise(resolve => setTimeout(resolve, 5000));
+                                    try {
+                                        await connectionManageOrder.start();
+                                        console.log("✅ SignalR reconnected");
+                                    } catch (err) {
+                                        console.error("❌ Reconnection failed:", err);
+                                    }
+                                });
+
+                                function fetchOrders() {
+                                    console.log("🚀 Fetching orders...");
+
+                                    return fetch("/seller/GetOrder", {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            "X-Requested-With": "XMLHttpRequest" // Đảm bảo server nhận diện đây là AJAX request
+                                        },
+                                        body: JSON.stringify({})
+                                    })
+                                    .then(response => {
+                                        console.log("📡 Response status:", response.status);
+
+                                        if (!response.ok) {
+                                            throw new Error(`HTTP error! status: ${response.status}`);
+                                        }
+
+                                        return response.json();
+                                    })
+                                    .then(data => {
+                                        console.log("📊 Orders Data received:", data);
+                                        console.log("📊 Data type:", typeof data);
+                                        console.log("📊 Is Array:", Array.isArray(data));
+
+                                        if (!data || data === false || (data.msg && typeof data.msg === "string")) {
+                                            console.warn("⚠️ Không có dữ liệu đơn hàng hoặc lỗi:", data?.msg || "No data");
+                                            renderTables([]);
+                                            return;
+                                        }
+
+                                        // Ensure data is array
+                                        const ordersArray = Array.isArray(data) ? data : (data.orders || []);
+                                        console.log("📋 Processing orders count:", ordersArray.length);
+
+                                        renderTables(ordersArray);
+                                    })
+                                    .catch(error => {
+                                        console.error("❌ Error fetching orders:", error);
+                                        // Show user-friendly error message
+                                        showErrorMessage("Không thể tải dữ liệu đơn hàng. Vui lòng thử lại sau.");
+                                    });
+                                }
+
+                                function renderTables(orders) {
+                                    console.log("🎨 Rendering tables with", orders.length, "orders");
+
+                                    function createGrid(elementId, filterStatus = null) {
+                                        const container = document.getElementById(elementId);
+                                        if (!container) {
+                                            console.warn(`⚠️ Container ${elementId} not found`);
+                                            return;
+                                        }
+
+                                        console.log(`🔄 Creating grid for ${elementId} with filter:`, filterStatus);
+
+                                        // 🔥 Destroy existing grid instance if exists
+                                        if (gridInstances[elementId]) {
+                                            try {
+                                                gridInstances[elementId].destroy();
+                                                console.log(`🗑️ Destroyed existing grid for ${elementId}`);
+                                            } catch (e) {
+                                                console.warn(`⚠️ Error destroying grid ${elementId}:`, e);
+                                            }
+                                        }
+
+                                        // ❗ Clear container completely
+                                        container.innerHTML = '';
+
+                                        const filteredData = filterStatus
+                                            ? orders.filter(order => {
+                                                const orderStatus = order.status?.toUpperCase();
+                                                const targetStatus = filterStatus.toUpperCase();
+                                                console.log(`🔍 Filtering: ${orderStatus} === ${targetStatus}`, orderStatus === targetStatus);
+                                                return orderStatus === targetStatus;
+                                            })
+                                            : orders;
+
+                                        console.log(`📊 Filtered data for ${elementId}:`, filteredData.length, "items");
+
+                                        try {
+                                            // Create new grid instance
+                                            const gridInstance = new gridjs.Grid({
+                                                columns: [
+                                                    { id: "stt", name: "STT" },
+                                                    {
+                                                        id: "orderTracking",
+                                                        name: "Order Code",
+                                                        formatter: (cell) => {
+                                                            return gridjs.html(`<a href="/seller/ViewOrderDetails/${cell}" target="_blank" class="fw-medium link-primary">${cell}</a>`);
+                                                        }
+                                                    },
+                                                    { id: "userName", name: "Customer" },
+                                                    {
+                                                        id: "orderDate",
+                                                        name: "Order Date",
+                                                        formatter: (e) => {
+                                                            if (!e) return "N/A";
+                                                            try {
+                                                                const date = new Date(e);
+                                                                if (isNaN(date.getTime())) return "Invalid Date";
+                                                                return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
+                                                            } catch (error) {
+                                                                console.error("Date formatting error:", error);
+                                                                return "N/A";
+                                                            }
+                                                        }
+                                                    },
+                                                    { id: "quantity", name: "Quantity" },
+                                                    {
+                                                        id: "total",
+                                                        name: "Total",
+                                                        formatter: cell => `₫${(cell || 0).toLocaleString('vi-VN')}`
+                                                    },
+                                                    {
+                                                        id: "status",
+                                                        name: "Status",
+                                                        formatter: cell => {
+                                                            const statusColors = {
+                                                                "SUCCESS": "success",
+                                                                "FAILED": "danger",
+                                                                "PROCESSING": "warning",
+                                                                "PENDING": "secondary",
+                                                                "PREPARING IN KITCHEN": "warning",
+                                                                "DELIVERING": "info",
+                                                                "CONFIRMED": "success",
+                                                                "CANCELLED BY USER": "danger",
+                                                                "CANCELLED BY SHOP": "danger",
+                                                                "DELIVERY FAILED": "danger"
+                                                            };
+
+                                                            const color = statusColors[cell?.toUpperCase()] || "secondary";
+                                                            return gridjs.html(`<span class="badge bg-${color}-subtle text-${color} text-uppercase">${cell || 'N/A'}</span>`);
+                                                        }
+                                                    },
+                                                    {
+                                                        name: "Action",
+                                                        formatter: (cell, row) => {
+                                                            const orderId = row.cells[1]?.data;
+                                                            return gridjs.html(`
+                                                                <a href="/seller/ViewOrderDetails/${orderId}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                                    <i class="ri-eye-line"></i> View
+                                                                </a>
+                                                            `);
+                                                        }
+                                                    }
+                                                ],
+                                                data: filteredData.map((item, index) => ({
+                                                    ...item,
+                                                    stt: index + 1
+                                                })),
+                                                pagination: {
+                                                    enabled: true,
+                                                    limit: 10,
+                                                    summary: true
+                                                },
+                                                search: {
+                                                    enabled: true,
+                                                    placeholder: 'Tìm kiếm...'
+                                                },
+                                                sort: true,
+                                                className: {
+                                                    table: 'table table-striped table-hover',
+                                                    thead: 'table-dark'
+                                                }
+                                            });
+
+                                            // Store instance and render
+                                            gridInstances[elementId] = gridInstance;
+                                            gridInstance.render(container);
+
+                                            console.log(`✅ Grid ${elementId} rendered successfully with ${filteredData.length} items`);
+
+                                        } catch (error) {
+                                            console.error(`❌ Error creating grid ${elementId}:`, error);
+                                            container.innerHTML = `<div class="alert alert-danger">Lỗi hiển thị bảng: ${error.message}</div>`;
+                                        }
+                                    }
+
+                                    // Status mappings
+                                    const statusMappings = {
+                                        "allTable": null,
+                                        "pendingTable": "PENDING",
+                                        "preparingTable": "PREPARING IN KITCHEN",
+                                        "deliveringTable": "DELIVERING",
+                                        "confirmedTable": "CONFIRMED",
+                                        "cancelledUserTable": "CANCELLED BY USER",
+                                        "cancelledShopTable": "CANCELLED BY SHOP",
+                                        "failedDeliveryTable": "DELIVERY FAILED"
+                                    };
+
+                                    // Create all grids
+                                    Object.entries(statusMappings).forEach(([elementId, status]) => {
+                                        createGrid(elementId, status);
+                                    });
+
+                                    console.log("🎉 All tables rendered successfully");
+                                }
+
+                                // Utility function to show error messages
+                                function showErrorMessage(message) {
+                                    // You can customize this based on your UI framework
+                                    console.error("🚨 Error:", message);
+
+                                    // Example with toast notification (if you're using Bootstrap)
+                                    const toastContainer = document.querySelector('.toast-container');
+                                    if (toastContainer) {
+                                        const toast = document.createElement('div');
+                                        toast.className = 'toast align-items-center text-white bg-danger border-0';
+                                        toast.innerHTML = `
+                                            <div class="d-flex">
+                                                <div class="toast-body">${message}</div>
+                                                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                                            </div>
+                                        `;
+                                        toastContainer.appendChild(toast);
+                                        new bootstrap.Toast(toast).show();
+                                    }
+                                }
+
+                                // 🔄 Test function to manually trigger update
+                                window.testSignalRUpdate = function() {
+                                    console.log("🧪 Manual test - triggering fetchOrders()");
+                                    fetchOrders();
+                                };
+
+                                // ✅ Load initial orders when page loads
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    console.log("🚀 DOM loaded, fetching initial orders...");
+
+                                    // Add some delay to ensure all resources are loaded
+                                    setTimeout(() => {
+                                        fetchOrders();
+                                    }, 100);
+                                });
+
+                                // 🔍 Debug helper - check connection status
+                                window.checkSignalRStatus = function() {
+                                    console.log("📊 SignalR Status:", {
+                                        connectionState: connectionManageOrder.state,
+                                        connectionId: connectionManageOrder.connectionId
+                                    });
+                                };
+                           </script>
+
+
+
+                        </div>
+
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+
+            </div>
+            <!-- container-fluid -->
+        </div>
+
+
+        <!-- End Page-content -->
+        <!-- <div class="modal fade flip show" id="deleteOrder" tabindex="-1" style="display: block;" aria-modal="true"
+            role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body p-5 text-center">
+                        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                            colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+                        <div class="mt-4 text-center">
+                            <h4>You are about to delete a order ?</h4>
+                            <p class="text-muted fs-15 mb-4">Deleting your order will remove all of your information
+                                from our
+                                database.</p>
+                            <div class="hstack gap-2 justify-content-center remove">
+                                <button class="btn btn-link link-success fw-medium text-decoration-none"
+                                    id="deleteRecord-close" data-bs-dismiss="modal"><i
+                                        class="ri-close-line me-1 align-middle"></i> Close</button>
+                                <button class="btn btn-danger" id="delete-record">Yes, Delete It</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        @await Html.PartialAsync("_Footer_Admin_Seller")
+    </div>
+    <!-- end main content-->
+    </div>
+    <!-- END layout-wrapper -->
+    <!--start back-to-top-->
+    <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+        <i class="ri-arrow-up-line"></i>
+    </button>
+    <!--end back-to-top-->
+    <!--preloader-->
+    <div id="preloader">
+        <div id="status">
+            <div class="spinner-border text-primary avatar-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+   
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+    <script src="~/assetsAdmin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assetsAdmin/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/assetsAdmin/libs/node-waves/waves.min.js"></script>
+    <script src="~/assetsAdmin/libs/feather-icons/feather.min.js"></script>
+    <script src="~/assetsAdmin/js/pages/plugins/lord-icon-2.1.0.js"></script>
+    <script src="~/assetsAdmin/js/plugins.js"></script>
+
+    <!-- list.js min js -->
+    <script src="~/assetsAdmin/libs/list.js/list.min.js"></script>
+
+    <!--list pagination js-->
+    <script src="~/assetsAdmin/libs/list.pagination.js/list.pagination.min.js"></script>
+
+    <!-- ecommerce-order init js -->
+    <script src="~/assetsAdmin/js/pages/ecommerce-order.init.js"></script>
+
+    <!-- Sweet Alerts js -->
+    <script src="~/assetsAdmin/libs/sweetalert2/sweetalert2.min.js"></script>
+
+    <!-- App js -->
+    <script src="~/assetsAdmin/js/app.js"></script>
+  
+</body>
+
+
+</html>

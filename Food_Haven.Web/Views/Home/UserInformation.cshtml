@@ -1,0 +1,291 @@
+﻿@model Repository.ViewModels.SellerViewModel
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Food Haven - User Information</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:title" content="" />
+    <meta property="og:type" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="~/assets/imgs/theme/favicon.svg" />
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="~/assets/css/main.css?v=6.0" />
+    <link rel="stylesheet" href="~/assets/css/plugins/animate.min.css" />
+    @Html.Raw(" <link href='https://cdn.jsdelivr.net/npm/@flaticon/flaticon-uicons/css/all/all.css' rel='stylesheet'>")
+    <script src="chrome-extension://mooikfkahbdckldjjndioackbalphokd/~/assets/prompt.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+            <!-- Icons Css -->
+    <link href="~/assetsAdmin/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        .featured-card-test {
+            padding: 50px 30px;
+            border-radius: 15px;
+            border: 1px solid #ececec;
+            background: #fff;
+        }
+
+            .featured-card-test h4 {
+                margin-bottom: 10px;
+            }
+
+            .featured-card-test p {
+                font-size: 17px;
+                margin-bottom: 10px;
+            }
+
+            .featured-card-test img {
+                margin-bottom: 10px;
+                width: 100px;
+            }
+
+            .featured-card-test button {
+                margin-bottom: 10px;
+                margin-right: 10px;
+            }
+
+            .featured-card-test p {
+                font-size: 17px;
+                margin-bottom: 30px;
+            }
+
+            .featured-card-test a {
+                font-size: 16px;
+            }
+
+            .featured-card-test:hover {
+                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.05);
+            }
+
+            .featured-card-test div {
+                font-size: 17px;
+                color: black;
+            }
+    </style>
+
+    @Html.Raw(" <link href='https://cdn.jsdelivr.net/npm/@flaticon/flaticon-uicons/css/all/all.css' rel='stylesheet'>")
+</head>
+
+<body>
+    @await Html.PartialAsync("_Header")
+    <!--End header-->
+    <main class="main pages">
+        @* <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a asp-controller="Home" asp-action="Index"></i>Home</a>
+                    <span></span> Pages <span></span> My Account
+                </div>
+            </div>
+        </div> *@
+        <div class="page-content pt-50 pb-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-10 m-auto">
+                        <div class="row">
+                            <div class="col-md-4 text-center mb-50">
+                                <div class=" col-lg-12 col-md-6 mb-24">
+                                    <div class="featured-card-test">
+                                        <img src="@(string.IsNullOrEmpty(Model.ProfileImageUrl) ? Url.Content("~/images/default-avatar.png") : Model.ProfileImageUrl)"
+                                             alt="Profile image"
+                                             class="rounded-circle mb-3"
+                                             style="width: 100px; height: 100px; object-fit: cover;" />
+                                        <h4>@Model.UserName</h4>
+                   
+                                        <p id="user-status-@Model.UserId">...</p>
+
+                                        <div class="d-flex gap-2 @(Model.HasStore && Model.StoreId != null ? "" : "justify-content-center")">
+                                            @if (Model.HasStore && Model.StoreId != null)
+                                            {
+                                                <form asp-controller="Home"
+                                                      asp-action="GetStoreDetail"
+                                                      asp-route-id="@Model.StoreId"
+                                                      method="get">
+                                                    <button type="submit" class="btn btn-fill-out submit font-weight-bold">
+                                                        View Store
+                                                    </button>
+                                                </form>
+                                            }
+                                            <button type="button" class="btn btn-fill-out submit font-weight-bold"
+                                                    onclick="goToChat('@Model.UserId')" value="Submit">
+                                                Chat
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="col-lg-12 col-md-6 mb-24">
+                                    <div class="featured-card-test">
+                                        <hr>
+                                        <div class="row mb-3 ">
+                                            <div class="col-md-5 font-weight-bold">User Name</div>
+                                            <div class="col-md-7">@Model.UserName</div>
+                                        </div>
+                                        <hr>
+                                        <div class="row mb-3">
+                                            <div class="col-md-5 font-weight-bold">Store Name</div>
+                                            <div class="col-md-7">
+                                                @if (Model.HasStore)
+                                                {
+                                                    @Model.StoreName
+                                                }
+                                                else
+                                                {
+                                                    <span class="fst-italic text-secondary">The user does not have a store yet.</span>
+
+                                                }
+                                            </div>
+                                        </div>
+
+                                        
+                                        <hr>
+                                        <div class="row mb-3">
+                                            <div class="col-md-5 font-weight-bold">Registration Date</div>
+                                            <div class="col-md-7">@Model.RegisterDate?.ToString("dd/MM/yyyy")</div>
+                                        </div>
+                                        <hr>
+                                        <div class="row mb-3">
+                                            <div class="col-md-5 font-weight-bold">Number of Products Purchased</div>
+                                            <div class="col-md-7">@Model.ProductPurchased</div>
+                                        </div>
+                                        <hr>
+                                        <div class="row mb-3">
+                                            <div class="col-md-5 font-weight-bold">Number of Products</div>
+                                            <div class="col-md-7">@Model.NumberOfProducts</div>
+                                        </div>
+                                        <hr>
+                                        <div class="row mb-3">
+                                            <div class="col-md-5 font-weight-bold">Number of Products Sold</div>
+                                            <div class="col-md-7">@Model.ProductsSold</div>
+                                        </div>
+                                        <hr>
+                                        <div class="row mb-3">
+                                            <div class="col-md-5 font-weight-bold">Number of Posts Sharing Recipes</div>
+                                            <div class="col-md-7 text-success">@Model.TotalPosts bài viết</div>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    @await Html.PartialAsync("_Footer_User")
+    <!-- Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <img src="~/assets/imgs/theme/loading.gif" alt="" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Vendor JS-->
+    <script src="~/assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="~/assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="~/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="~/assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/plugins/slick.js"></script>
+    <script src="~/assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="~/assets/js/plugins/wow.js"></script>
+    <script src="~/assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="~/assets/js/plugins/magnific-popup.js"></script>
+    <script src="~/assets/js/plugins/select2.min.js"></script>
+    <script src="~/assets/js/plugins/waypoints.js"></script>
+    <script src="~/assets/js/plugins/counterup.js"></script>
+    <script src="~/assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="~/assets/js/plugins/images-loaded.js"></script>
+    <script src="~/assets/js/plugins/isotope.js"></script>
+    <script src="~/assets/js/plugins/scrollup.js"></script>
+    <script src="~/assets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="~/assets/js/plugins/jquery.theia.sticky.js"></script>
+    <script src="~/assets/js/plugins/jquery.elevatezoom.js"></script>
+    <!-- Template  JS -->
+    <script src="~/assets/js/main.js?v=6.0"></script>
+    <script src="~/assets/js/shop.js?v=6.0"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-notify@latest/dist/simple-notify.min.js"></script>
+    <script>
+        // Initialize SignalR connection
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chathub")
+            .build();
+
+        // Function to update status into a <p> element
+        function updateUserStatus(userId, statusText) {
+            const el = document.getElementById(`user-status-${userId}`);
+            if (el) {
+                el.innerText = statusText;
+                el.className = statusText.includes("Online") ? "text-success" : "text-muted";
+            }
+        }
+
+        // Convert lastAccess → "x minutes ago"
+        function getTimeAgo(lastSeenString) {
+            if (!lastSeenString) return "a moment ago";
+            const lastSeen = new Date(lastSeenString);
+            if (isNaN(lastSeen)) return "a moment ago";
+
+            const now = new Date();
+            const diffSec = Math.floor((now - lastSeen) / 1000);
+
+            if (diffSec < 60) return "just now";
+            if (diffSec < 3600) return `${Math.floor(diffSec / 60)} minute(s) ago`;
+            if (diffSec < 86400) return `${Math.floor(diffSec / 3600)} hour(s) ago`;
+            return lastSeen.toLocaleDateString("en-US");
+        }
+
+        // Listen for "UserOnline" event
+        connection.on("UserOnline", function (userId) {
+            if (userId === "@Model.UserId") {
+                updateUserStatus(userId, "🟢 Online");
+            }
+        });
+
+        // Listen for "UserOffline" event
+        connection.on("UserOffline", function (userId, lastSeen) {
+            if (userId === "@Model.UserId") {
+                const ago = getTimeAgo(lastSeen);
+                updateUserStatus(userId, `🔴 Offline (${ago})`);
+            }
+        });
+
+        // Call API to fetch initial user status
+        async function fetchInitialStatus(userId) {
+            try {
+                const res = await fetch(`/api/user/status/${userId}`);
+                const data = await res.json();
+
+                if (data.isOnline) {
+                    updateUserStatus(userId, "🟢 Online");
+                } else {
+                    const ago = getTimeAgo(data.lastAccess);
+                    updateUserStatus(userId, `🔴 Offline (${ago})`);
+                }
+            } catch (error) {
+                updateUserStatus(userId, "Unable to check status");
+            }
+        }
+
+        // Start connection and fetch initial status
+        connection.start().then(() => {
+            const userId = "@Model.UserId";
+            fetchInitialStatus(userId);
+        });
+    </script>
+
+
+</body>
+
+</html>
